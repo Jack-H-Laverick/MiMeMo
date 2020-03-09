@@ -1,0 +1,23 @@
+Package: MiMeMo.tools
+Title: Tools for extracting data for StrathE2E, during the MiMeMo project
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Jack H.",
+           family = "Laverick",
+           role = c("aut", "cre"),
+           email = "jacklaverick@ymail.com",
+           comment = c(ORCID = "0000-0001-8829-2084"))
+Description: This package is intended for use with the StarthE2Epolar model. These tools can clip datasets to the geographical area of interest. Data can then be summarised as averages to parameterise volumes and boundary conditions needed by StarthE2Epolar.
+License: Ask nicely
+Encoding: UTF-8
+LazyData: true
+Imports:
+  dplyr,
+  tidyr,
+  purrr,
+  ggplot2,
+  tibble,
+  data.table,
+  sf,
+  rcdo
+RoxygenNote: 7.0.2
