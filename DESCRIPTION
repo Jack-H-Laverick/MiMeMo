@@ -1,16 +1,20 @@
 Package: MiMeMo.tools
-Title: Tools for extracting data for StrathE2E, during the MiMeMo project
+Type: Package
+Title: Tools for extracting data for StrathE2E, during MiMeMo
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "Jack H.",
+    person(given = "Jack H",
            family = "Laverick",
            role = c("aut", "cre"),
            email = "jacklaverick@ymail.com",
            comment = c(ORCID = "0000-0001-8829-2084"))
+Maintainer: Jack H Laverick <jacklaverick@ymail.com>
 Description: This package is intended for use with the StarthE2Epolar model. These tools can clip datasets to the geographical area of interest. Data can then be summarised as averages to parameterise volumes and boundary conditions needed by StarthE2Epolar.
-License: Ask nicely
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+URL: https://jack-h-laverick.github.io/MiMeMo.tools/, https:github.com/Jack-H-Laverick/MiMeMo.tools
+BugReports: https:github.com/Jack-H-Laverick/MiMeMo.tools/issues
 Imports:
   dplyr,
   tidyr,
