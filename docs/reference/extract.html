@@ -43,9 +43,9 @@
 
 
 <meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — extract" />
-<meta property="og:description" content="A data object of water velocities is inherited from Sample before using a precalculated set of
+<meta property="og:description" content="A data object of water velocities is inherited from `Sample` before using a precalculated set of
 indices of where transects intersect the grid for speedy extraction." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -115,7 +115,7 @@ indices of where transects intersect the grid for speedy extraction." />
     </div>
 
     <div class="ref-description">
-    <p>A data object of water velocities is inherited from Sample before using a precalculated set of
+    <p>A data object of water velocities is inherited from `Sample` before using a precalculated set of
 indices of where transects intersect the grid for speedy extraction.</p>
     </div>
 
@@ -126,15 +126,15 @@ indices of where transects intersect the grid for speedy extraction.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>var</th>
-      <td><p>The component of water movement to extract, either "Zonal" or "Meridional" velocities, inherited from Sample.</p></td>
+      <td><p>The component of water movement to extract, either "Zonal" or "Meridional" velocities, inherited from `Sample`.</p></td>
     </tr>
     <tr>
       <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D" inherited from Sample.</p></td>
+      <td><p>The depth layer to extract data from. Either "S" or "D" inherited from `Sample`.</p></td>
     </tr>
     <tr>
       <th>Data</th>
-      <td><p>The data object as passed from Sample.</p></td>
+      <td><p>The data object as passed from `Sample`.</p></td>
     </tr>
     </table>
 
@@ -143,7 +143,7 @@ indices of where transects intersect the grid for speedy extraction.</p>
     <p>The function returns a dataframe of transects and their average zonal <strong>OR</strong> meridional water velocities at a depth.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Extracted values are attached to transects before returning to Sample for further averaging.</p>
+    <p>Extracted values are attached to transects before returning to `Sample` for further averaging.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Boundary sampling functions: 

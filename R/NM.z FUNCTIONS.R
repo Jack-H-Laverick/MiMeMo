@@ -12,6 +12,7 @@
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA spatial tools
 #' @export
 empty <- function(x) all(is.na(x))                      # Quick function looking for areas with no data
 
@@ -24,6 +25,7 @@ empty <- function(x) all(is.na(x))                      # Quick function looking
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA spatial tools
 #' @export
 get_weights <- function(top, bottom)           {
   #top <- 200                                                                    # shallowest depth of the slice
@@ -66,6 +68,7 @@ get_weights <- function(top, bottom)           {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA spatial tools
 #' @export
 get_weights.W <- function(top, bottom)         {
 
@@ -106,6 +109,7 @@ get_weights.W <- function(top, bottom)         {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA spatial tools
 #' @export
 get_weights.old <- function(top, bottom)       {
   #top <- 200                                                                    # shallowest depth of the slice
@@ -148,6 +152,7 @@ get_weights.old <- function(top, bottom)       {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA spatial tools
 #' @export
 get_spatial <- function(file)                  {
   nc_raw <- nc_open(file)                                                    # Open up a netcdf file to see it's raw contents (var names)
@@ -168,6 +173,7 @@ get_spatial <- function(file)                  {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA spatial tools
 #' @export
 Compartmentalise <- function(work)             {
   #  levels(work$Depth) <- depth_levels                                       # Recode factor levels
@@ -202,6 +208,7 @@ Compartmentalise <- function(work)             {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA spatial tools
 #' @export
 stratify  <- function(data, depth, weights)    {
 
@@ -226,6 +233,7 @@ stratify  <- function(data, depth, weights)    {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 get_sea   <- function(path, file)              {
 
@@ -264,6 +272,7 @@ get_sea   <- function(path, file)              {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 get_bio   <- function(path, file)              {
 
@@ -301,6 +310,7 @@ get_bio   <- function(path, file)              {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 get_ice   <- function(path, file)              {
 
@@ -339,6 +349,7 @@ get_ice   <- function(path, file)              {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 get_vertical   <- function(path, file)         {
 
@@ -374,6 +385,7 @@ get_vertical   <- function(path, file)         {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 get_merid <- function(path, file)              {
 
@@ -406,6 +418,7 @@ get_merid <- function(path, file)              {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 get_zonal <- function(path, file)              {
 
@@ -438,6 +451,7 @@ get_zonal <- function(path, file)              {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 get_detritus <- function(file)                 {
 
@@ -470,6 +484,7 @@ get_detritus <- function(file)                 {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 type_in_month <- function(data)                {
 
@@ -499,6 +514,7 @@ type_in_month <- function(data)                {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 whole_month <- function(data)                  {
 
@@ -521,6 +537,7 @@ whole_month <- function(data)                  {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 detritus_month <- function(data)               {
 
@@ -544,6 +561,7 @@ detritus_month <- function(data)               {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 Big_Currents <- function(data)                 {
 
@@ -569,6 +587,7 @@ Big_Currents <- function(data)                 {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA spatial tools
 #' @export
 Window <- function(file, w, e, s, n)           {
 
@@ -601,6 +620,7 @@ Window <- function(file, w, e, s, n)           {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 get_air <- function(File, Type, Year)          {
 
@@ -646,6 +666,7 @@ get_air <- function(File, Type, Year)          {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA averages
 #' @export
 decadal <- function(saved)                     {
 
@@ -668,6 +689,7 @@ decadal <- function(saved)                     {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA averages
 #' @export
 strip_ice <- function(data)                    {
   if(data$Depth[1] == "D") {select(data, -c(starts_with("Ice"), Snow_Thickness))} else data}    # Strip snow and ice variables if in deep depth zone
@@ -681,6 +703,7 @@ strip_ice <- function(data)                    {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA averages
 #' @export
 summarise_sp <- function(decade)               {
 
@@ -700,6 +723,7 @@ summarise_sp <- function(decade)               {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA spatial tools
 #' @export
 sfc_as_cols <- function(x, names = c("x","y")) {
   stopifnot(inherits(x,"sf") && inherits(sf::st_geometry(x),"sfc_POINT"))
@@ -720,6 +744,7 @@ sfc_as_cols <- function(x, names = c("x","y")) {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA spatial tools
 #' @export
 reproj <- function(data)                       {
 
@@ -739,8 +764,8 @@ reproj <- function(data)                       {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA averages
 #' @export
-
 summarise_ts <- function(saved)                {
 
   # saved <- "./Objects/Months/NM.1.1981.rds"
@@ -794,6 +819,7 @@ summarise_ts <- function(saved)                {
       ungroup()
 
   return(Averaged) }    # Calculate monthly mean and SD per compartment as time series
+
 #' Extract the values from a grid under transects along the external boundaries of the model domain
 #'
 #' This function reads in a datafile and attaches the values needed to transects.
@@ -803,6 +829,7 @@ summarise_ts <- function(saved)                {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA averages
 #' @export
 summarise_ts_detritus <- function(saved)       {
 
@@ -830,6 +857,7 @@ summarise_ts_detritus <- function(saved)       {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA plots
 #' @export
 ts_plot <- function(var)                       {
 
@@ -853,8 +881,9 @@ ts_plot <- function(var)                       {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA plots
 #' @export
-point_plot <- function(data, var)              {
+point_plot <- function(data, var) {
 
   decade <- data$Decade[1]; depth <- data$Depth[1]                             # Find out what the data is
 
@@ -892,8 +921,9 @@ point_plot <- function(data, var)              {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family NEMO-MEDUSA plots
 #' @export
-stick_plot <- function(data)        {
+stick_plot <- function(data) {
 
   #data <- SP[[1]]
 

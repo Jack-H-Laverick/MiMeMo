@@ -12,6 +12,7 @@
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family Global Fishing Watch functions
 #' @export
 Arctic_boats <- function (Data)                {
   Fish <- Data %>%                                                            # Take first csv file as a test
@@ -39,6 +40,7 @@ Arctic_boats <- function (Data)                {
 #' @param Data The data object as provided by Sample_OOB
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @family Global Fishing Watch functions
 #' @export
 FAO_boats <- function (Data, Clip)             {
 
@@ -70,6 +72,7 @@ FAO_boats <- function (Data, Clip)             {
 #' @param gear The gear type used by boats to be mapped.
 #' @param limit The minimum number of hours of fishing activity required for a pixel to be included in the map.
 #' @return The function saves a map of fishing activity for a particular gear type above a minimum level of activity.
+#' @family Global Fishing Watch functions
 #' @export
 jacks_lazy_avg <- function (gear, limit) {
   plot <- ggplot() +
@@ -103,6 +106,7 @@ jacks_lazy_avg <- function (gear, limit) {
 #' @param gear The gear type used by boats to be mapped.
 #' @param limit The minimum number of hours of fishing activity required for a pixel to be included in the map.
 #' @return The function saves a map of fishing activity for a particular gear type above a minimum level of activity.
+#' @family Global Fishing Watch functions
 #' @export
 jacks_lazy_animation <- function (gear, limit) {
   plot <- ggplot() +
@@ -139,6 +143,7 @@ jacks_lazy_animation <- function (gear, limit) {
 #' @param gear The gear type used by boats to be mapped.
 #' @param limit The minimum number of hours of fishing activity required for a pixel to be included in the map.
 #' @return The function saves a map of fishing activity for a particular gear type above a minimum level of activity.
+#' @family Global Fishing Watch functions
 #' @export
 jacks_polar_static <- function (gear, limit)   {
   plot <- ggplot() +
@@ -179,6 +184,7 @@ jacks_polar_static <- function (gear, limit)   {
 #' @param gear The gear type used by boats to be mapped.
 #' @param limit The minimum number of hours of fishing activity required for a pixel to be included in the map.
 #' @return The function saves a map of fishing activity for a particular gear type above a minimum level of activity.
+#' @family Global Fishing Watch functions
 #' @export
 jacks_polar_animate <- function (gear, limit)  {
   plot <- ggplot() +

@@ -19,6 +19,7 @@
 #' @param Boundary The boundary depth between shallow and deep compartments, defaults to 60 m for MiMeMo.
 #' @return A data frame containing vertical eddy diffusivity and vertical velocity at the boundary depth
 #' between shallow and deep compartments, for a single day as a spatial plane.
+#' @family NEMO-MEDUSA variable extractors
 #' @export
 avg_day <- function(Path, File, Points, Boundary = 60) {
 
@@ -55,6 +56,7 @@ avg_day <- function(Path, File, Points, Boundary = 60) {
 #' @param data A list of paths to netcdf files which share the same month.
 #' @param grid_points An SF object containing the grid points which fall within the domain polygons.
 #' @return The function returns a dataframe of points averaged within a month and interpolated to the boundary depth.
+#' @family NEMO-MEDUSA averages
 #' @export
 avg_month <- function(data, grid_points) {
 

@@ -24,3 +24,7 @@ with:
 ``` r
 remotes::install_github("Jack-H-Laverick/MiMeMo.tools")
 ```
+
+<br/> Installation will fail if Robert Wilson’s `rcdo` package is
+unavailable. This is used to extract vertical water exchanges. This
+package might not be available to Windows users.

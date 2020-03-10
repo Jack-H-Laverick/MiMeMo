@@ -23,3 +23,12 @@ The user can specify which fishing gear type to visualise, and can also remove p
 of fishing effort. This is useful for keeping the plot clean, but also allows you to remove any fishing signals
 you might not trust from the global fishing watch modelGFW model.
 }
+\seealso{
+Other Global Fishing Watch functions: 
+\code{\link{Arctic_boats}()},
+\code{\link{FAO_boats}()},
+\code{\link{jacks_lazy_avg}()},
+\code{\link{jacks_polar_animate}()},
+\code{\link{jacks_polar_static}()}
+}
+\concept{Global Fishing Watch functions}

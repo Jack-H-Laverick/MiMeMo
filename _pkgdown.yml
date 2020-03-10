@@ -1,0 +1,73 @@
+home:
+  title: Parameterise StrathE2Epolar in R
+  links:
+  - text: Ask a question about the package at
+    href: jacklaverick@ymail.com
+destination: docs
+url: https://jack-h-laverick.github.io/MiMeMo.tools/
+reference:
+- title: Boundaries
+  desc: Extract driving data at the perimeter of model compartments.
+  contents:
+  - to_segments
+  - boundaries
+  - check_grid
+  - direction
+  - Sample
+  - Sample_OOB
+  - extract
+  - extract_OOB
+
+- title: Global Fishing Watch
+  desc: Extract fishing effort data.
+  contents:
+  - Arctic_boats
+  - FAO_boats
+  - jacks_lazy_avg
+  - jacks_lazy_animation
+  - jacks_polar_static
+  - jacks_polar_animate
+- title: NEMO-MEDUSA spatial tools
+  desc: Handle spatial weighting for averages, depth layers, and map projections.
+  contents:
+  - empty
+  - get_weights.W
+  - get_weights.old
+  - get_weights
+  - get_spatial
+  - Compartmentalise
+  - stratify
+  - Window
+  - reproj
+  - sfc_as_cols
+- title: NEMO-MEDUSA variable extractors
+  desc: Extract ecological driving data.
+  contents:
+  - get_air
+  - get_bio
+  - get_detritus
+  - get_ice
+  - get_merid
+  - get_sea
+  - get_vertical
+  - get_zonal
+  - avg_day
+  - type_in_month
+  - whole_month
+  - detritus_month
+  - Big_Currents
+- title: NEMO-MEDUSA averages
+  desc: Average driving data by decade or by model compartment.
+  contents:
+  - decadal
+  - strip_ice
+  - avg_month
+  - summarise_sp
+  - summarise_ts_detritus
+  - summarise_ts
+- title: NEMO-MEDUSA plotting
+  desc: Make plots.
+  contents:
+  - point_plot
+  - ts_plot
+  - stick_plot

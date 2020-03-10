@@ -20,3 +20,12 @@ The function returns a dataframe of transects and their average DIN, chlorophyll
 This function reads in a datafile and attaches the values needed to transects.
 It uses a precalculated set of indices of where transects intersect the grid for speed.
 }
+\seealso{
+Other NEMO-MEDUSA averages: 
+\code{\link{avg_month}()},
+\code{\link{decadal}()},
+\code{\link{summarise_sp}()},
+\code{\link{summarise_ts_detritus}()},
+\code{\link{summarise_ts}()}
+}
+\concept{NEMO-MEDUSA averages}

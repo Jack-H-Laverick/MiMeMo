@@ -20,3 +20,9 @@ The function returns a dataframe of transects and their average DIN, chlorophyll
 This function reads in a datafile and attaches the values needed to transects.
 It uses a precalculated set of indices of where transects intersect the grid for speed.
 }
+\seealso{
+Other NEMO-MEDUSA plots: 
+\code{\link{point_plot}()},
+\code{\link{stick_plot}()}
+}
+\concept{NEMO-MEDUSA plots}

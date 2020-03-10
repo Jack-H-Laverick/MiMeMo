@@ -20,3 +20,12 @@ The function returns a dataframe of transects and their average DIN, chlorophyll
 This function reads in a datafile and attaches the values needed to transects.
 It uses a precalculated set of indices of where transects intersect the grid for speed.
 }
+\seealso{
+Other Global Fishing Watch functions: 
+\code{\link{FAO_boats}()},
+\code{\link{jacks_lazy_animation}()},
+\code{\link{jacks_lazy_avg}()},
+\code{\link{jacks_polar_animate}()},
+\code{\link{jacks_polar_static}()}
+}
+\concept{Global Fishing Watch functions}

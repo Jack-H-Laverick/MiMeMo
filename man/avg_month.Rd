@@ -25,3 +25,12 @@ avg_day interpolates to the depth boundary between the shallow and deep compartm
 
 The daily dataframes are then passed back to avg_month, which averages again by month and variable, dropping the spatial information.
 }
+\seealso{
+Other NEMO-MEDUSA averages: 
+\code{\link{decadal}()},
+\code{\link{strip_ice}()},
+\code{\link{summarise_sp}()},
+\code{\link{summarise_ts_detritus}()},
+\code{\link{summarise_ts}()}
+}
+\concept{NEMO-MEDUSA averages}

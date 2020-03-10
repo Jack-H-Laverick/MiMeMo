@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Function reference" />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -121,64 +121,16 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-boundaries" class="hasAnchor"><a href="#section-boundaries" class="anchor"></a>Boundaries</h2>
+          <p class="section-desc"><p>Extract driving data at the perimeter of model compartments.</p></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="Arctic_boats.html">Arctic_boats()</a></code> </p>
+          <p><code><a href="to_segments.html">to_segments()</a></code> </p>
         </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Big_Currents.html">Big_Currents()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Compartmentalise.html">Compartmentalise()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="FAO_boats.html">FAO_boats()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Sample.html">Sample()</a></code> </p>
-        </td>
-        <td><p>Extract water flows across transects along the boundaries of model compartments</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Sample_OOB.html">Sample_OOB()</a></code> </p>
-        </td>
-        <td><p>Sample along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Window.html">Window()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="avg_day.html">avg_day()</a></code> </p>
-        </td>
-        <td><p>Interpolate vertical water movements to the boundary depth between shallow and deep compartments</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="avg_month.html">avg_month()</a></code> </p>
-        </td>
-        <td><p>Extract vertical water movements at the boundary between shallow and deep compartments</p></td>
+        <td><p>Break an SF linestring into segments at corners</p></td>
       </tr><tr>
         
         <td>
@@ -194,27 +146,21 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="decadal.html">decadal()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="detritus_month.html">detritus_month()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="direction.html">direction()</a></code> </p>
         </td>
         <td><p>Test whether "positive" currents flow in or out of a model compartment at a segment</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="empty.html">empty()</a></code> </p>
+          <p><code><a href="Sample.html">Sample()</a></code> </p>
         </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+        <td><p>Extract water flows across transects along the boundaries of model compartments</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Sample_OOB.html">Sample_OOB()</a></code> </p>
+        </td>
+        <td><p>Sample along the external boundaries of the model domain</p></td>
       </tr><tr>
         
         <td>
@@ -227,7 +173,127 @@
           <p><code><a href="extract_OOB.html">extract_OOB()</a></code> </p>
         </td>
         <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-global-fishing-watch" class="hasAnchor"><a href="#section-global-fishing-watch" class="anchor"></a>Global Fishing Watch</h2>
+          <p class="section-desc"><p>Extract fishing effort data.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="Arctic_boats.html">Arctic_boats()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
       </tr><tr>
+        
+        <td>
+          <p><code><a href="FAO_boats.html">FAO_boats()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="jacks_lazy_avg.html">jacks_lazy_avg()</a></code> </p>
+        </td>
+        <td><p>Map GFW data for a geartype, above a minimum level of fishing activity</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="jacks_lazy_animation.html">jacks_lazy_animation()</a></code> </p>
+        </td>
+        <td><p>Map GFW data for a geartype, above a minimum level of fishing activity</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="jacks_polar_static.html">jacks_polar_static()</a></code> </p>
+        </td>
+        <td><p>Map GFW data for a geartype, above a minimum level of fishing activity</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="jacks_polar_animate.html">jacks_polar_animate()</a></code> </p>
+        </td>
+        <td><p>Map GFW data for a geartype, above a minimum level of fishing activity</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-nemo-medusa-spatial-tools" class="hasAnchor"><a href="#section-nemo-medusa-spatial-tools" class="anchor"></a>NEMO-MEDUSA spatial tools</h2>
+          <p class="section-desc"><p>Handle spatial weighting for averages, depth layers, and map projections.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="empty.html">empty()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_weights.W.html">get_weights.W()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_weights.old.html">get_weights.old()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_weights.html">get_weights()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_spatial.html">get_spatial()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Compartmentalise.html">Compartmentalise()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="stratify.html">stratify()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Window.html">Window()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="reproj.html">reproj()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sfc_as_cols.html">sfc_as_cols()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-nemo-medusa-variable-extractors" class="hasAnchor"><a href="#section-nemo-medusa-variable-extractors" class="anchor"></a>NEMO-MEDUSA variable extractors</h2>
+          <p class="section-desc"><p>Extract ecological driving data.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="get_air.html">get_air()</a></code> </p>
@@ -266,31 +332,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="get_spatial.html">get_spatial()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="get_vertical.html">get_vertical()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_weights.html">get_weights()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_weights.W.html">get_weights.W()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_weights.old.html">get_weights.old()</a></code> </p>
         </td>
         <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
       </tr><tr>
@@ -302,93 +344,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="jacks_lazy_animation.html">jacks_lazy_animation()</a></code> </p>
+          <p><code><a href="avg_day.html">avg_day()</a></code> </p>
         </td>
-        <td><p>Map GFW data for a geartype, above a minimum level of fishing activity</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="jacks_lazy_avg.html">jacks_lazy_avg()</a></code> </p>
-        </td>
-        <td><p>Map GFW data for a geartype, above a minimum level of fishing activity</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="jacks_polar_animate.html">jacks_polar_animate()</a></code> </p>
-        </td>
-        <td><p>Map GFW data for a geartype, above a minimum level of fishing activity</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="jacks_polar_static.html">jacks_polar_static()</a></code> </p>
-        </td>
-        <td><p>Map GFW data for a geartype, above a minimum level of fishing activity</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="point_plot.html">point_plot()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="reproj.html">reproj()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sfc_as_cols.html">sfc_as_cols()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="stick_plot.html">stick_plot()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="stratify.html">stratify()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="strip_ice.html">strip_ice()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summarise_sp.html">summarise_sp()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summarise_ts.html">summarise_ts()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summarise_ts_detritus.html">summarise_ts_detritus()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="to_segments.html">to_segments()</a></code> </p>
-        </td>
-        <td><p>Break an SF linestring into segments at corners</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ts_plot.html">ts_plot()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+        <td><p>Interpolate vertical water movements to the boundary depth between shallow and deep compartments</p></td>
       </tr><tr>
         
         <td>
@@ -401,6 +359,88 @@
           <p><code><a href="whole_month.html">whole_month()</a></code> </p>
         </td>
         <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="detritus_month.html">detritus_month()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Big_Currents.html">Big_Currents()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-nemo-medusa-averages" class="hasAnchor"><a href="#section-nemo-medusa-averages" class="anchor"></a>NEMO-MEDUSA averages</h2>
+          <p class="section-desc"><p>Average driving data by decade or by model compartment.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="decadal.html">decadal()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="strip_ice.html">strip_ice()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="avg_month.html">avg_month()</a></code> </p>
+        </td>
+        <td><p>Extract vertical water movements at the boundary between shallow and deep compartments</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summarise_sp.html">summarise_sp()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summarise_ts_detritus.html">summarise_ts_detritus()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summarise_ts.html">summarise_ts()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-nemo-medusa-plotting" class="hasAnchor"><a href="#section-nemo-medusa-plotting" class="anchor"></a>NEMO-MEDUSA plotting</h2>
+          <p class="section-desc"><p>Make plots.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="point_plot.html">point_plot()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ts_plot.html">ts_plot()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="stick_plot.html">stick_plot()</a></code> </p>
+        </td>
+        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
       </tr>
     </tbody>
     </table>
@@ -409,7 +449,12 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-boundaries">Boundaries</a></li>
+      <li><a href="#section-global-fishing-watch">Global Fishing Watch</a></li>
+      <li><a href="#section-nemo-medusa-spatial-tools">NEMO-MEDUSA spatial tools</a></li>
+      <li><a href="#section-nemo-medusa-variable-extractors">NEMO-MEDUSA variable extractors</a></li>
+      <li><a href="#section-nemo-medusa-averages">NEMO-MEDUSA averages</a></li>
+      <li><a href="#section-nemo-medusa-plotting">NEMO-MEDUSA plotting</a></li>
     </ul>
   </div>
 </div>

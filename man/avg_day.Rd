@@ -29,3 +29,19 @@ the boundary depth between the shallow and deep model compartments. Points which
 extent of model compartments are dropped. The retained points are passed back to avg_month for further averaging
 as a dataframe.
 }
+\seealso{
+Other NEMO-MEDUSA variable extractors: 
+\code{\link{Big_Currents}()},
+\code{\link{detritus_month}()},
+\code{\link{get_air}()},
+\code{\link{get_bio}()},
+\code{\link{get_detritus}()},
+\code{\link{get_ice}()},
+\code{\link{get_merid}()},
+\code{\link{get_sea}()},
+\code{\link{get_vertical}()},
+\code{\link{get_zonal}()},
+\code{\link{type_in_month}()},
+\code{\link{whole_month}()}
+}
+\concept{NEMO-MEDUSA variable extractors}

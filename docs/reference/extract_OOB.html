@@ -43,9 +43,9 @@
 
 
 <meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — extract_OOB" />
-<meta property="og:description" content="This function is a variant of extract which only considers the external boundaries of the model domain
+<meta property="og:description" content="This function is a variant of extract which only considers the external boundaries (Out Of Bounds -&amp;gt; OOB) of the model domain
 for variables other than water movement." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -115,7 +115,7 @@ for variables other than water movement." />
     </div>
 
     <div class="ref-description">
-    <p>This function is a variant of extract which only considers the external boundaries of the model domain
+    <p>This function is a variant of extract which only considers the external boundaries (Out Of Bounds -&gt; OOB) of the model domain
 for variables other than water movement.</p>
     </div>
 
@@ -126,15 +126,15 @@ for variables other than water movement.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D" and inherited from Sample_OOB.</p></td>
+      <td><p>The depth layer to extract data from. Either "S" or "D" and inherited from `Sample_OOB`.</p></td>
     </tr>
     <tr>
       <th>Data</th>
-      <td><p>The data object as passed from Sample_OOB.</p></td>
+      <td><p>The data object as passed from `Sample_OOB`.</p></td>
     </tr>
     <tr>
       <th>variables</th>
-      <td><p>The variables to extract, inherited from Sample_OOB.</p></td>
+      <td><p>The variables to extract, inherited from `Sample_OOB`.</p></td>
     </tr>
     </table>
 
@@ -144,9 +144,9 @@ for variables other than water movement.</p>
 and salinity values by depth.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A data object is inherited from Sample_OOB before using a precalculated set of indices of where
+    <p>A data object is inherited from `Sample_OOB` before using a precalculated set of indices of where
 transects intersect the grid for speedy extraction.</p>
-<p>Extracted values are attached to transects before returning to Sample_OOB for further averaging.</p>
+<p>Extracted values are attached to transects before returning to `Sample_OOB` for further averaging.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Boundary sampling functions: 

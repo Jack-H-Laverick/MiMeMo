@@ -20,3 +20,16 @@ The function returns a dataframe of transects and their average DIN, chlorophyll
 This function reads in a datafile and attaches the values needed to transects.
 It uses a precalculated set of indices of where transects intersect the grid for speed.
 }
+\seealso{
+Other NEMO-MEDUSA spatial tools: 
+\code{\link{Compartmentalise}()},
+\code{\link{Window}()},
+\code{\link{empty}()},
+\code{\link{get_spatial}()},
+\code{\link{get_weights.W}()},
+\code{\link{get_weights.old}()},
+\code{\link{get_weights}()},
+\code{\link{sfc_as_cols}()},
+\code{\link{stratify}()}
+}
+\concept{NEMO-MEDUSA spatial tools}

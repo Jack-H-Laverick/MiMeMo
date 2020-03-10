@@ -20,3 +20,19 @@ The function returns a dataframe of transects and their average DIN, chlorophyll
 This function reads in a datafile and attaches the values needed to transects.
 It uses a precalculated set of indices of where transects intersect the grid for speed.
 }
+\seealso{
+Other NEMO-MEDUSA variable extractors: 
+\code{\link{Big_Currents}()},
+\code{\link{avg_day}()},
+\code{\link{detritus_month}()},
+\code{\link{get_air}()},
+\code{\link{get_bio}()},
+\code{\link{get_detritus}()},
+\code{\link{get_ice}()},
+\code{\link{get_merid}()},
+\code{\link{get_vertical}()},
+\code{\link{get_zonal}()},
+\code{\link{type_in_month}()},
+\code{\link{whole_month}()}
+}
+\concept{NEMO-MEDUSA variable extractors}
