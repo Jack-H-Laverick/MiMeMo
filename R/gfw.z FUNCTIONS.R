@@ -67,7 +67,7 @@ FAO_boats <- function (Data, Clip)             {
 #' The function saves a map of fishing activity, as recorded by global fishing watch, with FAO fishing regions overlayed.
 #' The user can specify which fishing gear type to visualise, and can also remove points below a certain amount
 #' of fishing effort. This is useful for keeping the plot clean, but also allows you to remove any fishing signals
-#' you might not trust from the global fishing watch modelGFW model.
+#' you might not trust from the global fishing watch model GFW model.
 #'
 #' @param gear The gear type used by boats to be mapped.
 #' @param limit The minimum number of hours of fishing activity required for a pixel to be included in the map.
@@ -94,14 +94,14 @@ jacks_lazy_avg <- function (gear, limit) {
   return(plot)
 }
 
-#' Map GFW data for a geartype, above a minimum level of fishing activity
+#' Animate a map of GFW data for a geartype, above a minimum level of fishing activity
 #'
 #' This functions saves an animated map of fishing activity by month.
 #'
 #' The function saves a map of fishing activity, as recorded by global fishing watch, with FAO fishing regions overlayed.
 #' The user can specify which fishing gear type to visualise, and can also remove points below a certain amount
 #' of fishing effort. This is useful for keeping the plot clean, but also allows you to remove any fishing signals
-#' you might not trust from the global fishing watch modelGFW model.
+#' you might not trust from the global fishing watch model GFW model.
 #'
 #' @param gear The gear type used by boats to be mapped.
 #' @param limit The minimum number of hours of fishing activity required for a pixel to be included in the map.
@@ -131,14 +131,14 @@ jacks_lazy_animation <- function (gear, limit) {
   # return(plot) uncomment this and comment out two lines above if you only want to return a single animation
 }
 
-#' Map GFW data for a geartype, above a minimum level of fishing activity
+#' Map GFW data for a geartype, above a minimum level of fishing activity (polar projection)
 #'
 #' This function saves a static map of fishing activity, with a CRS appropriate for the arctic.
 #'
 #' The function saves a map of fishing activity, as recorded by global fishing watch, with FAO fishing regions overlayed.
 #' The user can specify which fishing gear type to visualise, and can also remove points below a certain amount
 #' of fishing effort. This is useful for keeping the plot clean, but also allows you to remove any fishing signals
-#' you might not trust from the global fishing watch modelGFW model.
+#' you might not trust from the global fishing watch model GFW model.
 #'
 #' @param gear The gear type used by boats to be mapped.
 #' @param limit The minimum number of hours of fishing activity required for a pixel to be included in the map.
@@ -172,14 +172,14 @@ jacks_polar_static <- function (gear, limit)   {
   return(plot)
 }     # Plot polar maps
 
-#' Map GFW data for a geartype, above a minimum level of fishing activity
+#' Animate a map of GFW data for a geartype, above a minimum level of fishing activity (polar projection)
 #'
 #' This functions saves an animated map of fishing activity by month. with a CRS appropriate for the arctic.
 #'
 #' The function saves a map of fishing activity, as recorded by global fishing watch, with FAO fishing regions overlayed.
 #' The user can specify which fishing gear type to visualise, and can also remove points below a certain amount
 #' of fishing effort. This is useful for keeping the plot clean, but also allows you to remove any fishing signals
-#' you might not trust from the global fishing watch modelGFW model.
+#' you might not trust from the global fishing watch model GFW model.
 #'
 #' @param gear The gear type used by boats to be mapped.
 #' @param limit The minimum number of hours of fishing activity required for a pixel to be included in the map.

@@ -5,17 +5,17 @@
 
 #' Interpolate vertical water movements to the boundary depth between shallow and deep compartments
 #'
-#' This function reads in a 3 dimensional array of water movements, and uses the rcdo package to interpolate
+#' This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
 #' values to a plane at the boundary depth between shallow and deep compartments.
 #'
-#' The function uses rcdo::nc_remap to interpolate vertical eddy diffusivity and vertical water velocities at
+#' The function uses `rcdo::nc_remap` to interpolate vertical eddy diffusivity and vertical water velocities at
 #' the boundary depth between the shallow and deep model compartments. Points which fall outside the geographic
-#' extent of model compartments are dropped. The retained points are passed back to avg_month for further averaging
+#' extent of model compartments are dropped. The retained points are passed back to `avg_month` for further averaging
 #' as a dataframe.
 #'
-#' @param Path The path to a netcdf file containing target data, inherited from avg_month.
-#' @param File The name of a netcdf file containing target data, inherited from avg_month.
-#' @param Points An SF object containing the grid points which fall within the domain polygons, inherited from avg_month.
+#' @param Path The path to a netcdf file containing target data, inherited from `avg_month`.
+#' @param File The name of a netcdf file containing target data, inherited from `avg_month`.
+#' @param Points An SF object containing the grid points which fall within the domain polygons, inherited from `avg_month`.
 #' @param Boundary The boundary depth between shallow and deep compartments, defaults to 60 m for MiMeMo.
 #' @return A data frame containing vertical eddy diffusivity and vertical velocity at the boundary depth
 #' between shallow and deep compartments, for a single day as a spatial plane.
@@ -47,11 +47,11 @@ avg_day <- function(Path, File, Points, Boundary = 60) {
 #' This function reads in a packet of daily netcdf files from the same month, and returns a single monthly dataframe
 #' of vertical water movements.
 #'
-#' The function reads in a packet of monthly netcdf files and passes them to avg_day.
+#' The function reads in a packet of monthly netcdf files and passes them to `avg_day`.
 #'
-#' avg_day interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.
+#' `avg_day` interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.
 #'
-#' The daily dataframes are then passed back to avg_month, which averages again by month and variable, dropping the spatial information.
+#' The daily dataframes are then passed back to `avg_month`, which averages again by month and variable, dropping the spatial information.
 #'
 #' @param data A list of paths to netcdf files which share the same month.
 #' @param grid_points An SF object containing the grid points which fall within the domain polygons.
@@ -77,10 +77,12 @@ avg_month <- function(data, grid_points) {
 #' model zones into seperate segments between each corner. These segments can then be used independently to sample data.
 #'
 #' @param line The geographic perimeter of the inshore and offshore zone as SF object.
+#' @param crs The coordinate reference system for the project. This is inherited from `boundaries` and should be specified in
+#' the project region file.
 #' @return The function returns a list of individual SF lines connecting each corner of the perimeters of model compartments.
 #' @family Boundary sampling functions
 #' @export
-to_segments <- function(line) {
+to_segments <- function(line, crs) {
 
   g = sf::st_geometry(line) %>% sf::st_cast("POINT")                        # Grab the geometry and extract the points defining the line
   hd = head(g, -1)                                                          # Take all points except the last
@@ -94,21 +96,22 @@ to_segments <- function(line) {
 #' This function takes the domain polygon file and returns transects for use when sampling
 #' fluxes across boundaries between model compartments.
 #'
-#' The function exposes the geometry for the domain polygons to the to_segments function.
-#' to_segments converts the geometry into a collection of transects and passes them back to this function.
+#' The function exposes the geometry for the domain polygons to the `to_segments` function.
+#' `to_segments` converts the geometry into a collection of transects and passes them back to this function.
 #' A unique id is added for each transect along with the length of the transect for use when
 #' calculating weighted averages.
 #'
 #' @param domain An SF object containing polygons for the geographic extent of the inshore and offshore zones for the project.
+#' @param crs The coordinate reference system for the project. This should be specified in the project region file.
 #' @return The function returns a dataframe containg SF boundary transects around the model domain, a length column is
 #' included for weighting transects in future averaging functions.
 #' @family Boundary sampling functions
 #' @export
-boundaries <- function(domain) {
+boundaries <- function(domain, crs) {
 
   segments <- domain %>%
     dplyr::pull(geometry) %>%                                                 # Open the list column containing the geometry
-    purrr::map(to_segments) %>%                                               # Apply function to break each line in turn at the corners
+    purrr::map(to_segments, crs) %>%                                          # Apply function to break each line in turn at the corners
     unlist(recursive = FALSE) %>%                                             # Bring all the segments into the same level
     do.call(c, .)                                                             # Bind
 
@@ -286,7 +289,7 @@ extract <- function (var, Depth, Data) {
   return(Samples)
 }
 
-#' Extract water flows across transects along the boundaries of model compartments
+#' Sample water flows across transects along the boundaries of model compartments
 #'
 #' This function calculates the water exchanges between model compartments and external boundaries.
 #'

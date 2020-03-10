@@ -2,7 +2,7 @@
 % Please edit documentation in R/flows.z FUNCTIONS.R
 \name{Sample}
 \alias{Sample}
-\title{Extract water flows across transects along the boundaries of model compartments}
+\title{Sample water flows across transects along the boundaries of model compartments}
 \usage{
 Sample(file)
 }

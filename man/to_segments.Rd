@@ -4,10 +4,13 @@
 \alias{to_segments}
 \title{Break an SF linestring into segments at corners}
 \usage{
-to_segments(line)
+to_segments(line, crs)
 }
 \arguments{
 \item{line}{The geographic perimeter of the inshore and offshore zone as SF object.}
+
+\item{crs}{The coordinate reference system for the project. This is inherited from `boundaries` and should be specified in
+the project region file.}
 }
 \value{
 The function returns a list of individual SF lines connecting each corner of the perimeters of model compartments.

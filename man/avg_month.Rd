@@ -19,11 +19,11 @@ This function reads in a packet of daily netcdf files from the same month, and r
 of vertical water movements.
 }
 \details{
-The function reads in a packet of monthly netcdf files and passes them to avg_day.
+The function reads in a packet of monthly netcdf files and passes them to `avg_day`.
 
-avg_day interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.
+`avg_day` interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.
 
-The daily dataframes are then passed back to avg_month, which averages again by month and variable, dropping the spatial information.
+The daily dataframes are then passed back to `avg_month`, which averages again by month and variable, dropping the spatial information.
 }
 \seealso{
 Other NEMO-MEDUSA averages: 

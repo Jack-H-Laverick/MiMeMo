@@ -7,11 +7,11 @@
 avg_day(Path, File, Points, Boundary = 60)
 }
 \arguments{
-\item{Path}{The path to a netcdf file containing target data, inherited from avg_month.}
+\item{Path}{The path to a netcdf file containing target data, inherited from `avg_month`.}
 
-\item{File}{The name of a netcdf file containing target data, inherited from avg_month.}
+\item{File}{The name of a netcdf file containing target data, inherited from `avg_month`.}
 
-\item{Points}{An SF object containing the grid points which fall within the domain polygons, inherited from avg_month.}
+\item{Points}{An SF object containing the grid points which fall within the domain polygons, inherited from `avg_month`.}
 
 \item{Boundary}{The boundary depth between shallow and deep compartments, defaults to 60 m for MiMeMo.}
 }
@@ -20,13 +20,13 @@ A data frame containing vertical eddy diffusivity and vertical velocity at the b
 between shallow and deep compartments, for a single day as a spatial plane.
 }
 \description{
-This function reads in a 3 dimensional array of water movements, and uses the rcdo package to interpolate
+This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
 values to a plane at the boundary depth between shallow and deep compartments.
 }
 \details{
-The function uses rcdo::nc_remap to interpolate vertical eddy diffusivity and vertical water velocities at
+The function uses `rcdo::nc_remap` to interpolate vertical eddy diffusivity and vertical water velocities at
 the boundary depth between the shallow and deep model compartments. Points which fall outside the geographic
-extent of model compartments are dropped. The retained points are passed back to avg_month for further averaging
+extent of model compartments are dropped. The retained points are passed back to `avg_month` for further averaging
 as a dataframe.
 }
 \seealso{

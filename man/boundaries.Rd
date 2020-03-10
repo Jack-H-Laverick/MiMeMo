@@ -4,10 +4,12 @@
 \alias{boundaries}
 \title{Create a series of transects along the boundaries of model compartments}
 \usage{
-boundaries(domain)
+boundaries(domain, crs)
 }
 \arguments{
 \item{domain}{An SF object containing polygons for the geographic extent of the inshore and offshore zones for the project.}
+
+\item{crs}{The coordinate reference system for the project. This should be specified in the project region file.}
 }
 \value{
 The function returns a dataframe containg SF boundary transects around the model domain, a length column is
@@ -18,8 +20,8 @@ This function takes the domain polygon file and returns transects for use when s
 fluxes across boundaries between model compartments.
 }
 \details{
-The function exposes the geometry for the domain polygons to the to_segments function.
-to_segments converts the geometry into a collection of transects and passes them back to this function.
+The function exposes the geometry for the domain polygons to the `to_segments` function.
+`to_segments` converts the geometry into a collection of transects and passes them back to this function.
 A unique id is added for each transect along with the length of the transect for use when
 calculating weighted averages.
 }

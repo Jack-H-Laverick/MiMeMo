@@ -2,7 +2,7 @@
 % Please edit documentation in R/gfw.z FUNCTIONS.R
 \name{jacks_lazy_animation}
 \alias{jacks_lazy_animation}
-\title{Map GFW data for a geartype, above a minimum level of fishing activity}
+\title{Animate a map of GFW data for a geartype, above a minimum level of fishing activity}
 \usage{
 jacks_lazy_animation(gear, limit)
 }
@@ -21,7 +21,7 @@ This functions saves an animated map of fishing activity by month.
 The function saves a map of fishing activity, as recorded by global fishing watch, with FAO fishing regions overlayed.
 The user can specify which fishing gear type to visualise, and can also remove points below a certain amount
 of fishing effort. This is useful for keeping the plot clean, but also allows you to remove any fishing signals
-you might not trust from the global fishing watch modelGFW model.
+you might not trust from the global fishing watch model GFW model.
 }
 \seealso{
 Other Global Fishing Watch functions: 

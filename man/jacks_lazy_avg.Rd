@@ -21,7 +21,7 @@ This function saves a static map of fishing activity.
 The function saves a map of fishing activity, as recorded by global fishing watch, with FAO fishing regions overlayed.
 The user can specify which fishing gear type to visualise, and can also remove points below a certain amount
 of fishing effort. This is useful for keeping the plot clean, but also allows you to remove any fishing signals
-you might not trust from the global fishing watch modelGFW model.
+you might not trust from the global fishing watch model GFW model.
 }
 \seealso{
 Other Global Fishing Watch functions: 
