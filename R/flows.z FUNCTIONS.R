@@ -111,7 +111,7 @@ boundaries <- function(domain, crs) {
 
   segments <- domain %>%
     dplyr::pull(geometry) %>%                                                 # Open the list column containing the geometry
-    purrr::map(to_segments, crs) %>%                                          # Apply function to break each line in turn at the corners
+    purrr::map(to_segments, crs = crs) %>%                                    # Apply function to break each line in turn at the corners
     unlist(recursive = FALSE) %>%                                             # Bring all the segments into the same level
     do.call(c, .)                                                             # Bind
 
