@@ -14,11 +14,22 @@ The function returns a dataframe of average DIN, chlorophyll, temperature, and s
 the external model boundary by compartment for a month.
 }
 \description{
-This function is a variant of Sample which only considers the external boundaries of the model domain for
-variables other than water movement.
+This function is a variant of Sample which only considers the external boundaries (Out Of Bounds -> OOB) of the model domain
+for variables other than water movement.
 }
 \details{
-A datafile is imported and split by depth before calling extract_OOB to sample the grid.
+A datafile is imported and split by depth before calling `extract_OOB` to sample the grid.
 
-After extraction, Sample_OOB calculates the average for variables of interest by depth and shore zone.
+After extraction, `Sample_OOB` calculates the average for variables of interest by depth and shore zone.
 }
+\seealso{
+Other Boundary sampling functions: 
+\code{\link{Sample}()},
+\code{\link{boundaries}()},
+\code{\link{check_grid}()},
+\code{\link{direction}()},
+\code{\link{extract_OOB}()},
+\code{\link{extract}()},
+\code{\link{to_segments}()}
+}
+\concept{Boundary sampling functions}

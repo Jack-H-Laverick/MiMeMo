@@ -17,9 +17,20 @@ and the external environment in a given month.
 This function calculates the water exchanges between model compartments and external boundaries.
 }
 \details{
-A datafile containing water velocities is read in and split by depth before calling the extract function to
+A datafile containing water velocities is read in and split by depth before calling `extract` to
 pull the correct velocities.
 
-Sample then groups exchanges by depth, shore zone, neighbour and direction. Flows
+`Sample` then groups exchanges by depth, shore zone, neighbour and direction. Flows
 are summed to return net water movements for the given time step.
 }
+\seealso{
+Other Boundary sampling functions: 
+\code{\link{Sample_OOB}()},
+\code{\link{boundaries}()},
+\code{\link{check_grid}()},
+\code{\link{direction}()},
+\code{\link{extract_OOB}()},
+\code{\link{extract}()},
+\code{\link{to_segments}()}
+}
+\concept{Boundary sampling functions}

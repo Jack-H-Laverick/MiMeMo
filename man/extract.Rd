@@ -7,19 +7,30 @@
 extract(var, Depth, Data)
 }
 \arguments{
-\item{var}{The component of water movement to extract, either "Zonal" or "Meridional" velocities, inherited from Sample.}
+\item{var}{The component of water movement to extract, either "Zonal" or "Meridional" velocities, inherited from `Sample`.}
 
-\item{Depth}{The depth layer to extract data from. Either "S" or "D" inherited from Sample.}
+\item{Depth}{The depth layer to extract data from. Either "S" or "D" inherited from `Sample`.}
 
-\item{Data}{The data object as passed from Sample.}
+\item{Data}{The data object as passed from `Sample`.}
 }
 \value{
 The function returns a dataframe of transects and their average zonal \strong{OR} meridional water velocities at a depth.
 }
 \description{
-A data object of water velocities is inherited from Sample before using a precalculated set of
+A data object of water velocities is inherited from `Sample` before using a precalculated set of
 indices of where transects intersect the grid for speedy extraction.
 }
 \details{
-Extracted values are attached to transects before returning to Sample for further averaging.
+Extracted values are attached to transects before returning to `Sample` for further averaging.
 }
+\seealso{
+Other Boundary sampling functions: 
+\code{\link{Sample_OOB}()},
+\code{\link{Sample}()},
+\code{\link{boundaries}()},
+\code{\link{check_grid}()},
+\code{\link{direction}()},
+\code{\link{extract_OOB}()},
+\code{\link{to_segments}()}
+}
+\concept{Boundary sampling functions}

@@ -7,23 +7,34 @@
 extract_OOB(Depth, Data, variables)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D" and inherited from Sample_OOB.}
+\item{Depth}{The depth layer to extract data from. Either "S" or "D" and inherited from `Sample_OOB`.}
 
-\item{Data}{The data object as passed from Sample_OOB.}
+\item{Data}{The data object as passed from `Sample_OOB`.}
 
-\item{variables}{The variables to extract, inherited from Sample_OOB.}
+\item{variables}{The variables to extract, inherited from `Sample_OOB`.}
 }
 \value{
 The function returns a dataframe of transects and their average DIN, chlorophyll, temperature,
 and salinity values by depth.
 }
 \description{
-This function is a variant of extract which only considers the external boundaries of the model domain
+This function is a variant of extract which only considers the external boundaries (Out Of Bounds -> OOB) of the model domain
 for variables other than water movement.
 }
 \details{
-A data object is inherited from Sample_OOB before using a precalculated set of indices of where
+A data object is inherited from `Sample_OOB` before using a precalculated set of indices of where
 transects intersect the grid for speedy extraction.
 
-Extracted values are attached to transects before returning to Sample_OOB for further averaging.
+Extracted values are attached to transects before returning to `Sample_OOB` for further averaging.
 }
+\seealso{
+Other Boundary sampling functions: 
+\code{\link{Sample_OOB}()},
+\code{\link{Sample}()},
+\code{\link{boundaries}()},
+\code{\link{check_grid}()},
+\code{\link{direction}()},
+\code{\link{extract}()},
+\code{\link{to_segments}()}
+}
+\concept{Boundary sampling functions}

@@ -76,6 +76,7 @@ avg_month <- function(data, grid_points) {
 #'
 #' @param line The geographic perimeter of the inshore and offshore zone as SF object.
 #' @return The function returns a list of individual SF lines connecting each corner of the perimeters of model compartments.
+#' @family Boundary sampling functions
 #' @export
 to_segments <- function(line) {
 
@@ -99,6 +100,7 @@ to_segments <- function(line) {
 #' @param domain An SF object containing polygons for the geographic extent of the inshore and offshore zones for the project.
 #' @return The function returns a dataframe containg SF boundary transects around the model domain, a length column is
 #' included for weighting transects in future averaging functions.
+#' @family Boundary sampling functions
 #' @export
 boundaries <- function(domain) {
 
@@ -128,6 +130,7 @@ boundaries <- function(domain) {
 #'
 #' @param segment An SF line object representing a transect along the perimeter of a model domain polygon.
 #' @return The function returns a dataframe detailing whether laitudues are the same and longitudes are the same along a segment.
+#' @family Boundary sampling functions
 #' @export
 check_grid <- function(segment) {
 
@@ -164,6 +167,7 @@ check_grid <- function(segment) {
 #' @param segment An SF line object representing a transect along the perimeter of a model domain polygon.
 #' @return The function returns a dataframe detailing which two model compartments are either side of the transect,
 #' and the direction of the exchange.
+#' @family Boundary sampling functions
 #' @export
 direction <- function(segment) {
 
@@ -244,15 +248,16 @@ direction <- function(segment) {
 
 #' Extract the values from a grid under transects along the external boundaries of the model domain
 #'
-#' A data object of water velocities is inherited from Sample before using a precalculated set of
+#' A data object of water velocities is inherited from `Sample` before using a precalculated set of
 #' indices of where transects intersect the grid for speedy extraction.
 #'
-#' Extracted values are attached to transects before returning to Sample for further averaging.
+#' Extracted values are attached to transects before returning to `Sample` for further averaging.
 #'
-#' @param var The component of water movement to extract, either "Zonal" or "Meridional" velocities, inherited from Sample.
-#' @param Depth The depth layer to extract data from. Either "S" or "D" inherited from Sample.
-#' @param Data The data object as passed from Sample.
+#' @param var The component of water movement to extract, either "Zonal" or "Meridional" velocities, inherited from `Sample`.
+#' @param Depth The depth layer to extract data from. Either "S" or "D" inherited from `Sample`.
+#' @param Data The data object as passed from `Sample`.
 #' @return The function returns a dataframe of transects and their average zonal \strong{OR} meridional water velocities at a depth.
+#' @family Boundary sampling functions
 #' @export
 extract <- function (var, Depth, Data) {
 
@@ -283,15 +288,16 @@ extract <- function (var, Depth, Data) {
 #'
 #' This function calculates the water exchanges between model compartments and external boundaries.
 #'
-#' A datafile containing water velocities is read in and split by depth before calling the extract function to
+#' A datafile containing water velocities is read in and split by depth before calling `extract` to
 #' pull the correct velocities.
 #'
-#' Sample then groups exchanges by depth, shore zone, neighbour and direction. Flows
+#' `Sample` then groups exchanges by depth, shore zone, neighbour and direction. Flows
 #' are summed to return net water movements for the given time step.
 #'
 #' @param file Path to the .rds object containing both Zonal and Meridional water velocities.
 #' @return The function returns a dataframe of net water movements between model compartments
 #' and the external environment in a given month.
+#' @family Boundary sampling functions
 #' @export
 Sample <- function(file) {
 
@@ -320,19 +326,20 @@ Sample <- function(file) {
 
 #' Extract the values from a grid under transects along the external boundaries of the model domain
 #'
-#' This function is a variant of extract which only considers the external boundaries of the model domain
+#' This function is a variant of extract which only considers the external boundaries (Out Of Bounds -> OOB) of the model domain
 #' for variables other than water movement.
 #'
-#' A data object is inherited from Sample_OOB before using a precalculated set of indices of where
+#' A data object is inherited from `Sample_OOB` before using a precalculated set of indices of where
 #' transects intersect the grid for speedy extraction.
 #'
-#' Extracted values are attached to transects before returning to Sample_OOB for further averaging.
+#' Extracted values are attached to transects before returning to `Sample_OOB` for further averaging.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D" and inherited from Sample_OOB.
-#' @param Data The data object as passed from Sample_OOB.
-#' @param variables The variables to extract, inherited from Sample_OOB.
+#' @param Depth The depth layer to extract data from. Either "S" or "D" and inherited from `Sample_OOB`.
+#' @param Data The data object as passed from `Sample_OOB`.
+#' @param variables The variables to extract, inherited from `Sample_OOB`.
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature,
 #' and salinity values by depth.
+#' @family Boundary sampling functions
 #' @export
 extract_OOB <- function (Depth, Data, variables) {
 
@@ -356,16 +363,17 @@ extract_OOB <- function (Depth, Data, variables) {
 
 #' Sample along the external boundaries of the model domain
 #'
-#' This function is a variant of Sample which only considers the external boundaries of the model domain for
-#' variables other than water movement.
+#' This function is a variant of Sample which only considers the external boundaries (Out Of Bounds -> OOB) of the model domain
+#' for variables other than water movement.
 #'
-#' A datafile is imported and split by depth before calling extract_OOB to sample the grid.
+#' A datafile is imported and split by depth before calling `extract_OOB` to sample the grid.
 #'
-#' After extraction, Sample_OOB calculates the average for variables of interest by depth and shore zone.
+#' After extraction, `Sample_OOB` calculates the average for variables of interest by depth and shore zone.
 #'
 #' @param file Path to the .rds object containing data.
 #' @return The function returns a dataframe of average DIN, chlorophyll, temperature, and salinity at
 #' the external model boundary by compartment for a month.
+#' @family Boundary sampling functions
 #' @export
 Sample_OOB <- function(file) {
 

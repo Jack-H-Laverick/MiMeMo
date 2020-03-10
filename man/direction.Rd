@@ -28,3 +28,14 @@ flows from West to East now leave the model compartment. A True or False column 
 for a water velocity is leaving the polygon, or a negative flow value is entering the polygon, flip can be used to multiply
 by -1 to correctly sum the water movements from the perspective of the focal polygon.
 }
+\seealso{
+Other Boundary sampling functions: 
+\code{\link{Sample_OOB}()},
+\code{\link{Sample}()},
+\code{\link{boundaries}()},
+\code{\link{check_grid}()},
+\code{\link{extract_OOB}()},
+\code{\link{extract}()},
+\code{\link{to_segments}()}
+}
+\concept{Boundary sampling functions}

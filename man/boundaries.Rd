@@ -23,3 +23,14 @@ to_segments converts the geometry into a collection of transects and passes them
 A unique id is added for each transect along with the length of the transect for use when
 calculating weighted averages.
 }
+\seealso{
+Other Boundary sampling functions: 
+\code{\link{Sample_OOB}()},
+\code{\link{Sample}()},
+\code{\link{check_grid}()},
+\code{\link{direction}()},
+\code{\link{extract_OOB}()},
+\code{\link{extract}()},
+\code{\link{to_segments}()}
+}
+\concept{Boundary sampling functions}

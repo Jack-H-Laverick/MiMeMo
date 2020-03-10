@@ -16,3 +16,14 @@ The function returns a list of individual SF lines connecting each corner of the
 This function is wrapped within the boundaries function and is used to convert the perimeter of
 model zones into seperate segments between each corner. These segments can then be used independently to sample data.
 }
+\seealso{
+Other Boundary sampling functions: 
+\code{\link{Sample_OOB}()},
+\code{\link{Sample}()},
+\code{\link{boundaries}()},
+\code{\link{check_grid}()},
+\code{\link{direction}()},
+\code{\link{extract_OOB}()},
+\code{\link{extract}()}
+}
+\concept{Boundary sampling functions}
