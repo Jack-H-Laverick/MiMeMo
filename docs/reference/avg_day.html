@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Interpolate vertical water movements to the boundary depth between shallow and deep compartments — avg_day" />
-<meta property="og:description" content="This function reads in a 3 dimensional array of water movements, and uses the rcdo package to interpolate
+<meta property="og:description" content="This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
 values to a plane at the boundary depth between shallow and deep compartments." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -115,7 +115,7 @@ values to a plane at the boundary depth between shallow and deep compartments." 
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a 3 dimensional array of water movements, and uses the rcdo package to interpolate
+    <p>This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
 values to a plane at the boundary depth between shallow and deep compartments.</p>
     </div>
 
@@ -126,15 +126,15 @@ values to a plane at the boundary depth between shallow and deep compartments.</
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>Path</th>
-      <td><p>The path to a netcdf file containing target data, inherited from avg_month.</p></td>
+      <td><p>The path to a netcdf file containing target data, inherited from `avg_month`.</p></td>
     </tr>
     <tr>
       <th>File</th>
-      <td><p>The name of a netcdf file containing target data, inherited from avg_month.</p></td>
+      <td><p>The name of a netcdf file containing target data, inherited from `avg_month`.</p></td>
     </tr>
     <tr>
       <th>Points</th>
-      <td><p>An SF object containing the grid points which fall within the domain polygons, inherited from avg_month.</p></td>
+      <td><p>An SF object containing the grid points which fall within the domain polygons, inherited from `avg_month`.</p></td>
     </tr>
     <tr>
       <th>Boundary</th>
@@ -148,9 +148,9 @@ values to a plane at the boundary depth between shallow and deep compartments.</
 between shallow and deep compartments, for a single day as a spatial plane.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function uses rcdo::nc_remap to interpolate vertical eddy diffusivity and vertical water velocities at
+    <p>The function uses `rcdo::nc_remap` to interpolate vertical eddy diffusivity and vertical water velocities at
 the boundary depth between the shallow and deep model compartments. Points which fall outside the geographic
-extent of model compartments are dropped. The retained points are passed back to avg_month for further averaging
+extent of model compartments are dropped. The retained points are passed back to `avg_month` for further averaging
 as a dataframe.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

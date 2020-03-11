@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — get_sea • MiMeMo.tools</title>
+<title>Get Salinity, Temperature &amp; Sea Ice Concentration — get_sea • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,9 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — get_sea" />
-<meta property="og:description" content="This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed." />
+<meta property="og:title" content="Get Salinity, Temperature &amp; Sea Ice Concentration — get_sea" />
+<meta property="og:description" content="This function reads in the title variables from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
+Salinity, temperature &amp;amp; sea ice concentration can be found in files labelled &quot;grid_T_&quot;." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -109,14 +109,14 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Get Salinity, Temperature &amp; Sea Ice Concentration</h1>
     
     <div class="hidden name"><code>get_sea.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.</p>
+    <p>This function reads in the title variables from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
+Salinity, temperature &amp; sea ice concentration can be found in files labelled "grid_T_".</p>
     </div>
 
     <pre class="usage"><span class='fu'>get_sea</span>(<span class='no'>path</span>, <span class='no'>file</span>)</pre>
@@ -125,27 +125,28 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D"</p></td>
+      <th>path</th>
+      <td><p>The path to the NEMO-MEDUSA model outputs.</p></td>
     </tr>
     <tr>
-      <th>Data</th>
-      <td><p>The data object as provided by Sample_OOB</p></td>
-    </tr>
-    <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, provided by Sample_OOB</p></td>
+      <th>file</th>
+      <td><p>The name of a netcdf file containing the title variables.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.</p>
+    <p>A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for title variables
+in the shallow and deep zone. The dataframe contains the data for a single day.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Each variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
+`count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
+of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA variable extractors: 
 <code><a href='Big_Currents.html'>Big_Currents</a>()</code>,
-<code><a href='avg_day.html'>avg_day</a>()</code>,
 <code><a href='detritus_month.html'>detritus_month</a>()</code>,
 <code><a href='get_air.html'>get_air</a>()</code>,
 <code><a href='get_bio.html'>get_bio</a>()</code>,
@@ -154,6 +155,8 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <code><a href='get_merid.html'>get_merid</a>()</code>,
 <code><a href='get_vertical.html'>get_vertical</a>()</code>,
 <code><a href='get_zonal.html'>get_zonal</a>()</code>,
+<code>interp_month()</code>,
+<code>interp_vertical()</code>,
 <code><a href='type_in_month.html'>type_in_month</a>()</code>,
 <code><a href='whole_month.html'>whole_month</a>()</code></p></div>
 
@@ -163,6 +166,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 

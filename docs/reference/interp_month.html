@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — summarise_sp • MiMeMo.tools</title>
+<title>Extract vertical water movements at the boundary between shallow and deep compartments — interp_month • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,9 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — summarise_sp" />
-<meta property="og:description" content="This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed." />
+<meta property="og:title" content="Extract vertical water movements at the boundary between shallow and deep compartments — interp_month" />
+<meta property="og:description" content="This function reads in a packet of daily netcdf files from the same month, and returns a single monthly dataframe
+of vertical water movements." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -109,45 +109,55 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Extract vertical water movements at the boundary between shallow and deep compartments</h1>
     
-    <div class="hidden name"><code>summarise_sp.Rd</code></div>
+    <div class="hidden name"><code>interp_month.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.</p>
+    <p>This function reads in a packet of daily netcdf files from the same month, and returns a single monthly dataframe
+of vertical water movements.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summarise_sp</span>(<span class='no'>decade</span>)</pre>
+    <pre class="usage"><span class='fu'>interp_month</span>(<span class='no'>data</span>, <span class='no'>grid_points</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D"</p></td>
+      <th>data</th>
+      <td><p>A list of paths to netcdf files which share the same month.</p></td>
     </tr>
     <tr>
-      <th>Data</th>
-      <td><p>The data object as provided by Sample_OOB</p></td>
-    </tr>
-    <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, provided by Sample_OOB</p></td>
+      <th>grid_points</th>
+      <td><p>An SF object containing the grid points which fall within the domain polygons.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.</p>
+    <p>The function returns a dataframe of points averaged within a month and interpolated to the boundary depth.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function reads in a packet of monthly netcdf files and passes them to `interp_vertical`.</p>
+<p>`interp_vertical` interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.</p>
+<p>The daily dataframes are then passed back to `interp_month`, which averages again by month and variable, dropping the spatial information.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other NEMO-MEDUSA averages: 
-<code><a href='decadal.html'>decadal</a>()</code>,
-<code><a href='strip_ice.html'>strip_ice</a>()</code>,
-<code><a href='summarise_ts_detritus.html'>summarise_ts_detritus</a>()</code>,
-<code><a href='summarise_ts.html'>summarise_ts</a>()</code></p></div>
+    <div class='dont-index'><p>Other NEMO-MEDUSA variable extractors: 
+<code><a href='Big_Currents.html'>Big_Currents</a>()</code>,
+<code><a href='detritus_month.html'>detritus_month</a>()</code>,
+<code><a href='get_air.html'>get_air</a>()</code>,
+<code><a href='get_bio.html'>get_bio</a>()</code>,
+<code><a href='get_detritus.html'>get_detritus</a>()</code>,
+<code><a href='get_ice.html'>get_ice</a>()</code>,
+<code><a href='get_merid.html'>get_merid</a>()</code>,
+<code><a href='get_sea.html'>get_sea</a>()</code>,
+<code><a href='get_vertical.html'>get_vertical</a>()</code>,
+<code><a href='get_zonal.html'>get_zonal</a>()</code>,
+<code>interp_vertical()</code>,
+<code><a href='type_in_month.html'>type_in_month</a>()</code>,
+<code><a href='whole_month.html'>whole_month</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -155,6 +165,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 

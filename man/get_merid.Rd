@@ -2,28 +2,31 @@
 % Please edit documentation in R/NM.z FUNCTIONS.R
 \name{get_merid}
 \alias{get_merid}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Get Meridional Currents}
 \usage{
 get_merid(path, file)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
+\item{path}{The path to the NEMO-MEDUSA model outputs.}
 
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{file}{The name of a netcdf file containing the title variable.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for the title variable
+in the shallow and deep zone. The dataframe contains the data for a single day.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function reads in the title variable from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
+Meridional currents can be found in files labelled "grid_V_".
+}
+\details{
+Each variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
+`count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
+of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.
 }
 \seealso{
 Other NEMO-MEDUSA variable extractors: 
 \code{\link{Big_Currents}()},
-\code{\link{avg_day}()},
 \code{\link{detritus_month}()},
 \code{\link{get_air}()},
 \code{\link{get_bio}()},
@@ -32,6 +35,8 @@ Other NEMO-MEDUSA variable extractors:
 \code{\link{get_sea}()},
 \code{\link{get_vertical}()},
 \code{\link{get_zonal}()},
+\code{\link{interp_month}()},
+\code{\link{interp_vertical}()},
 \code{\link{type_in_month}()},
 \code{\link{whole_month}()}
 }

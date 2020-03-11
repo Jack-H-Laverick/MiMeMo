@@ -23,7 +23,6 @@ It uses a precalculated set of indices of where transects intersect the grid for
 \seealso{
 Other NEMO-MEDUSA variable extractors: 
 \code{\link{Big_Currents}()},
-\code{\link{avg_day}()},
 \code{\link{detritus_month}()},
 \code{\link{get_air}()},
 \code{\link{get_bio}()},
@@ -33,6 +32,8 @@ Other NEMO-MEDUSA variable extractors:
 \code{\link{get_sea}()},
 \code{\link{get_vertical}()},
 \code{\link{get_zonal}()},
+\code{\link{interp_month}()},
+\code{\link{interp_vertical}()},
 \code{\link{type_in_month}()}
 }
 \concept{NEMO-MEDUSA variable extractors}

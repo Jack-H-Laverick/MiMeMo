@@ -2,28 +2,36 @@
 % Please edit documentation in R/NM.z FUNCTIONS.R
 \name{get_air}
 \alias{get_air}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Get Surface Irradiance & Air Temperature}
 \usage{
 get_air(File, Type, Year)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
+\item{File}{The location of the netcdf file containing NEMO-MEDUSA driving data.}
 
-\item{Data}{The data object as provided by Sample_OOB}
+\item{Type}{The variable contained in the netcdf file either "T150" (air temperature) or "SWF" (surface irradiance).}
 
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{Year}{The year the necdf file contains data for.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+A dataframe containing a monthly time series within a year of either average air temperature or surface
+irradiance. Air temperature is also split by shore zone.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function reads either title variable from a NEMO-MEDUSA model \strong{DRIVERS} file, and returns a monthly time series.
+}
+\details{
+The appropriate variable in the netcdf file is imported according to the `Type` parameter, only reading within an
+x/y window specified in `Space`. The function then drops points outside the model domain before constructing the monthly
+time series.
+
+Unlike other NEMO-MEDUSA related get_* functions, this function constructs the monthly time series directly. A wrapper function
+to handle time isn't required, as each netcdf file for driving data contains 360 day steps for a single year. `stratify` also
+isn't called, as these variables have no depth dimension.
 }
 \seealso{
 Other NEMO-MEDUSA variable extractors: 
 \code{\link{Big_Currents}()},
-\code{\link{avg_day}()},
 \code{\link{detritus_month}()},
 \code{\link{get_bio}()},
 \code{\link{get_detritus}()},
@@ -32,6 +40,8 @@ Other NEMO-MEDUSA variable extractors:
 \code{\link{get_sea}()},
 \code{\link{get_vertical}()},
 \code{\link{get_zonal}()},
+\code{\link{interp_month}()},
+\code{\link{interp_vertical}()},
 \code{\link{type_in_month}()},
 \code{\link{whole_month}()}
 }

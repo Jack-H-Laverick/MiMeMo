@@ -22,7 +22,6 @@ It uses a precalculated set of indices of where transects intersect the grid for
 }
 \seealso{
 Other NEMO-MEDUSA averages: 
-\code{\link{avg_month}()},
 \code{\link{decadal}()},
 \code{\link{summarise_sp}()},
 \code{\link{summarise_ts_detritus}()},

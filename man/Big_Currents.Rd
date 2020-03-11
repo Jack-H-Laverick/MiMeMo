@@ -2,27 +2,33 @@
 % Please edit documentation in R/NM.z FUNCTIONS.R
 \name{Big_Currents}
 \alias{Big_Currents}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Extract a full field for sampling currents}
 \usage{
 Big_Currents(data)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
-
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{data}{A dataframe containing a batch of netcdf file locations which share a month and year, but may have different
+variables.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+A dataframe containing points and lat/lon coordinates. Attached data are the average NEMO-MEDUSA model outputs for
+zonal and meridional currents in the shallow and deep zone. The dataframe contains the data averaged across a whole month.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+\strong{THIS FUNCTION IS LIKELY REDUNDANT}
+}
+\details{
+Since this function was written the domain polygons have been reshaped, and I learnt more than just currents needed to be
+sampled at the boundary of compartments. The more general `whole_month` now behaves in the same way, returning a grid clipped
+to the window of interest for the project, but not the model domain.
+
+The function takes a packet of netcdf files which contain model outputs for the same month. These are split by the type of
+data they contain, and are then passed to `type_in_month` for variable specific averaging. After, the data are returned to this
+function to be combined into a single monthly dataframe for all variables. The dataframe is saved in the Objects directory
+under Currents.
 }
 \seealso{
 Other NEMO-MEDUSA variable extractors: 
-\code{\link{avg_day}()},
 \code{\link{detritus_month}()},
 \code{\link{get_air}()},
 \code{\link{get_bio}()},
@@ -32,6 +38,8 @@ Other NEMO-MEDUSA variable extractors:
 \code{\link{get_sea}()},
 \code{\link{get_vertical}()},
 \code{\link{get_zonal}()},
+\code{\link{interp_month}()},
+\code{\link{interp_vertical}()},
 \code{\link{type_in_month}()},
 \code{\link{whole_month}()}
 }

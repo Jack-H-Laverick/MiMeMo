@@ -10,18 +10,18 @@
 #'
 #' The function uses `rcdo::nc_remap` to interpolate vertical eddy diffusivity and vertical water velocities at
 #' the boundary depth between the shallow and deep model compartments. Points which fall outside the geographic
-#' extent of model compartments are dropped. The retained points are passed back to `avg_month` for further averaging
+#' extent of model compartments are dropped. The retained points are passed back to `interp_month` for further averaging
 #' as a dataframe.
 #'
-#' @param Path The path to a netcdf file containing target data, inherited from `avg_month`.
-#' @param File The name of a netcdf file containing target data, inherited from `avg_month`.
-#' @param Points An SF object containing the grid points which fall within the domain polygons, inherited from `avg_month`.
+#' @param Path The path to a netcdf file containing target data, inherited from `interp_month`.
+#' @param File The name of a netcdf file containing target data, inherited from `interp_month`.
+#' @param Points An SF object containing the grid points which fall within the domain polygons, inherited from `interp_month`.
 #' @param Boundary The boundary depth between shallow and deep compartments, defaults to 60 m for MiMeMo.
 #' @return A data frame containing vertical eddy diffusivity and vertical velocity at the boundary depth
 #' between shallow and deep compartments, for a single day as a spatial plane.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-avg_day <- function(Path, File, Points, Boundary = 60) {
+interp_vertical <- function(Path, File, Points, Boundary = 60) {
 
   V_interface <- rcdo::nc_remap(paste0(Path, File), vars = c("vovecrtz", "votkeavt"), vert_depths = Boundary) %>% # Interpolate at 60 m
     dplyr::filter(Latitude != 0) %>%                                                 # Remove incorrectlly labelled points (outside domain anyway)
@@ -47,21 +47,21 @@ avg_day <- function(Path, File, Points, Boundary = 60) {
 #' This function reads in a packet of daily netcdf files from the same month, and returns a single monthly dataframe
 #' of vertical water movements.
 #'
-#' The function reads in a packet of monthly netcdf files and passes them to `avg_day`.
+#' The function reads in a packet of monthly netcdf files and passes them to `interp_vertical`.
 #'
-#' `avg_day` interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.
+#' `interp_vertical` interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.
 #'
-#' The daily dataframes are then passed back to `avg_month`, which averages again by month and variable, dropping the spatial information.
+#' The daily dataframes are then passed back to `interp_month`, which averages again by month and variable, dropping the spatial information.
 #'
 #' @param data A list of paths to netcdf files which share the same month.
 #' @param grid_points An SF object containing the grid points which fall within the domain polygons.
 #' @return The function returns a dataframe of points averaged within a month and interpolated to the boundary depth.
-#' @family NEMO-MEDUSA averages
+#' @family NEMO-MEDUSA variable extractors
 #' @export
-avg_month <- function(data, grid_points) {
+interp_month <- function(data, grid_points) {
 
   month <- data %>%                                             # Take the month
-    dplyr::mutate(data = purrr::map2(Path, File, .f = avg_day, Points = grid_points)) %>%  # Extract and average data from each day
+    dplyr::mutate(data = purrr::map2(Path, File, .f = interp_vertical, Points = grid_points)) %>%  # Extract and average data from each day
     tidyr::unnest(data) %>%                                     # unnext the column holding the extraction
     dplyr::group_by(Year, Month, Flow) %>%                      # Group by information we want to retain
     dplyr::summarise(Value = mean(Value)) %>%                   # Average the values within a month
@@ -109,9 +109,11 @@ to_segments <- function(line, crs) {
 #' @export
 boundaries <- function(domain, crs) {
 
+  passed <- crs                                                               # Pass CRS to nested custom function
+
   segments <- domain %>%
     dplyr::pull(geometry) %>%                                                 # Open the list column containing the geometry
-    purrr::map(to_segments, crs = crs) %>%                                    # Apply function to break each line in turn at the corners
+    purrr::map(to_segments, crs = passed) %>%                                 # Apply function to break each line in turn at the corners
     unlist(recursive = FALSE) %>%                                             # Bring all the segments into the same level
     do.call(c, .)                                                             # Bind
 
@@ -137,9 +139,11 @@ boundaries <- function(domain, crs) {
 #' @return The function returns a dataframe detailing whether laitudues are the same and longitudes are the same along a segment.
 #' @family Boundary sampling functions
 #' @export
-check_grid <- function(segment) {
+check_grid <- function(segment, Weighted) {
 
-  latlon <- Weighted[segment,] %>%
+  Weighted <- transects
+
+  latlon <- transects[segment,] %>%
     sf::st_transform(4326) %>%                  # Convert to latitude and longitude
     sf::st_coordinates() %>%                    # Pull the coordinates
     round(digits = 3)                           # Round to drop conversion error

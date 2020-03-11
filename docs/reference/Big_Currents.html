@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — Big_Currents • MiMeMo.tools</title>
+<title>Extract a full field for sampling currents — Big_Currents • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,8 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — Big_Currents" />
-<meta property="og:description" content="This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed." />
+<meta property="og:title" content="Extract a full field for sampling currents — Big_Currents" />
+<meta property="og:description" content="THIS FUNCTION IS LIKELY REDUNDANT" />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -109,14 +108,13 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Extract a full field for sampling currents</h1>
     
     <div class="hidden name"><code>Big_Currents.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.</p>
+    <p><strong>THIS FUNCTION IS LIKELY REDUNDANT</strong></p>
     </div>
 
     <pre class="usage"><span class='fu'>Big_Currents</span>(<span class='no'>data</span>)</pre>
@@ -125,26 +123,28 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D"</p></td>
-    </tr>
-    <tr>
-      <th>Data</th>
-      <td><p>The data object as provided by Sample_OOB</p></td>
-    </tr>
-    <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, provided by Sample_OOB</p></td>
+      <th>data</th>
+      <td><p>A dataframe containing a batch of netcdf file locations which share a month and year, but may have different
+variables.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.</p>
+    <p>A dataframe containing points and lat/lon coordinates. Attached data are the average NEMO-MEDUSA model outputs for
+zonal and meridional currents in the shallow and deep zone. The dataframe contains the data averaged across a whole month.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Since this function was written the domain polygons have been reshaped, and I learnt more than just currents needed to be
+sampled at the boundary of compartments. The more general `whole_month` now behaves in the same way, returning a grid clipped
+to the window of interest for the project, but not the model domain.</p>
+<p>The function takes a packet of netcdf files which contain model outputs for the same month. These are split by the type of
+data they contain, and are then passed to `type_in_month` for variable specific averaging. After, the data are returned to this
+function to be combined into a single monthly dataframe for all variables. The dataframe is saved in the Objects directory
+under Currents.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA variable extractors: 
-<code><a href='avg_day.html'>avg_day</a>()</code>,
 <code><a href='detritus_month.html'>detritus_month</a>()</code>,
 <code><a href='get_air.html'>get_air</a>()</code>,
 <code><a href='get_bio.html'>get_bio</a>()</code>,
@@ -154,6 +154,8 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <code><a href='get_sea.html'>get_sea</a>()</code>,
 <code><a href='get_vertical.html'>get_vertical</a>()</code>,
 <code><a href='get_zonal.html'>get_zonal</a>()</code>,
+<code>interp_month()</code>,
+<code>interp_vertical()</code>,
 <code><a href='type_in_month.html'>type_in_month</a>()</code>,
 <code><a href='whole_month.html'>whole_month</a>()</code></p></div>
 
@@ -163,6 +165,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 

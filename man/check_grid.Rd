@@ -4,7 +4,7 @@
 \alias{check_grid}
 \title{Check if a segment runs parallel to latitude or longitude}
 \usage{
-check_grid(segment)
+check_grid(segment, Weighted)
 }
 \arguments{
 \item{segment}{An SF line object representing a transect along the perimeter of a model domain polygon.}

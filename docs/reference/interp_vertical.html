@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — summarise_sp • MiMeMo.tools</title>
+<title>Interpolate vertical water movements to the boundary depth between shallow and deep compartments — interp_vertical • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,9 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — summarise_sp" />
-<meta property="og:description" content="This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed." />
+<meta property="og:title" content="Interpolate vertical water movements to the boundary depth between shallow and deep compartments — interp_vertical" />
+<meta property="og:description" content="This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
+values to a plane at the boundary depth between shallow and deep compartments." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -109,45 +109,65 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Interpolate vertical water movements to the boundary depth between shallow and deep compartments</h1>
     
-    <div class="hidden name"><code>summarise_sp.Rd</code></div>
+    <div class="hidden name"><code>interp_vertical.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.</p>
+    <p>This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
+values to a plane at the boundary depth between shallow and deep compartments.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summarise_sp</span>(<span class='no'>decade</span>)</pre>
+    <pre class="usage"><span class='fu'>interp_vertical</span>(<span class='no'>Path</span>, <span class='no'>File</span>, <span class='no'>Points</span>, <span class='kw'>Boundary</span> <span class='kw'>=</span> <span class='fl'>60</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D"</p></td>
+      <th>Path</th>
+      <td><p>The path to a netcdf file containing target data, inherited from `interp_month`.</p></td>
     </tr>
     <tr>
-      <th>Data</th>
-      <td><p>The data object as provided by Sample_OOB</p></td>
+      <th>File</th>
+      <td><p>The name of a netcdf file containing target data, inherited from `interp_month`.</p></td>
     </tr>
     <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, provided by Sample_OOB</p></td>
+      <th>Points</th>
+      <td><p>An SF object containing the grid points which fall within the domain polygons, inherited from `interp_month`.</p></td>
+    </tr>
+    <tr>
+      <th>Boundary</th>
+      <td><p>The boundary depth between shallow and deep compartments, defaults to 60 m for MiMeMo.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.</p>
+    <p>A data frame containing vertical eddy diffusivity and vertical velocity at the boundary depth
+between shallow and deep compartments, for a single day as a spatial plane.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function uses `rcdo::nc_remap` to interpolate vertical eddy diffusivity and vertical water velocities at
+the boundary depth between the shallow and deep model compartments. Points which fall outside the geographic
+extent of model compartments are dropped. The retained points are passed back to `interp_month` for further averaging
+as a dataframe.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other NEMO-MEDUSA averages: 
-<code><a href='decadal.html'>decadal</a>()</code>,
-<code><a href='strip_ice.html'>strip_ice</a>()</code>,
-<code><a href='summarise_ts_detritus.html'>summarise_ts_detritus</a>()</code>,
-<code><a href='summarise_ts.html'>summarise_ts</a>()</code></p></div>
+    <div class='dont-index'><p>Other NEMO-MEDUSA variable extractors: 
+<code><a href='Big_Currents.html'>Big_Currents</a>()</code>,
+<code><a href='detritus_month.html'>detritus_month</a>()</code>,
+<code><a href='get_air.html'>get_air</a>()</code>,
+<code><a href='get_bio.html'>get_bio</a>()</code>,
+<code><a href='get_detritus.html'>get_detritus</a>()</code>,
+<code><a href='get_ice.html'>get_ice</a>()</code>,
+<code><a href='get_merid.html'>get_merid</a>()</code>,
+<code><a href='get_sea.html'>get_sea</a>()</code>,
+<code><a href='get_vertical.html'>get_vertical</a>()</code>,
+<code><a href='get_zonal.html'>get_zonal</a>()</code>,
+<code>interp_month()</code>,
+<code><a href='type_in_month.html'>type_in_month</a>()</code>,
+<code><a href='whole_month.html'>whole_month</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -155,6 +175,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 

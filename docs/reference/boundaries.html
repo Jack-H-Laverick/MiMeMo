@@ -119,7 +119,7 @@ fluxes across boundaries between model compartments." />
 fluxes across boundaries between model compartments.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>boundaries</span>(<span class='no'>domain</span>)</pre>
+    <pre class="usage"><span class='fu'>boundaries</span>(<span class='no'>domain</span>, <span class='no'>crs</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -127,6 +127,10 @@ fluxes across boundaries between model compartments.</p>
     <tr>
       <th>domain</th>
       <td><p>An SF object containing polygons for the geographic extent of the inshore and offshore zones for the project.</p></td>
+    </tr>
+    <tr>
+      <th>crs</th>
+      <td><p>The coordinate reference system for the project. This should be specified in the project region file.</p></td>
     </tr>
     </table>
 
@@ -136,8 +140,8 @@ fluxes across boundaries between model compartments.</p>
 included for weighting transects in future averaging functions.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function exposes the geometry for the domain polygons to the to_segments function.
-to_segments converts the geometry into a collection of transects and passes them back to this function.
+    <p>The function exposes the geometry for the domain polygons to the `to_segments` function.
+`to_segments` converts the geometry into a collection of transects and passes them back to this function.
 A unique id is added for each transect along with the length of the transect for use when
 calculating weighted averages.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

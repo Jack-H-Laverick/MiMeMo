@@ -28,12 +28,6 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Window.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/avg_day.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/avg_month.html</loc>
-  </url>
-  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/boundaries.html</loc>
   </url>
   <url>
@@ -92,6 +86,12 @@
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_zonal.html</loc>
+  </url>
+  <url>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/interp_month.html</loc>
+  </url>
+  <url>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/interp_vertical.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/jacks_lazy_animation.html</loc>

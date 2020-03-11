@@ -224,18 +224,22 @@ stratify  <- function(data, depth, weights)    {
   return(weighted_mean)
 }    # Take a range of depths from an array and average into a single matrix for the layer, weighted by thickness of water around each depth observation
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Get Salinity, Temperature & Sea Ice Concentration
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function reads in the title variables from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
+#' Salinity, temperature & sea ice concentration can be found in files labelled "grid_T_".
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' Each variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
+#' `count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
+#' of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.
+#'
+#' @param path The path to the NEMO-MEDUSA model outputs.
+#' @param file The name of a netcdf file containing the title variables.
+#' @return A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for title variables
+#' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_sea   <- function(path, file)              {
+get_sea   <- function(path, file) {
 
   print(str_glue("{file} Extracting Salinity, Temperature, and Sea Ice concentration"))
   nc_raw <- nc_open(paste0(path, file))                                        # Open up a netcdf file to see it's raw contents (var names)
@@ -261,20 +265,24 @@ get_sea   <- function(path, file)              {
     mutate(Depth = as.factor(Depth))
 
   return(all)
-}    # Pull ice, and then salinity and temperature in 2 depth bands from grid_T_ files
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Get Dissolved Inorganic Nitrogen & Chlorophyll a
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function reads in the title variables from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
+#' DIN & chlorphyll a can be found in files labelled "ptrc_T_".
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' Each variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
+#' `count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
+#' of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.
+#'
+#' @param path The path to the NEMO-MEDUSA model outputs.
+#' @param file The name of a netcdf file containing the title variables.
+#' @return A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for title variables
+#' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_bio   <- function(path, file)              {
+get_bio   <- function(path, file) {
 
   print(str_glue("{file} Extracting Dissolved Inorganic Nitrogen and Chlorophyll"))
   nc_raw <- nc_open(paste0(path, file))                                        # Open up a netcdf file to see it's raw contents (var names)
@@ -299,20 +307,24 @@ get_bio   <- function(path, file)              {
     mutate(Depth = as.factor(Depth))
 
   return(all)
-}    # Pull nitrogen and chlorophyll from ptrc_T_ files
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Get Ice Pesence & Thickness, & Snow Thickness
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function reads in the title variables from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
+#' Ice presence & thickness, & snow thickness can be found in files labelled "icemod_".
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' Each variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
+#' `count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
+#' of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.
+#'
+#' @param path The path to the NEMO-MEDUSA model outputs.
+#' @param file The name of a netcdf file containing the title variables.
+#' @return A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for title variables
+#' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_ice   <- function(path, file)              {
+get_ice   <- function(path, file) {
 
   print(str_glue("{file} Extracting Ice presence, and Ice and Snow thickness"))
   nc_raw <- nc_open(paste0(path, file))                                        # Open up a netcdf file to see it's raw contents (var names)
@@ -338,20 +350,24 @@ get_ice   <- function(path, file)              {
     mutate(Depth = as.factor(Depth))
 
   return(all)
-}    # Pull ice presence, and snow and ice thickness from icemod_ files
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Get Vertical Velocity and Vertical Eddy Diffusivity
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function reads in the title variables from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
+#' Vertical velocity and vertical eddy diffusivitiy can be found in files labelled "W".
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' Each variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
+#' `count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
+#' of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.
+#'
+#' @param path The path to the NEMO-MEDUSA model outputs.
+#' @param file The name of a netcdf file containing the title variables.
+#' @return A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for title variables
+#' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_vertical   <- function(path, file)         {
+get_vertical   <- function(path, file) {
 
   print(str_glue("{file} Extracting Vertical water movements"))
   nc_raw <- nc_open(paste0(path, file))                                        # Open up a netcdf file to see it's raw contents (var names)
@@ -374,20 +390,24 @@ get_vertical   <- function(path, file)         {
     mutate(Depth = as.factor(Depth))
 
   return(all)
-}    # Pull vertical veolcity and vertical eddy diffusivity from W files
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Get Meridional Currents
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function reads in the title variable from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
+#' Meridional currents can be found in files labelled "grid_V_".
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' Each variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
+#' `count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
+#' of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.
+#'
+#' @param path The path to the NEMO-MEDUSA model outputs.
+#' @param file The name of a netcdf file containing the title variable.
+#' @return A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for the title variable
+#' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_merid <- function(path, file)              {
+get_merid <- function(path, file) {
 
   print(str_glue("{file} Extracting Meridional currents"))
   nc_raw <- nc_open(paste0(path, file))                                      # Open up a netcdf file to see it's raw contents (var names)
@@ -407,20 +427,24 @@ get_merid <- function(path, file)              {
     mutate(Depth = as.factor(Depth))
 
   return(all)
-}    # Pull meridinal currents from grid_V_ files
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Get Zonal Currents
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function reads in the title variable from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
+#' Zonal currents can be found in files labelled "grid_U_".
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
+#' `count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
+#' of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.
+#'
+#' @param path The path to the NEMO-MEDUSA model outputs.
+#' @param file The name of a netcdf file containing the title variables.
+#' @return A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for the title variable
+#' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_zonal <- function(path, file)              {
+get_zonal <- function(path, file) {
 
   print(str_glue("{file} Extracting Zonal currents"))
   nc_raw <- nc_open(paste0(path, file))                                      # Open up a netcdf file to see it's raw contents (var names)
@@ -440,20 +464,24 @@ get_zonal <- function(path, file)              {
     mutate(Depth = as.factor(Depth))
 
   return(all)
-}    # Pull zonal currents from grid_U_ files
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Get Detritus
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function reads in the title variable from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
+#' Detritus can be found in an older NEMO-MEDUSA data excerpt.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
+#' `count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
+#' of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.
+#'
+#' @param path The path to the NEMO-MEDUSA model outputs.
+#' @param file The name of a netcdf file containing the title variables.
+#' @return A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for the title variable
+#' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_detritus <- function(file)                 {
+get_detritus <- function(file) {
 
   print(str_glue("Extracting detrital nitrogen"))
   nc_raw <- nc_open(file)                                                    # Open up a netcdf file to see it's raw contents (var names)
@@ -473,7 +501,7 @@ get_detritus <- function(file)                 {
     mutate(Depth = as.factor(Depth))
 
   return(all)
-}    # Pull zonal currents from grid_U_ files
+}
 
 #' Extract the values from a grid under transects along the external boundaries of the model domain
 #'
@@ -539,7 +567,7 @@ whole_month <- function(data)                  {
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-detritus_month <- function(data)               {
+detritus_month <- function(data) {
 
   Month <- data[1,3] ; Year <- data[1,2]                                    # Pull date
 
@@ -550,22 +578,30 @@ detritus_month <- function(data)               {
     summarise_if(is.numeric, mean) %>%
     right_join(Window) %>%                                                  # Cut out rows outside of plotting window
     saveRDS(., file = paste("./Objects/Detritus/Det", Month, Year, "rds", sep = "."))    # save out a data object for one whole month
-}    # Collate the different datasources from a single month
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Extract a full field for sampling currents
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' \strong{THIS FUNCTION IS LIKELY REDUNDANT}
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' Since this function was written the domain polygons have been reshaped, and I learnt more than just currents needed to be
+#' sampled at the boundary of compartments. The more general `whole_month` now behaves in the same way, returning a grid clipped
+#' to the window of interest for the project, but not the model domain.
+#'
+#' The function takes a packet of netcdf files which contain model outputs for the same month. These are split by the type of
+#' data they contain, and are then passed to `type_in_month` for variable specific averaging. After, the data are returned to this
+#' function to be combined into a single monthly dataframe for all variables. The dataframe is saved in the Objects directory
+#' under Currents.
+#'
+#' @param data A dataframe containing a batch of netcdf file locations which share a month and year, but may have different
+#' variables.
+#' @return A dataframe containing points and lat/lon coordinates. Attached data are the average NEMO-MEDUSA model outputs for
+#' zonal and meridional currents in the shallow and deep zone. The dataframe contains the data averaged across a whole month.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
 Big_Currents <- function(data)                 {
 
-  Month <- data[1,5] ; Year <- data[1,4]                                      # Pull date
+  Month <- data[1,5] ; Year <- data[1,4]                                    # Pull date
 
   Month <- split(data, f = list(data$Type)) %>%                             # Split out the files for this month by type, so they can be averaged together
     purrr::map(type_in_month) %>%                                           # Pull a whole month of data from a single file type
@@ -611,18 +647,26 @@ Window <- function(file, w, e, s, n)           {
   return(Limits)
 }    # Extract the positions to clip the netcdf file to, and the values for the smaller grid
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Get Surface Irradiance & Air Temperature
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function reads either title variable from a NEMO-MEDUSA model \strong{DRIVERS} file, and returns a monthly time series.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The appropriate variable in the netcdf file is imported according to the `Type` parameter, only reading within an
+#' x/y window specified in `Space`. The function then drops points outside the model domain before constructing the monthly
+#' time series.
+#'
+#' Unlike other NEMO-MEDUSA related get_* functions, this function constructs the monthly time series directly. A wrapper function
+#' to handle time isn't required, as each netcdf file for driving data contains 360 day steps for a single year. `stratify` also
+#' isn't called, as these variables have no depth dimension.
+#'
+#' @param File The location of the netcdf file containing NEMO-MEDUSA driving data.
+#' @param Type The variable contained in the netcdf file either "T150" (air temperature) or "SWF" (surface irradiance).
+#' @param Year The year the necdf file contains data for.
+#' @return A dataframe containing a monthly time series within a year of either average air temperature or surface
+#' irradiance. Air temperature is also split by shore zone.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_air <- function(File, Type, Year)          {
+get_air <- function(File, Type, Year) {
 
   #File <- Airtemp_files$File[1] ; Type <- Airtemp_files$Type[1] ; Year <- Airtemp_files$Year[1] # test
   if(Type == "SWF") months <- Light_months                                     # Get the file holding the months
@@ -653,7 +697,7 @@ get_air <- function(File, Type, Year)          {
   Summary <- summarise(Data, Measured = mean(Measured))                      # Average by time step.
 
   return(Summary)
-}    # Pull light or air temp and create monthly time series per zone
+}
 
 #### Data averaging                   ####
 

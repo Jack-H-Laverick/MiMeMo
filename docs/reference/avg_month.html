@@ -139,9 +139,9 @@ of vertical water movements.</p>
     <p>The function returns a dataframe of points averaged within a month and interpolated to the boundary depth.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function reads in a packet of monthly netcdf files and passes them to avg_day.</p>
-<p>avg_day interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.</p>
-<p>The daily dataframes are then passed back to avg_month, which averages again by month and variable, dropping the spatial information.</p>
+    <p>The function reads in a packet of monthly netcdf files and passes them to `interp_vertical`.</p>
+<p>`interp_vertical` interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.</p>
+<p>The daily dataframes are then passed back to `avg_month`, which averages again by month and variable, dropping the spatial information.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA averages: 

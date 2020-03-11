@@ -47,21 +47,21 @@ reference:
   - get_bio
   - get_detritus
   - get_ice
-  - get_merid
   - get_sea
-  - get_vertical
+  - get_merid
   - get_zonal
-  - avg_day
+  - get_vertical
+  - interp_vertical
+  - interp_month
   - type_in_month
   - whole_month
   - detritus_month
   - Big_Currents
 - title: NEMO-MEDUSA averages
-  desc: Average driving data by decade or by model compartment.
+  desc: Average driving data into time series or decadal maps.
   contents:
   - decadal
   - strip_ice
-  - avg_month
   - summarise_sp
   - summarise_ts_detritus
   - summarise_ts
