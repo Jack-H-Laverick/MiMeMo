@@ -1,7 +1,7 @@
 Package: MiMeMo.tools
 Type: Package
 Title: Tools for extracting data for StrathE2E, during MiMeMo
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     person(given = "Jack H",
            family = "Laverick",
@@ -24,4 +24,4 @@ Imports:
   data.table,
   sf,
   rcdo
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0

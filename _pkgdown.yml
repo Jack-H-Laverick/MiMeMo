@@ -56,15 +56,14 @@ reference:
   - type_in_month
   - whole_month
   - detritus_month
-  - Big_Currents
 - title: NEMO-MEDUSA averages
   desc: Average driving data into time series or decadal maps.
   contents:
   - decadal
   - strip_ice
   - summarise_sp
-  - summarise_ts_detritus
   - summarise_ts
+  - summarise_ts_detritus
 - title: NEMO-MEDUSA plotting
   desc: Make plots.
   contents:
