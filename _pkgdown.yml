@@ -5,6 +5,7 @@ home:
     href: jacklaverick@ymail.com
 destination: docs
 url: https://jack-h-laverick.github.io/MiMeMo.tools/
+
 reference:
 - title: Boundaries
   desc: Extract driving data at the perimeter of model compartments.
@@ -17,7 +18,6 @@ reference:
   - Sample_OOB
   - extract
   - extract_OOB
-
 - title: Global Fishing Watch
   desc: Extract fishing effort data.
   contents:
