@@ -1,64 +1,5 @@
 
-##**## A tidy place to keep functions and reduce clutter in programmes
-
-#### Global Fishing Watch Data Extraction ####
-
-#' Extract the values from a grid under transects along the external boundaries of the model domain
-#'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
-#'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
-#' @family Global Fishing Watch functions
-#' @export
-Arctic_boats <- function (Data)                {
-  Fish <- Data %>%                                                            # Take first csv file as a test
-    mutate(Date = date) %>%                                            # We need Lon-lat to be the first two columns so move date column
-    mutate(date = lon_bin/100, lat_bin = lat_bin/100)                 # Move Coordinate columns, and divide by 100 because raw data misses decimal point
-
-  colnames(Fish)[2] <- "Latitude"                                             # Change column names for GIS functions
-  colnames(Fish)[1] <- "Longitude"
-
-  coordinates(Fish) <- ~ Longitude + Latitude                                 # Converts to a shapefile
-
-  proj4string(Fish) <- proj4string(FAO_arctic)                                # Set the projection of the points to match the polygons
-
-  # Filter the data to rows where polygons lie over the fishing data points
-  inside.Arctic <- Fish[!is.na(over(Fish, as(FAO_arctic, "SpatialPolygons"))),] %>%
-    fortify(inside.Arctic)                                    # Coerce for ggplot
-  return(inside.Arctic) }     # Function to clip boat pings to the FAO regions of interest
-
-#' Extract the values from a grid under transects along the external boundaries of the model domain
-#'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
-#'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
-#' @family Global Fishing Watch functions
-#' @export
-FAO_boats <- function (Data, Clip)             {
-
-  colnames(Data)[2] <- "Latitude"                                             # Change column names for GIS functions
-  colnames(Data)[1] <- "Longitude"
-  name <- deparse(substitute(Clip))                                           # Pull object name to attach as a column on the output
-
-  coordinates(Data) <- ~ Longitude + Latitude                                 # Converts to a shapefile
-
-  proj4string(Data) <- proj4string(Clip)                                      # Set the projection of the points to match the polygons
-
-  # Filter the data to rows where polygons lie over the fishing data points
-  inside.Arctic <- Data[!is.na(over(Data, as(Clip, "SpatialPolygons"))),] %>%
-    fortify(inside.Arctic) %>%                                # Coerce for ggplot
-    mutate(Region = name)
-  return(inside.Arctic) }     # Function to clip boat pings to specific FAO regions
-
-#### Global fishing watch plotting ####
+#### Global Fishing Watch ####
 
 #' Map GFW data for a geartype, above a minimum level of fishing activity
 #'
@@ -223,3 +164,106 @@ jacks_polar_animate <- function (gear, limit)  {
   anim_save(paste("./Figures/GFW/GIF3_domains", gear), animation = last_animation())    # Save animation
   # return(plot) uncomment this and comment out two lines above if you only want to return a single animation
 }     # Animate polar maps
+
+#### NEMO - MEDUSA ####
+
+#' Plot Temporal Summaries
+#'
+#' This function builds a time series, split by model compartment.
+#'
+#' @param var A "quoted" column name denoting how to colour the map.
+#' @return The function creates a time series by model compartment of a summarised variable.
+#' The plot is saved into the NEMO-MEDUSA folder.
+#' @family NEMO-MEDUSA plots
+#' @export
+ts_plot <- function(var) {
+
+  ts <- ggplot(TS, aes(x=date, y= get(var), colour = Compartment)) +
+    geom_line(size = 0.2) +
+    geom_smooth(span = 0.008, size = 0.2, se = FALSE) +
+    theme_minimal() +
+    theme(legend.position = "top") +
+    labs(caption = paste("NM", var, "time series by compartment"), y = var) +
+    NULL
+  ggsave(paste0("./Figures/NEMO-MEDUSA/TS_", var, ".png"), plot = ts, width = 16, height = 10, units = "cm", dpi = 500)
+
+}
+
+#' Map Spatial Summaries
+#'
+#' This function builds a map of the passed variable, facetted by month.
+#'
+#' @param data A dataframe containing the columns "Zonal" and "Meridional" for currents.
+#' @param var A "quoted" column name denoting how to colour the map.
+#' @return The function creates a facetted map of a summarised variable. Each facet shows a month.
+#' The plot is saved into the NEMO-MEDUSA/grids folder.
+#' @family NEMO-MEDUSA plots
+#' @export
+point_plot <- function(data, var) {
+
+  decade <- data$Decade[1]; depth <- data$Depth[1]                             # Find out what the data is
+
+  if(depth == "D" & var %in% c("Ice", "Ice_conc", "Ice_Thickness", "Snow_Thickness")) {
+    print("Skipped deep ice plot") } else {
+
+      print(paste("plotting", var, "for", decade, depth))                          # Show things are working
+
+      map <- ggplot() +                                                            # Create the base
+        coord_sf(xlim = c(6100000, 2800000), ylim = c(7500000, 4400000)) +
+        theme_minimal() +
+        labs(title = paste("Decade:", decade),
+             subtitle = paste("Water layer:", depth), x = NULL, y = NULL) +
+        geom_point(data = data, aes(x=x, y=y, colour = get(var)), stroke = 0, size = 1.1, na.rm = TRUE) +
+        scale_colour_viridis(option = "viridis", name = var, na.value = "red") +
+        facet_wrap(vars(Month)) +
+        geom_sf(data = world) +
+        # bathymetry
+        new_scale_colour() +
+        geom_sf(data = lines, aes(colour = level), stroke = 0, size = 0.2, show.legend = "line") +
+        scale_colour_manual(name = 'Depth (m)', values = c("-1000" = "white", "-200" = "grey40", "-30" = "black")) +
+        zoom +
+        NULL
+      ggsave(paste0("./Figures/NEMO-MEDUSA/grids/map ", var, " ", depth, " ", decade, ".png"),
+             plot = map, scale = 1, width = 32, height = 20, units = "cm", dpi = 500)
+    }
+}
+
+#' Create Stick Plots to Show Currents
+#'
+#' This function builds a stick plot to map water velocities in the project window.
+#'
+#' @param data A dataframe containing the columns "Zonal" and "Meridional" for currents.
+#' @return The function creates a map of Water velocities. Colour is used to show speed, sticks are included to show direction.
+#' The plot is saved into the NEMO-MEDUSA/Currents folder.
+#' @family NEMO-MEDUSA plots
+#' @export
+stick_plot <- function(data) {
+
+  #data <- SP[[1]]
+
+  current_uv_scalar <- 500000                                        # Establish the vector scalar for the currents
+
+  direction <- slice(data, seq(1,nrow(data), by = 50)) %>% drop_na()  # Take a subset of arrows to plot for legibility, dropping arrows with NAs
+
+  sticks <- ggplot(data) +
+    geom_point(aes(x=x, y=y, colour = log(abs(Zonal)+abs(Meridional))+1), size = 0.65, stroke = 0, shape = 16) +
+    scale_colour_viridis(option = "viridis", name = "Current\nspeed (m/s)", na.value = NA) +
+    # Bathymetry
+    new_scale_colour() +
+    geom_sf(data = lines, aes(colour = level), stroke = 0, size = 0.1, show.legend = "line") +
+    scale_colour_manual(name = 'Depth (m)', values = c("-1000" = "red", "-200" = "pink" , "-30" = "white")) +
+    # Sticks
+    geom_segment(data = direction, aes(x=x, xend = x + (Zonal * current_uv_scalar),
+                                       y=y, yend = y + (Meridional * current_uv_scalar)), colour = "black", size = 0.1) +
+    geom_point(data = direction, aes(x=x, y=y), colour = "white", size = 0.2, stroke = 0, shape = 16) +
+    # Land
+    geom_sf(data = world, fill = "black", size = 0.2) +
+    zoom +
+    theme_minimal() +
+    theme(panel.background = element_rect(fill="black"),
+          panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+    labs(caption = paste("Decade:", unique(data$Decade), "    Water layer:", unique(data$Depth)), x = NULL, y = NULL) +
+    NULL
+
+  ggsave_map(paste("./Figures/NEMO-MEDUSA/currents/currents ", unique(data$Depth), unique(data$Decade), ".png"), plot = sticks)
+}

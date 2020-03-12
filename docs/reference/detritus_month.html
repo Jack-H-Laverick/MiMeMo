@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — detritus_month • MiMeMo.tools</title>
+<title>Condense Daily netcdf Files into a Monthly Summary — detritus_month • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,10 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — detritus_month" />
-<meta property="og:description" content="This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed." />
+<meta property="og:title" content="Condense Daily netcdf Files into a Monthly Summary — detritus_month" />
+<meta property="og:description" content="This function is a variant of `whole_month` which only considers detritus files. This is a convenience function.
+Detritus data is available on it's own grid, so there's no reason to pass to `type_in_month` and specify the
+required metadata." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +79,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MiMeMo.tools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -92,6 +93,9 @@ It uses a precalculated set of indices of where transects intersect the grid for
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -109,14 +113,15 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Condense Daily netcdf Files into a Monthly Summary</h1>
     
     <div class="hidden name"><code>detritus_month.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.</p>
+    <p>This function is a variant of `whole_month` which only considers detritus files. This is a convenience function.
+Detritus data is available on it's own grid, so there's no reason to pass to `type_in_month` and specify the
+required metadata.</p>
     </div>
 
     <pre class="usage"><span class='fu'>detritus_month</span>(<span class='no'>data</span>)</pre>
@@ -125,26 +130,26 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D"</p></td>
-    </tr>
-    <tr>
-      <th>Data</th>
-      <td><p>The data object as provided by Sample_OOB</p></td>
-    </tr>
-    <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, provided by Sample_OOB</p></td>
+      <th>data</th>
+      <td><p>A dataframe containing the metadata of multiple netcdf files from a common month.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.</p>
+    <p>The function returns a dataframe containing the monthly average shalllow and deep spatial grids for
+detrital nitrogen.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function takes the metadata for a collection of files which contain data from the same month. The files
+are passed to `get_detritus` to be summarised, reducing the NEMO-MEDUSA model outputs from large arrays to effectively
+two matrices for the month. Points outside the project window are removed before saving the dataframe for the month in
+"./Objects/Detritus/".</p>
+<p>Creating intermediate monthly objects allows the terabytes of data to be reduced without encountering memory issues.
+Also, working on independent monthly packets of data means we can parallelise any data processing for speed.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA variable extractors: 
-<code><a href='Big_Currents.html'>Big_Currents</a>()</code>,
 <code><a href='get_air.html'>get_air</a>()</code>,
 <code><a href='get_bio.html'>get_bio</a>()</code>,
 <code><a href='get_detritus.html'>get_detritus</a>()</code>,
@@ -164,6 +169,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 

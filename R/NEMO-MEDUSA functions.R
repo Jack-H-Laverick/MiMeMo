@@ -1,6 +1,4 @@
 
-##**## A tidy place to keep functions and reduce clutter in programmes
-
 #### NEMO - MEDUSA data extraction    ####
 
 #' Extract the values from a grid under transects along the external boundaries of the model domain
@@ -503,18 +501,28 @@ get_detritus <- function(file) {
   return(all)
 }
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Condense Daily netcdf Files into a Month by Type
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function takes the metadata for multiple netcdf files and creates a spatial summary for the month.
+#' \strong{For one file type only}.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The function bridges the step between extracting data from a netcdf file, and creating an average dataframe
+#' for a whole month of NEMO-MEDUSA model outputs.
+#'
+#' Different file types require a different get function. This function takes a collection of netcdf files of
+#' the same time from the same month, and passes them to the correct `get_*` for data extraction. The results
+#' are passed back to this function, before the estimates from different days at the same lat-lon-depth
+#' combination are averaged to get a single number for the month.
+#'
+#' Creating intermediate monthly objects allows the terabytes of data to be reduced without encountering memory issues.
+#' Also, working on independent monthly packets of data means we can parallelise any data processing for speed.
+#'
+#' @param data A dataframe containing the metadata of multiple netcdf files which share a type.
+#' @return The function returns a dataframe containing the monthly average shalllow and deep spatial grids for
+#' variables of interest.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-type_in_month <- function(data)                {
+type_in_month <- function(data) {
 
   Type <- data[1,3]                                                         # Pull type from the file
 
@@ -531,22 +539,30 @@ type_in_month <- function(data)                {
     group_by(Longitude, Latitude, Depth, .drop=FALSE) %>%
     summarise_if(is.numeric, mean)
   return(Month.type)
-}    # Extract the data from files in a month and average by depth
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Condense Daily netcdf Files into a Monthly Summary
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function takes the metadata for multiple netcdf files. It then creates a common spatial summary for all
+#' the variables of interest for a month.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The function takes the metadata for a collection of files which contain data from the same month. The files
+#' are split into data packets which share the same file type, before being passed to `type_in_month` to be summarised.
+#' `type_in_month` reduces the NEMO-MEDUSA model outputs from large arrays to effectively two matrices. The summaries for
+#' each file type are returned to this function and get bound into a single dataframe. Points outside the project window are
+#' removed before saving the dataframe for the month in "./Objects/Months/".
+#'
+#' Creating intermediate monthly objects allows the terabytes of data to be reduced without encountering memory issues.
+#' Also, working on independent monthly packets of data means we can parallelise any data processing for speed.
+#'
+#' @param data A dataframe containing the metadata of multiple netcdf files from a common month.
+#' @return The function returns a dataframe containing the monthly average shalllow and deep spatial grids for
+#' \strong{all} the variables of interest in NEMO-MEDUSA outputs.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-whole_month <- function(data)                  {
+whole_month <- function(data) {
 
-  Month <- data[1,5] ; Year <- data[1,4]                                      # Pull date
+  Month <- data[1,5] ; Year <- data[1,4]                                    # Pull date
 
   Month <- split(data, f = list(data$Type)) %>%                             # Split out the files for this month by type, so they can be averaged together
     purrr::map(type_in_month) %>%                                           # Pull a whole month of data from a single file type
@@ -554,17 +570,25 @@ whole_month <- function(data)                  {
   # right_join(spine) %>%     # a)                                          # Cut out rows outside of polygons and attach compartment labels
     right_join(Window) %>%    # b)                                          # Cut out rows outside of plotting window
     saveRDS(., file = paste("./Objects/Months/NM", Month, Year, "rds", sep = "."))    # save out a data object for one whole month
-}    # Collate the different datasources from a single month
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Condense Daily netcdf Files into a Monthly Summary
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function is a variant of `whole_month` which only considers detritus files. This is a convenience function.
+#' Detritus data is available on it's own grid, so there's no reason to pass to `type_in_month` and specify the
+#' required metadata.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The function takes the metadata for a collection of files which contain data from the same month. The files
+#' are passed to `get_detritus` to be summarised, reducing the NEMO-MEDUSA model outputs from large arrays to effectively
+#' two matrices for the month. Points outside the project window are removed before saving the dataframe for the month in
+#' "./Objects/Detritus/".
+#'
+#' Creating intermediate monthly objects allows the terabytes of data to be reduced without encountering memory issues.
+#' Also, working on independent monthly packets of data means we can parallelise any data processing for speed.
+#'
+#' @param data A dataframe containing the metadata of multiple netcdf files from a common month.
+#' @return The function returns a dataframe containing the monthly average shalllow and deep spatial grids for
+#' detrital nitrogen.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
 detritus_month <- function(data) {
@@ -579,36 +603,6 @@ detritus_month <- function(data) {
     right_join(Window) %>%                                                  # Cut out rows outside of plotting window
     saveRDS(., file = paste("./Objects/Detritus/Det", Month, Year, "rds", sep = "."))    # save out a data object for one whole month
 }
-
-#' Extract a full field for sampling currents
-#'
-#' \strong{THIS FUNCTION IS LIKELY REDUNDANT}
-#'
-#' Since this function was written the domain polygons have been reshaped, and I learnt more than just currents needed to be
-#' sampled at the boundary of compartments. The more general `whole_month` now behaves in the same way, returning a grid clipped
-#' to the window of interest for the project, but not the model domain.
-#'
-#' The function takes a packet of netcdf files which contain model outputs for the same month. These are split by the type of
-#' data they contain, and are then passed to `type_in_month` for variable specific averaging. After, the data are returned to this
-#' function to be combined into a single monthly dataframe for all variables. The dataframe is saved in the Objects directory
-#' under Currents.
-#'
-#' @param data A dataframe containing a batch of netcdf file locations which share a month and year, but may have different
-#' variables.
-#' @return A dataframe containing points and lat/lon coordinates. Attached data are the average NEMO-MEDUSA model outputs for
-#' zonal and meridional currents in the shallow and deep zone. The dataframe contains the data averaged across a whole month.
-#' @family NEMO-MEDUSA variable extractors
-#' @export
-Big_Currents <- function(data)                 {
-
-  Month <- data[1,5] ; Year <- data[1,4]                                    # Pull date
-
-  Month <- split(data, f = list(data$Type)) %>%                             # Split out the files for this month by type, so they can be averaged together
-    purrr::map(type_in_month) %>%                                           # Pull a whole month of data from a single file type
-    reduce(full_join) %>%                                                   # Join together all the data packets
-    saveRDS(., file = paste("./Objects/Currents/c", Month, Year, "rds", sep = "."))    # save out a data object for one whole month
-#return(Month)
-}    # Pull just current data without cropping to domains, to allow boundary sampling
 
 #### NEMO - MEDUSA drivers extraction ####
 
@@ -889,112 +883,3 @@ summarise_ts_detritus <- function(saved)       {
     ungroup()
 
   return(Averaged) }    # Calculate monthly mean and SD per compartment as time series
-
-#### Plotting functions               ####
-
-#' Extract the values from a grid under transects along the external boundaries of the model domain
-#'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
-#'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
-#' @family NEMO-MEDUSA plots
-#' @export
-ts_plot <- function(var)                       {
-
-  ts <- ggplot(TS, aes(x=date, y= get(var), colour = Compartment)) +
-    geom_line(size = 0.2) +
-    geom_smooth(span = 0.008, size = 0.2, se = FALSE) +
-    theme_minimal() +
-    theme(legend.position = "top") +
-    labs(caption = paste("NM", var, "time series by compartment"), y = var) +
-    NULL
-  ggsave(paste0("./Figures/NEMO-MEDUSA/TS_", var, ".png"), plot = ts, width = 16, height = 10, units = "cm", dpi = 500)
-
-}    # Plot any of the variables as a time series
-
-#' Extract the values from a grid under transects along the external boundaries of the model domain
-#'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
-#'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
-#' @family NEMO-MEDUSA plots
-#' @export
-point_plot <- function(data, var) {
-
-  decade <- data$Decade[1]; depth <- data$Depth[1]                             # Find out what the data is
-
-  if(depth == "D" & var %in% c("Ice", "Ice_conc", "Ice_Thickness", "Snow_Thickness")) {
-    print("Skipped deep ice plot") } else {
-
-      print(paste("plotting", var, "for", decade, depth))                          # Show things are working
-
-      map <- ggplot() +                                                            # Create the base
-        coord_sf(xlim = c(6100000, 2800000), ylim = c(7500000, 4400000)) +
-        theme_minimal() +
-        labs(title = paste("Decade:", decade),
-             subtitle = paste("Water layer:", depth), x = NULL, y = NULL) +
-        geom_point(data = data, aes(x=x, y=y, colour = get(var)), stroke = 0, size = 1.1, na.rm = TRUE) +
-        scale_colour_viridis(option = "viridis", name = var, na.value = "red") +
-        facet_wrap(vars(Month)) +
-        geom_sf(data = world) +
-        # bathymetry
-        new_scale_colour() +
-        geom_sf(data = lines, aes(colour = level), stroke = 0, size = 0.2, show.legend = "line") +
-        scale_colour_manual(name = 'Depth (m)', values = c("-1000" = "white", "-200" = "grey40", "-30" = "black")) +
-        zoom +
-        NULL
-      ggsave(paste0("./Figures/NEMO-MEDUSA/grids/map ", var, " ", depth, " ", decade, ".png"),
-             plot = map, scale = 1, width = 32, height = 20, units = "cm", dpi = 500)
-    }
-}    # Plot any of the variables showing just points
-
-#' Extract the values from a grid under transects along the external boundaries of the model domain
-#'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
-#'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
-#' @family NEMO-MEDUSA plots
-#' @export
-stick_plot <- function(data) {
-
-  #data <- SP[[1]]
-
-  current_uv_scalar <- 500000                                        # Establish the vector scalar for the currents
-
-  direction <- slice(data, seq(1,nrow(data), by = 50)) %>% drop_na()  # Take a subset of arrows to plot for legibility, dropping arrows with NAs
-
-  sticks <- ggplot(data) +
-    geom_point(aes(x=x, y=y, colour = log(abs(Zonal)+abs(Meridional))+1), size = 0.65, stroke = 0, shape = 16) +
-    scale_colour_viridis(option = "viridis", name = "Current\nspeed (m/s)", na.value = NA) +
-    # Bathymetry
-    new_scale_colour() +
-    geom_sf(data = lines, aes(colour = level), stroke = 0, size = 0.1, show.legend = "line") +
-    scale_colour_manual(name = 'Depth (m)', values = c("-1000" = "red", "-200" = "pink" , "-30" = "white")) +
-    # Sticks
-    geom_segment(data = direction, aes(x=x, xend = x + (Zonal * current_uv_scalar),
-                                       y=y, yend = y + (Meridional * current_uv_scalar)), colour = "black", size = 0.1) +
-    geom_point(data = direction, aes(x=x, y=y), colour = "white", size = 0.2, stroke = 0, shape = 16) +
-    # Land
-    geom_sf(data = world, fill = "black", size = 0.2) +
-    zoom +
-    theme_minimal() +
-    theme(panel.background = element_rect(fill="black"),
-          panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-    labs(caption = paste("Decade:", unique(data$Decade), "    Water layer:", unique(data$Depth)), x = NULL, y = NULL) +
-    NULL
-
-  ggsave_map(paste("./Figures/NEMO-MEDUSA/currents/currents ", unique(data$Depth), unique(data$Decade), ".png"), plot = sticks)
-  # return(sticks)
-}    # Plot currents, this adds arrows to the plot

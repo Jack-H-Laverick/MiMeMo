@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — stick_plot • MiMeMo.tools</title>
+<title>Create Stick Plots to Show Currents — stick_plot • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,8 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — stick_plot" />
-<meta property="og:description" content="This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed." />
+<meta property="og:title" content="Create Stick Plots to Show Currents — stick_plot" />
+<meta property="og:description" content="This function builds a stick plot to map water velocities in the project window." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +77,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MiMeMo.tools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -92,6 +91,9 @@ It uses a precalculated set of indices of where transects intersect the grid for
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -109,14 +111,13 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Create Stick Plots to Show Currents</h1>
     
     <div class="hidden name"><code>stick_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.</p>
+    <p>This function builds a stick plot to map water velocities in the project window.</p>
     </div>
 
     <pre class="usage"><span class='fu'>stick_plot</span>(<span class='no'>data</span>)</pre>
@@ -125,22 +126,15 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D"</p></td>
-    </tr>
-    <tr>
-      <th>Data</th>
-      <td><p>The data object as provided by Sample_OOB</p></td>
-    </tr>
-    <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, provided by Sample_OOB</p></td>
+      <th>data</th>
+      <td><p>A dataframe containing the columns "Zonal" and "Meridional" for currents.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.</p>
+    <p>The function creates a map of Water velocities. Colour is used to show speed, sticks are included to show direction.
+The plot is saved into the NEMO-MEDUSA/Currents folder.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA plots: 
