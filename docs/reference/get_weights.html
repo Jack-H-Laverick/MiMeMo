@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — get_weights • MiMeMo.tools</title>
+<title>Calculate Water Layer Thicknesses Within an Array — get_weights • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,9 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — get_weights" />
-<meta property="og:description" content="This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed." />
+<meta property="og:title" content="Calculate Water Layer Thicknesses Within an Array — get_weights" />
+<meta property="og:description" content="This function calculates the thickness of the water layer around each point in a NEMO-MEDUSA array. These thicknesses
+are needed to calculate weighted averages across a depth window." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -67,7 +67,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
@@ -86,19 +86,32 @@ It uses a precalculated set of indices of where transects intersect the grid for
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="../reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    Functions
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    Change log
+  </a>
+</li>
+<li>
+  <a href="../https:github.com/Jack-H-Laverick/MiMeMo.tools">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -112,14 +125,14 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Calculate Water Layer Thicknesses Within an Array</h1>
     
     <div class="hidden name"><code>get_weights.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.</p>
+    <p>This function calculates the thickness of the water layer around each point in a NEMO-MEDUSA array. These thicknesses
+are needed to calculate weighted averages across a depth window.</p>
     </div>
 
     <pre class="usage"><span class='fu'>get_weights</span>(<span class='no'>top</span>, <span class='no'>bottom</span>)</pre>
@@ -128,29 +141,37 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D"</p></td>
+      <th>top</th>
+      <td><p>The shallowest depth in the depth window.</p></td>
     </tr>
     <tr>
-      <th>Data</th>
-      <td><p>The data object as provided by Sample_OOB</p></td>
-    </tr>
-    <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, provided by Sample_OOB</p></td>
+      <th>bottom</th>
+      <td><p>The deepest depth in the depth window.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.</p>
+    <p>An array of water layer thicknesses to match the dimensions of a NEMO-MEDUSA array.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function starts by calculating the thickness of the depth window represented by the shallowest layer in the array.
+This is the depth to halfway between the shallowest and the next layer, subtracting any depth to the top of the window, i.e.
+If the top of the window is the sea surface, the first array layer is at 5m, and the second is at 10m, the water thickness about
+the first point is 7.5m (mean(5, 10) - 0). The function then checks whether the depth of this layer of points is shallower than the depth
+to the seafloor for any of the points. For these points which exist below the seafloor, thicknesses are replaced by the depth to the seafloor,
+minus the depth to the top of the depth window.</p>
+<p>The function then populates the thicknesses of the mid-layers in a for-loop, working increasingly deeper. The thickness about a point is
+calculated as the difference between the depth halfway to the point above, and the depth halfway to the point below. Checks and replacements
+are performed, as explained above, to see whether any points are now beyond the limit of the bathymetry, or approaching the `top` or
+`bottom` of the depth window. If they are, the claculations are performed again using the new max and min depths.</p>
+<p>The thicknesses for the deepest layer of points are calculated as the depth to the seafloor minus the mid-depth of the deepest two layers.</p>
+<p>If a weight is &lt;= 0, it is replaced with NA as this indicates land.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA spatial tools: 
-<code><a href='Compartmentalise.html'>Compartmentalise</a>()</code>,
 <code><a href='Window.html'>Window</a>()</code>,
 <code><a href='empty.html'>empty</a>()</code>,
-<code><a href='get_spatial.html'>get_spatial</a>()</code>,
 <code><a href='get_weights.W.html'>get_weights.W</a>()</code>,
 <code><a href='get_weights.old.html'>get_weights.old</a>()</code>,
 <code><a href='reproj.html'>reproj</a>()</code>,
@@ -163,6 +184,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 

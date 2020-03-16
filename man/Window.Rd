@@ -2,29 +2,42 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{Window}
 \alias{Window}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Get Indices to Use When Clipping netcdf Files at Import}
 \usage{
 Window(file, w, e, s, n)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
+\item{file}{The full name of a netcdf file containing a longitude and latitude dimension.}
 
-\item{Data}{The data object as provided by Sample_OOB}
+\item{w}{Degrees West to read from.}
 
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{e}{Degrees East to read to.}
+
+\item{s}{Degrees South to read from.}
+
+\item{n}{Degrees North to read to.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+A list of three elements:
+\itemize{
+ \item{\emph{Lats -}}{ A vector of latitudes from `s` to `n`.}
+ \item{\emph{Lons -}}{ A vector of longitudes from `w` to `e`.}
+ \item{\emph{Limits -}}{ A dataframe containing the index to start reading from (Lon_start, Lat_start)
+ and the length of the vector to read (Lon_count, Lat_count.}
+ }
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function works out how much of a netcdf file to read, to capture the data between a given Lat-Lon window.
+}
+\details{
+The function reads in a vector for both latitudes and longitudes, and tests whether each entry is within the specified
+window. The max and min position in these vectors where the condition == TRUE are taken to define the ends of the window
+to import. The vectors of latitudes and longitudes between these limits are kept, so they can be added to the variables
+of interest during extraction.
 }
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
-\code{\link{Compartmentalise}()},
 \code{\link{empty}()},
-\code{\link{get_spatial}()},
 \code{\link{get_weights.W}()},
 \code{\link{get_weights.old}()},
 \code{\link{get_weights}()},

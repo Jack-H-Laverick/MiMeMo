@@ -2,30 +2,28 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{reproj}
 \alias{reproj}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Reproject from Latitude and Longitude to Project CRS}
 \usage{
 reproj(data)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
-
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{data}{A dataframe containing Longitude and Latitude.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+A dataframe, now with an x and y column specifying the coordinates for points in the projects Coordiante Reference System.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function takes a dataframe containing a latitude and longitude column, and replaces them with an X and Y column of coordinates
+in a new CRS.
+}
+\details{
+The function converts a dataframe into an SF object and reprojects into a new CRS. Two coordinate columns are extracted from the
+geometry column using `sfc_as_cols`, before the geometry column is dropped.
 }
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
-\code{\link{Compartmentalise}()},
 \code{\link{Window}()},
 \code{\link{empty}()},
-\code{\link{get_spatial}()},
 \code{\link{get_weights.W}()},
 \code{\link{get_weights.old}()},
 \code{\link{get_weights}()},

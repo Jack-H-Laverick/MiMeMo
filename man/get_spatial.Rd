@@ -2,34 +2,41 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{get_spatial}
 \alias{get_spatial}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Get Latitudes, Longitudes, & Depths}
 \usage{
 get_spatial(file)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
-
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{file}{The full name of a netcdf file.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+A list of three elements:
+\itemize{
+ \item{\emph{nc_lat -}}{ A matrix of latitudes which maps onto the first and second dimension of a NEMO-MEDUSA array.}
+ \item{\emph{nc_lon -}}{ A matrix of longitudes which maps onto the first and second dimension of a NEMO-MEDUSA array.}
+ \item{\emph{nc_depth -}}{ A vector of depths which match the third dimension of a NEMO-MEDUSA array.}
+ }
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function gets the latitudes, longitudes, and depths which define the spatial location of points in an array of NEMO-MEDUSA outputs.
+}
+\details{
+Each variable of interest in the netcdf file is imported, and then collected into a list.
 }
 \seealso{
-Other NEMO-MEDUSA spatial tools: 
-\code{\link{Compartmentalise}()},
-\code{\link{Window}()},
-\code{\link{empty}()},
-\code{\link{get_weights.W}()},
-\code{\link{get_weights.old}()},
-\code{\link{get_weights}()},
-\code{\link{reproj}()},
-\code{\link{sfc_as_cols}()},
-\code{\link{stratify}()}
+Other NEMO-MEDUSA variable extractors: 
+\code{\link{detritus_month}()},
+\code{\link{get_air}()},
+\code{\link{get_bio}()},
+\code{\link{get_detritus}()},
+\code{\link{get_ice}()},
+\code{\link{get_merid}()},
+\code{\link{get_sea}()},
+\code{\link{get_vertical}()},
+\code{\link{get_zonal}()},
+\code{\link{interp_month}()},
+\code{\link{interp_vertical}()},
+\code{\link{type_in_month}()},
+\code{\link{whole_month}()}
 }
-\concept{NEMO-MEDUSA spatial tools}
+\concept{NEMO-MEDUSA variable extractors}

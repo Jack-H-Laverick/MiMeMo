@@ -2,30 +2,23 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{sfc_as_cols}
 \alias{sfc_as_cols}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Pull Coordinates from a Simple Feature Geometry Column}
 \usage{
 sfc_as_cols(x, names = c("x", "y"))
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
-
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{data}{An SF (Simple Feature) object.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+The same object, now with two columns containing the coordinates in the geometry column.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function takes an SF object, and adds two columns containing the coordinates in the geometry column.
 }
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
-\code{\link{Compartmentalise}()},
 \code{\link{Window}()},
 \code{\link{empty}()},
-\code{\link{get_spatial}()},
 \code{\link{get_weights.W}()},
 \code{\link{get_weights.old}()},
 \code{\link{get_weights}()},

@@ -2,30 +2,28 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{stratify}
 \alias{stratify}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Summarise Across Depths in a NEMO-MEDUSA Array}
 \usage{
 stratify(data, depth, weights)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
+\item{data}{An array containing estimates of a variable.}
 
-\item{Data}{The data object as provided by Sample_OOB}
+\item{depth}{A TRUE FALSE vector indicating the depth layers to be extracted.}
 
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{weights}{An array containing water thicknesses.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+A matrix containing the weighted averages of the variable across the depth window of interest.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function takes an array of a variable, and an array of water thicknesses to perform a weighted average across depth. The depth
+window to be averaged can be specified, so this function can be used to create both shallow and deep layers (or more for that matter).
 }
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
-\code{\link{Compartmentalise}()},
 \code{\link{Window}()},
 \code{\link{empty}()},
-\code{\link{get_spatial}()},
 \code{\link{get_weights.W}()},
 \code{\link{get_weights.old}()},
 \code{\link{get_weights}()},

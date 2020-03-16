@@ -2,30 +2,44 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{get_weights.old}
 \alias{get_weights.old}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Calculate Water Layer Thicknesses Within an Array (Detritus)}
 \usage{
 get_weights.old(top, bottom)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
+\item{top}{The shallowest depth in the depth window.}
 
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{bottom}{The deepest depth in the depth window.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+An array of water layer thicknesses to match the dimensions of a NEMO-MEDUSA array.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function is a variant of `get_weights` which applies to the old NEMO-MEDUSA grid. Detrital nitrogen from NEMO-MEDUSA are on an old
+spatial grid. This function calculates the thickness of the water layer around each point in a NEMO-MEDUSA array. These thicknesses
+are needed to calculate weighted averages across a depth window.
+}
+\details{
+The function starts by calculating the thickness of the depth window represented by the shallowest layer in the array.
+This is the depth to halfway between the shallowest and the next layer, subtracting any depth to the top of the window, i.e.
+If the top of the window is the sea surface, the first array layer is at 5m, and the second is at 10m, the water thickness about
+the first point is 7.5m (mean(5, 10) - 0). The function then checks whether the depth of this layer of points is shallower than the depth
+to the seafloor for any of the points. For these points which exist below the seafloor, thicknesses are replaced by the depth to the seafloor,
+minus the depth to the top of the depth window.
+
+The function then populates the thicknesses of the mid-layers in a for-loop, working increasingly deeper. The thickness about a point is
+calculated as the difference between the depth halfway to the point above, and the depth halfway to the point below. Checks and replacements
+are performed, as explained above, to see whether any points are now beyond the limit of the bathymetry, or approaching the `top` or
+`bottom` of the depth window. If they are, the claculations are performed again using the new max and min depths.
+
+The thicknesses for the deepest layer of points are calculated as the depth to the seafloor minus the mid-depth of the deepest two layers.
+
+If a weight is <= 0, it is replaced with NA as this indicates land.
 }
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
-\code{\link{Compartmentalise}()},
 \code{\link{Window}()},
 \code{\link{empty}()},
-\code{\link{get_spatial}()},
 \code{\link{get_weights.W}()},
 \code{\link{get_weights}()},
 \code{\link{reproj}()},

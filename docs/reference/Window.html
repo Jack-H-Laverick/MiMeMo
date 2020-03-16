@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — Window • MiMeMo.tools</title>
+<title>Get Indices to Use When Clipping netcdf Files at Import — Window • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,8 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — Window" />
-<meta property="og:description" content="This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed." />
+<meta property="og:title" content="Get Indices to Use When Clipping netcdf Files at Import — Window" />
+<meta property="og:description" content="This function works out how much of a netcdf file to read, to capture the data between a given Lat-Lon window." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -67,7 +66,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
@@ -86,19 +85,32 @@ It uses a precalculated set of indices of where transects intersect the grid for
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="../reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    Functions
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    Change log
+  </a>
+</li>
+<li>
+  <a href="../https:github.com/Jack-H-Laverick/MiMeMo.tools">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -112,14 +124,13 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Get Indices to Use When Clipping netcdf Files at Import</h1>
     
     <div class="hidden name"><code>Window.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.</p>
+    <p>This function works out how much of a netcdf file to read, to capture the data between a given Lat-Lon window.</p>
     </div>
 
     <pre class="usage"><span class='fu'>Window</span>(<span class='no'>file</span>, <span class='no'>w</span>, <span class='no'>e</span>, <span class='no'>s</span>, <span class='no'>n</span>)</pre>
@@ -128,28 +139,46 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D"</p></td>
+      <th>file</th>
+      <td><p>The full name of a netcdf file containing a longitude and latitude dimension.</p></td>
     </tr>
     <tr>
-      <th>Data</th>
-      <td><p>The data object as provided by Sample_OOB</p></td>
+      <th>w</th>
+      <td><p>Degrees West to read from.</p></td>
     </tr>
     <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, provided by Sample_OOB</p></td>
+      <th>e</th>
+      <td><p>Degrees East to read to.</p></td>
+    </tr>
+    <tr>
+      <th>s</th>
+      <td><p>Degrees South to read from.</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>Degrees North to read to.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.</p>
+    <p>A list of three elements:</p><ul>
+<li><p><em>Lats -</em> A vector of latitudes from `s` to `n`.</p></li>
+<li><p><em>Lons -</em> A vector of longitudes from `w` to `e`.</p></li>
+<li><p><em>Limits -</em> A dataframe containing the index to start reading from (Lon_start, Lat_start)
+ and the length of the vector to read (Lon_count, Lat_count.</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function reads in a vector for both latitudes and longitudes, and tests whether each entry is within the specified
+window. The max and min position in these vectors where the condition == TRUE are taken to define the ends of the window
+to import. The vectors of latitudes and longitudes between these limits are kept, so they can be added to the variables
+of interest during extraction.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA spatial tools: 
-<code><a href='Compartmentalise.html'>Compartmentalise</a>()</code>,
 <code><a href='empty.html'>empty</a>()</code>,
-<code><a href='get_spatial.html'>get_spatial</a>()</code>,
 <code><a href='get_weights.W.html'>get_weights.W</a>()</code>,
 <code><a href='get_weights.old.html'>get_weights.old</a>()</code>,
 <code><a href='get_weights.html'>get_weights</a>()</code>,
@@ -163,6 +192,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 

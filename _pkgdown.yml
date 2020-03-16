@@ -31,12 +31,10 @@ reference:
   desc: Handle spatial weighting for averages, depth layers, and map projections.
   contents:
   - empty
+  - get_weights
   - get_weights.W
   - get_weights.old
-  - get_weights
   - get_spatial
-  - Compartmentalise
-  - stratify
   - Window
   - reproj
   - sfc_as_cols
@@ -53,6 +51,7 @@ reference:
   - get_vertical
   - interp_vertical
   - interp_month
+  - stratify
   - type_in_month
   - whole_month
   - detritus_month
@@ -70,3 +69,18 @@ reference:
   - point_plot
   - ts_plot
   - stick_plot
+
+navbar:
+  type: inverse
+  left:
+   - icon: fa-home
+     href: index.html
+  right:
+   - icon: fa-file-code-o
+     text: "Functions"
+     href: reference/index.html
+   - icon: fa-newspaper-o
+     text: "Change log"
+     href: news/index.html
+   - icon: fa-github fa-lg
+     href: https:github.com/Jack-H-Laverick/MiMeMo.tools

@@ -2,29 +2,24 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{empty}
 \alias{empty}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Check Whether a Vector Contains Data}
 \usage{
 empty(x)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
-
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{x}{A vector of values to check.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+TRUE (if only NAs) or FALSE (if any entry is not NA).
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function provides a check for whether a vector of locations contains any data. This is useful
+for checking whether a lat/lon pixel doesn't report any data for the deep zone. This is expected if the
+sea floor at those coordinates is shallower than the maximum depth we set for the shallow zone.
 }
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
-\code{\link{Compartmentalise}()},
 \code{\link{Window}()},
-\code{\link{get_spatial}()},
 \code{\link{get_weights.W}()},
 \code{\link{get_weights.old}()},
 \code{\link{get_weights}()},

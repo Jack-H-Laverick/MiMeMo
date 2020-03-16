@@ -65,7 +65,7 @@
   <body>
     <div class="container template-reference-index">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
@@ -84,19 +84,32 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="../reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    Functions
+  </a>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    Change log
+  </a>
+</li>
+<li>
+  <a href="../https:github.com/Jack-H-Laverick/MiMeMo.tools">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -233,61 +246,49 @@
         <td>
           <p><code><a href="empty.html">empty()</a></code> </p>
         </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_weights.W.html">get_weights.W()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_weights.old.html">get_weights.old()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+        <td><p>Check Whether a Vector Contains Data</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="get_weights.html">get_weights()</a></code> </p>
         </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+        <td><p>Calculate Water Layer Thicknesses Within an Array</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_weights.W.html">get_weights.W()</a></code> </p>
+        </td>
+        <td><p>Calculate Water Layer Thicknesses Within an Array (Velocities)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_weights.old.html">get_weights.old()</a></code> </p>
+        </td>
+        <td><p>Calculate Water Layer Thicknesses Within an Array (Detritus)</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="get_spatial.html">get_spatial()</a></code> </p>
         </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Compartmentalise.html">Compartmentalise()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="stratify.html">stratify()</a></code> </p>
-        </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+        <td><p>Get Latitudes, Longitudes, &amp; Depths</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="Window.html">Window()</a></code> </p>
         </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+        <td><p>Get Indices to Use When Clipping netcdf Files at Import</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="reproj.html">reproj()</a></code> </p>
         </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+        <td><p>Reproject from Latitude and Longitude to Project CRS</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="sfc_as_cols.html">sfc_as_cols()</a></code> </p>
         </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+        <td><p>Pull Coordinates from a Simple Feature Geometry Column</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -356,6 +357,12 @@
           <p><code><a href="interp_month.html">interp_month()</a></code> </p>
         </td>
         <td><p>Extract vertical water movements at the boundary between shallow and deep compartments</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="stratify.html">stratify()</a></code> </p>
+        </td>
+        <td><p>Summarise Across Depths in a NEMO-MEDUSA Array</p></td>
       </tr><tr>
         
         <td>

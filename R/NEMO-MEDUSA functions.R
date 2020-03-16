@@ -1,31 +1,45 @@
 
 #### NEMO - MEDUSA data extraction    ####
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Check Whether a Vector Contains Data
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function provides a check for whether a vector of locations contains any data. This is useful
+#' for checking whether a lat/lon pixel doesn't report any data for the deep zone. This is expected if the
+#' sea floor at those coordinates is shallower than the maximum depth we set for the shallow zone.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @param x A vector of values to check.
+#' @return TRUE (if only NAs) or FALSE (if any entry is not NA).
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-empty <- function(x) all(is.na(x))                      # Quick function looking for areas with no data
+empty <- function(x) all(is.na(x))
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Calculate Water Layer Thicknesses Within an Array
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function calculates the thickness of the water layer around each point in a NEMO-MEDUSA array. These thicknesses
+#' are needed to calculate weighted averages across a depth window.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The function starts by calculating the thickness of the depth window represented by the shallowest layer in the array.
+#' This is the depth to halfway between the shallowest and the next layer, subtracting any depth to the top of the window, i.e.
+#' If the top of the window is the sea surface, the first array layer is at 5m, and the second is at 10m, the water thickness about
+#' the first point is 7.5m (mean(5, 10) - 0). The function then checks whether the depth of this layer of points is shallower than the depth
+#' to the seafloor for any of the points. For these points which exist below the seafloor, thicknesses are replaced by the depth to the seafloor,
+#' minus the depth to the top of the depth window.
+#'
+#' The function then populates the thicknesses of the mid-layers in a for-loop, working increasingly deeper. The thickness about a point is
+#' calculated as the difference between the depth halfway to the point above, and the depth halfway to the point below. Checks and replacements
+#' are performed, as explained above, to see whether any points are now beyond the limit of the bathymetry, or approaching the `top` or
+#' `bottom` of the depth window. If they are, the claculations are performed again using the new max and min depths.
+#'
+#' The thicknesses for the deepest layer of points are calculated as the depth to the seafloor minus the mid-depth of the deepest two layers.
+#'
+#' If a weight is <= 0, it is replaced with NA as this indicates land.
+#'
+#' @param top The shallowest depth in the depth window.
+#' @param bottom The deepest depth in the depth window.
+#' @return An array of water layer thicknesses to match the dimensions of a NEMO-MEDUSA array.
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-get_weights <- function(top, bottom)           {
+get_weights <- function(top, bottom) {
   #top <- 200                                                                    # shallowest depth of the slice
   #bottom <- 1000                                                                # What's the bottom of the slice? for incorporating into a function
 
@@ -55,20 +69,36 @@ get_weights <- function(top, bottom)           {
   no_weight <- weights[] <= 0; weights[no_weight] <- NA                        # Finally if a weight is <= 0 get NA
 
   return(weights)
-}    # Return the weights for averaging across depths, specifying the top and bottom layer of a slice
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Calculate Water Layer Thicknesses Within an Array (Velocities)
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function is a variant of `get_weights` which applies to water velocities. Water velocities from NEMO-MEDUSA are on a different
+#' vector of depths. This function calculates the thickness of the water layer around each point in a NEMO-MEDUSA array. These thicknesses
+#' are needed to calculate weighted averages across a depth window.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The function starts by calculating the thickness of the depth window represented by the shallowest layer in the array.
+#' This is the depth to halfway between the shallowest and the next layer, subtracting any depth to the top of the window, i.e.
+#' If the top of the window is the sea surface, the first array layer is at 5m, and the second is at 10m, the water thickness about
+#' the first point is 7.5m (mean(5, 10) - 0). The function then checks whether the depth of this layer of points is shallower than the depth
+#' to the seafloor for any of the points. For these points which exist below the seafloor, thicknesses are replaced by the depth to the seafloor,
+#' minus the depth to the top of the depth window.
+#'
+#' The function then populates the thicknesses of the mid-layers in a for-loop, working increasingly deeper. The thickness about a point is
+#' calculated as the difference between the depth halfway to the point above, and the depth halfway to the point below. Checks and replacements
+#' are performed, as explained above, to see whether any points are now beyond the limit of the bathymetry, or approaching the `top` or
+#' `bottom` of the depth window. If they are, the claculations are performed again using the new max and min depths.
+#'
+#' The thicknesses for the deepest layer of points are calculated as the depth to the seafloor minus the mid-depth of the deepest two layers.
+#'
+#' If a weight is <= 0, it is replaced with NA as this indicates land.
+#'
+#' @param top The shallowest depth in the depth window.
+#' @param bottom The deepest depth in the depth window.
+#' @return An array of water layer thicknesses to match the dimensions of a NEMO-MEDUSA array.
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-get_weights.W <- function(top, bottom)         {
+get_weights.W <- function(top, bottom) {
 
   weights <- array(NA, c(235,190,39))                                            # Initialise an array to hold weights
   first <- weights[,,1]
@@ -96,20 +126,36 @@ get_weights.W <- function(top, bottom)         {
   no_weight <- weights[] <= 0; weights[no_weight] <- NA                        # Finally if a weight is <= 0 get NA
 
   return(weights)
-}    # Return the weights for averaging across depths, specifying the top and bottom layer of a slice
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Calculate Water Layer Thicknesses Within an Array (Detritus)
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function is a variant of `get_weights` which applies to the old NEMO-MEDUSA grid. Detrital nitrogen from NEMO-MEDUSA are on an old
+#' spatial grid. This function calculates the thickness of the water layer around each point in a NEMO-MEDUSA array. These thicknesses
+#' are needed to calculate weighted averages across a depth window.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The function starts by calculating the thickness of the depth window represented by the shallowest layer in the array.
+#' This is the depth to halfway between the shallowest and the next layer, subtracting any depth to the top of the window, i.e.
+#' If the top of the window is the sea surface, the first array layer is at 5m, and the second is at 10m, the water thickness about
+#' the first point is 7.5m (mean(5, 10) - 0). The function then checks whether the depth of this layer of points is shallower than the depth
+#' to the seafloor for any of the points. For these points which exist below the seafloor, thicknesses are replaced by the depth to the seafloor,
+#' minus the depth to the top of the depth window.
+#'
+#' The function then populates the thicknesses of the mid-layers in a for-loop, working increasingly deeper. The thickness about a point is
+#' calculated as the difference between the depth halfway to the point above, and the depth halfway to the point below. Checks and replacements
+#' are performed, as explained above, to see whether any points are now beyond the limit of the bathymetry, or approaching the `top` or
+#' `bottom` of the depth window. If they are, the claculations are performed again using the new max and min depths.
+#'
+#' The thicknesses for the deepest layer of points are calculated as the depth to the seafloor minus the mid-depth of the deepest two layers.
+#'
+#' If a weight is <= 0, it is replaced with NA as this indicates land.
+#'
+#' @param top The shallowest depth in the depth window.
+#' @param bottom The deepest depth in the depth window.
+#' @return An array of water layer thicknesses to match the dimensions of a NEMO-MEDUSA array.
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-get_weights.old <- function(top, bottom)       {
+get_weights.old <- function(top, bottom) {
   #top <- 200                                                                    # shallowest depth of the slice
   #bottom <- 1000                                                                # What's the bottom of the slice? for incorporating into a function
 
@@ -139,76 +185,45 @@ get_weights.old <- function(top, bottom)       {
   no_weight <- weights[] <= 0; weights[no_weight] <- NA                        # Finally if a weight is <= 0 get NA
 
   return(weights)
-}    # Return the weights for averaging across depths, specifying the top and bottom layer of a slice
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Get Latitudes, Longitudes, & Depths
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function gets the latitudes, longitudes, and depths which define the spatial location of points in an array of NEMO-MEDUSA outputs.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
-#' @family NEMO-MEDUSA spatial tools
+#' Each variable of interest in the netcdf file is imported, and then collected into a list.
+#'
+#' @param file The full name of a netcdf file.
+#' @return A list of three elements:
+#' \itemize{
+#'  \item{\emph{nc_lat -}}{ A matrix of latitudes which maps onto the first and second dimension of a NEMO-MEDUSA array.}
+#'  \item{\emph{nc_lon -}}{ A matrix of longitudes which maps onto the first and second dimension of a NEMO-MEDUSA array.}
+#'  \item{\emph{nc_depth -}}{ A vector of depths which match the third dimension of a NEMO-MEDUSA array.}
+#'  }
+#' @family NEMO-MEDUSA variable extractors
 #' @export
-get_spatial <- function(file)                  {
-  nc_raw <- nc_open(file)                                                    # Open up a netcdf file to see it's raw contents (var names)
+get_spatial <- function(file) {
+  nc_raw <- nc_open(file)                              # Open up a netcdf file to see it's raw contents (var names)
   nc_lat <- ncvar_get(nc_raw, "nav_lat")               # Extract a matrix of all the latitudes
   nc_lon <- ncvar_get(nc_raw, "nav_lon")               # Extract a matrix of all the longitudes
-  nc_depth <- ncvar_get(nc_raw, "deptht")                                    # Extract a matrix of depths
-  nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
+  nc_depth <- ncvar_get(nc_raw, "deptht")              # Extract a matrix of depths
+  nc_close(nc_raw)                                     # You must close an open netcdf file when finished to avoid data loss
   all <- list("nc_lat" = nc_lat, "nc_lon" = nc_lon, "nc_depth" = nc_depth)
   return(all)
-}    # Pull spatial structure netcdf file
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Summarise Across Depths in a NEMO-MEDUSA Array
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function takes an array of a variable, and an array of water thicknesses to perform a weighted average across depth. The depth
+#' window to be averaged can be specified, so this function can be used to create both shallow and deep layers (or more for that matter).
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @param data An array containing estimates of a variable.
+#' @param depth A TRUE FALSE vector indicating the depth layers to be extracted.
+#' @param weights An array containing water thicknesses.
+#' @return A matrix containing the weighted averages of the variable across the depth window of interest.
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-Compartmentalise <- function(work)             {
-  #  levels(work$Depth) <- depth_levels                                       # Recode factor levels
-
-  work <- split(work, f = work$Shore) %>%                                  # Split by shore region
-    .[sapply(., function(x) dim(x)[1]) > 0]                                # Drop empty elements introduced by interactions
-
-  inshore <- data.frame(work[["Inshore"]]) %>%                             # Maniuplate just Inshore observations
-    filter(Depth == "S") %>%                                               # There is no deep compartment inshore
-    filter(Bathymetry > -60 | Shore_dist < 20000) %>%                      # Reinstate conditions for inshore zone, as clipping polygon is slightly larger
-    mutate(weights = abs(Bathymetry))
-
-  inshore$weights[inshore$weights > 60] <- 60                              # Overwrite the weights used for deep nearshore pixels.
-
-  offshore <- data.frame(work[["Offshore"]]) %>%                           # Manipulate offshore observations
-    filter(between(Bathymetry, -400, -60) & Shore_dist > 20000) %>%        # Reinstate conditions for offshore zone, as cliiping polygon is slightly larger
-    mutate(weights = abs(Bathymetry))
-
-  offshore$weights[offshore$weights > 60 & offshore$Depth == "S" ] <- 60   # Observation in water deeper than 60 m with a shallow label should have a water thickness of 60 m
-  offshore$weights[offshore$Depth == "D" ] <- offshore$weights[offshore$Depth == "D" ] - 60 # All deep water observations have a water thickness of the bathymetry - the shallow layer thickness
-
-  result <- rbind(inshore, offshore)
-  return(result)
-}    # Refilter and get weights for depths and shore zones *use this once on the spine dataframe for speed, then join
-
-#' Extract the values from a grid under transects along the external boundaries of the model domain
-#'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
-#'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
-#' @family NEMO-MEDUSA spatial tools
-#' @export
-stratify  <- function(data, depth, weights)    {
+stratify  <- function(data, depth, weights) {
 
   # data <- nc_zonal ; depth <- Deep_mark ; weights <- dw                   # testing
 
@@ -220,7 +235,7 @@ stratify  <- function(data, depth, weights)    {
   weighted_mean <- new2/denominator                                            # Divide by the sum of the weights
   weighted_mean[empties] <- NA                                                 # Sum replaces an all NA dimension with 0, overwrite these by position
   return(weighted_mean)
-}    # Take a range of depths from an array and average into a single matrix for the layer, weighted by thickness of water around each depth observation
+}
 
 #' Get Salinity, Temperature & Sea Ice Concentration
 #'
@@ -608,18 +623,30 @@ detritus_month <- function(data) {
 
 ## used for Light and air temperature data which goes into NM, this data uses a different grid and has time stored differently
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Get Indices to Use When Clipping netcdf Files at Import
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function works out how much of a netcdf file to read, to capture the data between a given Lat-Lon window.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The function reads in a vector for both latitudes and longitudes, and tests whether each entry is within the specified
+#' window. The max and min position in these vectors where the condition == TRUE are taken to define the ends of the window
+#' to import. The vectors of latitudes and longitudes between these limits are kept, so they can be added to the variables
+#' of interest during extraction.
+#'
+#' @param file The full name of a netcdf file containing a longitude and latitude dimension.
+#' @param w Degrees West to read from.
+#' @param e Degrees East to read to.
+#' @param s Degrees South to read from.
+#' @param n Degrees North to read to.
+#' @return A list of three elements:
+#' \itemize{
+#'  \item{\emph{Lats -}}{ A vector of latitudes from `s` to `n`.}
+#'  \item{\emph{Lons -}}{ A vector of longitudes from `w` to `e`.}
+#'  \item{\emph{Limits -}}{ A dataframe containing the index to start reading from (Lon_start, Lat_start)
+#'  and the length of the vector to read (Lon_count, Lat_count.}
+#'  }
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-Window <- function(file, w, e, s, n)           {
+Window <- function(file, w, e, s, n) {
 
   #file <- examples[1,]$File ; w = 0 ; e = 180 ; s = 0 ; n = 90
 
@@ -639,7 +666,7 @@ Window <- function(file, w, e, s, n)           {
 
   Limits <- list(Lats = lats, Lons = lons, Limits = Limits)
   return(Limits)
-}    # Extract the positions to clip the netcdf file to, and the values for the smaller grid
+}
 
 #' Get Surface Irradiance & Air Temperature
 #'
@@ -754,15 +781,12 @@ summarise_sp <- function(decade) {
   return(Averaged)
 }
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Pull Coordinates from a Simple Feature Geometry Column
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function takes an SF object, and adds two columns containing the coordinates in the geometry column.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @param data An SF (Simple Feature) object.
+#' @return The same object, now with two columns containing the coordinates in the geometry column.
 #' @family NEMO-MEDUSA spatial tools
 #' @export
 sfc_as_cols <- function(x, names = c("x","y")) {
@@ -773,27 +797,28 @@ sfc_as_cols <- function(x, names = c("x","y")) {
   x <- x[ , !names(x) %in% names]
   ret <- setNames(ret,names)
   dplyr::bind_cols(x,ret)
-}    # Function to pull the geometry column of an SF object into XY
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Reproject from Latitude and Longitude to Project CRS
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function takes a dataframe containing a latitude and longitude column, and replaces them with an X and Y column of coordinates
+#' in a new CRS.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#'The function converts a dataframe into an SF object and reprojects into a new CRS. Two coordinate columns are extracted from the
+#'geometry column using `sfc_as_cols`, before the geometry column is dropped.
+#'
+#' @param data A dataframe containing Longitude and Latitude.
+#' @return A dataframe, now with an x and y column specifying the coordinates for points in the projects Coordiante Reference System.
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-reproj <- function(data)                       {
+reproj <- function(data) {
 
   data %>%
     st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>% # Specify original projection (crs)
     st_transform(crs = crs) %>%                                   # Transform to crs specified in region file
     sfc_as_cols() %>%                                             # Extract geometry column for geom_segment to work
     st_set_geometry(NULL)                                         # Chuck geometry column
-}    # Get an SF projected XY from Lat/lon
+}
 
 #' Average into Time Series
 #'
