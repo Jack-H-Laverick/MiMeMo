@@ -695,18 +695,16 @@ get_air <- function(File, Type, Year) {
 
 #### Data averaging                   ####
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Prepare for Averaging by Decade
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function cleans the saved NEMO-MEDUSA monthly summaries, for averaging into decades.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' @param saved A dataframe containing a summarised month from NEMO-MEDUSA model outputs.
+#' @return A dataframe containing a summarised month of NEMO-MEDUSA output, gaining a decade column, and dropping columns
+#' which aren't needed for spatial maps.
 #' @family NEMO-MEDUSA averages
 #' @export
-decadal <- function(saved)                     {
+decadal <- function(saved) {
 
   import <- readRDS(file = saved) %>%                                   # Read in wide format data file
  #   select(-c(geometry, weights, Day, Bathymetry, Shore_dist)) %>%
@@ -716,41 +714,45 @@ decadal <- function(saved)                     {
   str_sub(import$Decade, -1, -1) <- "0"                                 # Overwite the 4th digit with a 0 to get the decade
 
   return(import)
-}    # Read in files and relevant columns, make a decade column
+}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Strip Snow and Ice Variables at Depth
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function removes the snow and ice columns from a dataframe if depth = "D".
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' Some variables are only relevant in the shallow zone of StrathE2E polar. There is no sea-ice 60 m under the sea.
+#' This means, when dataframes containing both shallow and deep data are split by depth, empty columns can be introduced.
+#' These empty columns can cause problems in downstream functions, such as plotting by column. This function removes the
+#' empty columns.
+#'
+#' @param data A dataframe containing a summarised month from NEMO-MEDUSA model outputs, at a single depth.
+#' @return If the `data` contains shallow data, no action is taken. If `data` contains deep data, columns for variables only
+#' relevant in the shallow zone are dropped.
 #' @family NEMO-MEDUSA averages
 #' @export
-strip_ice <- function(data)                    {
-  if(data$Depth[1] == "D") {select(data, -c(starts_with("Ice"), Snow_Thickness))} else data}    # Strip snow and ice variables if in deep depth zone
+strip_ice <- function(data) {
+  if(data$Depth[1] == "D") {select(data, -c(starts_with("Ice"), Snow_Thickness))} else data}
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Average into Decadal Grids
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function averages cleaned NEMO-MEDUSA monthly summaries into decadal grids.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The function groups by all spatial variables (Longitude, Latitude, Depth, and Shore zone), and by decade and month.
+#' The mean for every other variable is calculated within these groups.
+#'
+#' @param saved A dataframe containing a summarised month from NEMO-MEDUSA model outputs. It must contain the columns:
+#' Longitude, Latitude, Decade, Month, Shore, and Depth.
+#' @return A dataframe containing a summarised decade of spatialy resolved NEMO-MEDUSA outputs.
 #' @family NEMO-MEDUSA averages
 #' @export
-summarise_sp <- function(decade)               {
+summarise_sp <- function(decade) {
 
   Averaged <- decade %>%
-    group_by(Longitude, Latitude, Decade, Month, Shore, Depth) %>%    # Group by pixel and decade
+    group_by(Longitude, Latitude, Decade, Month, Shore, Depth) %>%     # Group by pixel and decade
     summarise_all(mean, na.rm = TRUE) %>%                              # Average data columns
     ungroup()                                                          # Ungroup
   return(Averaged)
-}    # Average all columns over decade by pixel for spatial analysis
+}
 
 #' Extract the values from a grid under transects along the external boundaries of the model domain
 #'
@@ -793,18 +795,18 @@ reproj <- function(data)                       {
     st_set_geometry(NULL)                                         # Chuck geometry column
 }    # Get an SF projected XY from Lat/lon
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Average into Time Series
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function averages NEMO-MEDUSA monthly summaries into time series for each model compartment.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The function groups by model compartment (Depth and Shore zone) and time step (Month and Year).
+#' The mean for every target variable is calculated within these groups.
+#'
+#' @param saved A dataframe containing a summarised month from NEMO-MEDUSA model outputs.
+#' @return A dataframe containing a mean monthly time series of all target variables in NEMO-MEDUSA outputs.
 #' @family NEMO-MEDUSA averages
 #' @export
-summarise_ts <- function(saved)                {
+summarise_ts <- function(saved) {
 
   # saved <- "./Objects/Months/NM.1.1981.rds"
 
@@ -814,7 +816,7 @@ summarise_ts <- function(saved)                {
   #   drop_na(Year, Shore) %>%
   #   group_by(Shore, Year, Month, Depth)
   #
-  # summarise(test, Salinity_avg = weighted.mean(Salinity, weights, na.rm = TRUE),   # Get monthly mean salinity
+  # summarise(test, Salinity_avg = weighted.mean(Salinity, weights, na.rm = TRUE),  # Get monthly mean salinity
   #                 Salinity_sd = weighted.sd(Salinity, weights, na.rm = TRUE))  # Get monthly mean salinity
 
   ## Try and get the vertical SDs to work
@@ -837,7 +839,7 @@ summarise_ts <- function(saved)                {
               Temperature_avg = weighted.mean(Temperature, weights, na.rm = TRUE),
               DIN_avg = weighted.mean(DIN, weights, na.rm = TRUE),
               Chlorophyll_avg = weighted.mean(Chlorophyll, weights, na.rm = TRUE),
-              Ice_pres = mean(Ice_pres, na.rm = TRUE),  #  ** needs to be scaled differently for compartment areas # fraction of pixels covered by ice
+              Ice_pres = mean(Ice_pres, na.rm = TRUE),                         # Proprtion of pixels covered by ice
               Ice_conc_avg = mean(Ice_conc, na.rm = TRUE),                     # Get monthly mean sea ice concentration
               Vertical_diffusivity_avg = weighted.mean(Vertical_diffusivity, weights, na.rm = TRUE),
               Vertical_velocity_avg = weighted.mean(Vertical_velocity, weights, na.rm = TRUE),
@@ -856,20 +858,20 @@ summarise_ts <- function(saved)                {
       left_join(Ice) %>%                                                              # Add in ice and snow thicknesses
       ungroup()
 
-  return(Averaged) }    # Calculate monthly mean and SD per compartment as time series
+  return(Averaged) }
 
-#' Extract the values from a grid under transects along the external boundaries of the model domain
+#' Average into Detrital Time Series
 #'
-#' This function reads in a datafile and attaches the values needed to transects.
-#' It uses a precalculated set of indices of where transects intersect the grid for speed.
+#' This function is a variant of `summarise_ts` which only considers detritus files.
 #'
-#' @param Depth The depth layer to extract data from. Either "S" or "D"
-#' @param Data The data object as provided by Sample_OOB
-#' @param variables The variables to extract, provided by Sample_OOB
-#' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+#' The function groups by model compartment (Depth and Shore zone) and time step (Month and Year) before calculating
+#' mean detrital nitrogen within groups.
+#'
+#' @param saved A dataframe containing a summarised month from NEMO-MEDUSA model outputs.
+#' @return A dataframe containing a mean monthly time series of detrital nitrogen in NEMO-MEDUSA outputs.
 #' @family NEMO-MEDUSA averages
 #' @export
-summarise_ts_detritus <- function(saved)       {
+summarise_ts_detritus <- function(saved) {
 
   # saved <- "./Objects/Detritus/Det.1.1988.rds"
 
@@ -882,4 +884,4 @@ summarise_ts_detritus <- function(saved)       {
               Detritus_sd = weighted.sd(Detritus, weights, na.rm = TRUE)) %>%
     ungroup()
 
-  return(Averaged) }    # Calculate monthly mean and SD per compartment as time series
+  return(Averaged) }

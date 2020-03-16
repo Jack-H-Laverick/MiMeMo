@@ -2,23 +2,22 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{summarise_ts}
 \alias{summarise_ts}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Average into Time Series}
 \usage{
 summarise_ts(saved)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
-
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{saved}{A dataframe containing a summarised month from NEMO-MEDUSA model outputs.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+A dataframe containing a mean monthly time series of all target variables in NEMO-MEDUSA outputs.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function averages NEMO-MEDUSA monthly summaries into time series for each model compartment.
+}
+\details{
+The function groups by model compartment (Depth and Shore zone) and time step (Month and Year).
+The mean for every target variable is calculated within these groups.
 }
 \seealso{
 Other NEMO-MEDUSA averages: 

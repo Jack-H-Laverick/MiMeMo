@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — summarise_sp • MiMeMo.tools</title>
+<title>Average into Decadal Grids — summarise_sp • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,8 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — summarise_sp" />
-<meta property="og:description" content="This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed." />
+<meta property="og:title" content="Average into Decadal Grids — summarise_sp" />
+<meta property="og:description" content="This function averages cleaned NEMO-MEDUSA monthly summaries into decadal grids." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -112,14 +111,13 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Average into Decadal Grids</h1>
     
     <div class="hidden name"><code>summarise_sp.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.</p>
+    <p>This function averages cleaned NEMO-MEDUSA monthly summaries into decadal grids.</p>
     </div>
 
     <pre class="usage"><span class='fu'>summarise_sp</span>(<span class='no'>decade</span>)</pre>
@@ -128,22 +126,19 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D"</p></td>
-    </tr>
-    <tr>
-      <th>Data</th>
-      <td><p>The data object as provided by Sample_OOB</p></td>
-    </tr>
-    <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, provided by Sample_OOB</p></td>
+      <th>saved</th>
+      <td><p>A dataframe containing a summarised month from NEMO-MEDUSA model outputs. It must contain the columns:
+Longitude, Latitude, Decade, Month, Shore, and Depth.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.</p>
+    <p>A dataframe containing a summarised decade of spatialy resolved NEMO-MEDUSA outputs.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function groups by all spatial variables (Longitude, Latitude, Depth, and Shore zone), and by decade and month.
+The mean for every other variable is calculated within these groups.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA averages: 
@@ -158,6 +153,7 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 

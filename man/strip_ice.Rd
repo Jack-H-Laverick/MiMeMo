@@ -2,23 +2,25 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{strip_ice}
 \alias{strip_ice}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Strip Snow and Ice Variables at Depth}
 \usage{
 strip_ice(data)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
-
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{data}{A dataframe containing a summarised month from NEMO-MEDUSA model outputs, at a single depth.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+If the `data` contains shallow data, no action is taken. If `data` contains deep data, columns for variables only
+relevant in the shallow zone are dropped.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function removes the snow and ice columns from a dataframe if depth = "D".
+}
+\details{
+Some variables are only relevant in the shallow zone of StrathE2E polar. There is no sea-ice 60 m under the sea.
+This means, when dataframes containing both shallow and deep data are split by depth, empty columns can be introduced.
+These empty columns can cause problems in downstream functions, such as plotting by column. This function removes the
+empty columns.
 }
 \seealso{
 Other NEMO-MEDUSA averages: 

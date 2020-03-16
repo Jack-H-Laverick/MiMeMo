@@ -2,23 +2,19 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{decadal}
 \alias{decadal}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Prepare for Averaging by Decade}
 \usage{
 decadal(saved)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
-
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{saved}{A dataframe containing a summarised month from NEMO-MEDUSA model outputs.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+A dataframe containing a summarised month of NEMO-MEDUSA output, gaining a decade column, and dropping columns
+which aren't needed for spatial maps.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function cleans the saved NEMO-MEDUSA monthly summaries, for averaging into decades.
 }
 \seealso{
 Other NEMO-MEDUSA averages: 

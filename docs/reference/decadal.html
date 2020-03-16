@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — decadal • MiMeMo.tools</title>
+<title>Prepare for Averaging by Decade — decadal • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,8 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — decadal" />
-<meta property="og:description" content="This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed." />
+<meta property="og:title" content="Prepare for Averaging by Decade — decadal" />
+<meta property="og:description" content="This function cleans the saved NEMO-MEDUSA monthly summaries, for averaging into decades." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -112,14 +111,13 @@ It uses a precalculated set of indices of where transects intersect the grid for
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Prepare for Averaging by Decade</h1>
     
     <div class="hidden name"><code>decadal.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.</p>
+    <p>This function cleans the saved NEMO-MEDUSA monthly summaries, for averaging into decades.</p>
     </div>
 
     <pre class="usage"><span class='fu'>decadal</span>(<span class='no'>saved</span>)</pre>
@@ -128,22 +126,15 @@ It uses a precalculated set of indices of where transects intersect the grid for
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D"</p></td>
-    </tr>
-    <tr>
-      <th>Data</th>
-      <td><p>The data object as provided by Sample_OOB</p></td>
-    </tr>
-    <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, provided by Sample_OOB</p></td>
+      <th>saved</th>
+      <td><p>A dataframe containing a summarised month from NEMO-MEDUSA model outputs.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.</p>
+    <p>A dataframe containing a summarised month of NEMO-MEDUSA output, gaining a decade column, and dropping columns
+which aren't needed for spatial maps.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA averages: 

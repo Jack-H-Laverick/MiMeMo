@@ -2,23 +2,23 @@
 % Please edit documentation in R/NEMO-MEDUSA functions.R
 \name{summarise_sp}
 \alias{summarise_sp}
-\title{Extract the values from a grid under transects along the external boundaries of the model domain}
+\title{Average into Decadal Grids}
 \usage{
 summarise_sp(decade)
 }
 \arguments{
-\item{Depth}{The depth layer to extract data from. Either "S" or "D"}
-
-\item{Data}{The data object as provided by Sample_OOB}
-
-\item{variables}{The variables to extract, provided by Sample_OOB}
+\item{saved}{A dataframe containing a summarised month from NEMO-MEDUSA model outputs. It must contain the columns:
+Longitude, Latitude, Decade, Month, Shore, and Depth.}
 }
 \value{
-The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
+A dataframe containing a summarised decade of spatialy resolved NEMO-MEDUSA outputs.
 }
 \description{
-This function reads in a datafile and attaches the values needed to transects.
-It uses a precalculated set of indices of where transects intersect the grid for speed.
+This function averages cleaned NEMO-MEDUSA monthly summaries into decadal grids.
+}
+\details{
+The function groups by all spatial variables (Longitude, Latitude, Depth, and Shore zone), and by decade and month.
+The mean for every other variable is calculated within these groups.
 }
 \seealso{
 Other NEMO-MEDUSA averages: 
