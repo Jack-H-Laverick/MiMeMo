@@ -6,6 +6,9 @@ home:
 destination: docs
 url: https://jack-h-laverick.github.io/MiMeMo.tools/
 
+template:
+ path: "pkgdown"
+
 reference:
 - title: Boundaries
   desc: Extract driving data at the perimeter of model compartments.
