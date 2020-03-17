@@ -24,7 +24,7 @@ reference:
 - title: Global Fishing Watch
   desc: Extract fishing effort data.
   contents:
-  - Arctic_boats
+  - get_cropped_fishing
   - FAO_boats
   - jacks_lazy_avg
   - jacks_lazy_animation

@@ -25,8 +25,8 @@ you might not trust from the global fishing watch model GFW model.
 }
 \seealso{
 Other Global Fishing Watch functions: 
-\code{\link{Arctic_boats}()},
 \code{\link{FAO_boats}()},
+\code{\link{get_cropped_fishing}()},
 \code{\link{jacks_lazy_animation}()},
 \code{\link{jacks_lazy_avg}()},
 \code{\link{jacks_polar_animate}()}
