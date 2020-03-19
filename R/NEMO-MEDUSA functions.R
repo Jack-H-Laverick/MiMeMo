@@ -496,22 +496,22 @@ get_zonal <- function(path, file) {
 #' @export
 get_detritus <- function(file) {
 
-  print(str_glue("Extracting detrital nitrogen"))
-  nc_raw <- nc_open(file)                                                    # Open up a netcdf file to see it's raw contents (var names)
-  nc_detritus <- ncvar_get(nc_raw, "DET", start3D, count3D)                  # Pull detritus
-  nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
+  print(stringr::str_glue("Extracting detrital nitrogen"))
+  nc_raw <- ncdf4::nc_open(file)                                             # Open up a netcdf file to see it's raw contents (var names)
+  nc_detritus <- ncdf4::ncvar_get(nc_raw, "DET", start3D, count3D)           # Pull detritus
+  ncdf4::nc_close(nc_raw)                                                    # You must close an open netcdf file when finished to avoid data loss
 
   shallow <- output %>%                                                      # Grab the tidied dataframe of lat-longs
-    mutate(Detritus = as.numeric(stratify(nc_detritus, Shallow_mark, sw)),   # Collapse shallow meridional currents into 2D and convert to long format
+    dplyr::mutate(Detritus = as.numeric(stratify(nc_detritus, Shallow_mark, sw)), # Collapse shallow meridional currents into 2D and convert to long format
            Depth = "S")                                                      # Introduce depth column
 
   deep <- output %>%                                                         # Grab the tidied dataframe of lat-longs
-    mutate(Detritus = as.numeric(stratify(nc_detritus, Deep_mark, dw)),      # Collapse, reshape and append deepwater data
+    dplyr::mutate(Detritus = as.numeric(stratify(nc_detritus, Deep_mark, dw)), # Collapse, reshape and append deepwater data
            Depth = "D")                                                      # Collapse, reshape and append deepwater data
 
   all <- rbind(shallow, deep) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
-    filter(Shore_dist > 0) %>%                                               # Remove points on land
-    mutate(Depth = as.factor(Depth))
+    dplyr::filter(Shore_dist > 0) %>%                                               # Remove points on land
+    dplyr::mutate(Depth = as.factor(Depth))
 
   return(all)
 }
@@ -611,11 +611,11 @@ detritus_month <- function(data) {
   Month <- data[1,3] ; Year <- data[1,2]                                    # Pull date
 
   Month <- data %>%                                                         # Take the year
-    mutate(data = purrr::map(data$value, get_detritus)) %>%                 # Extract detritus data from each file
-    unnest(data) %>%                                                        # Extract all encoded data
-    group_by(Longitude, Latitude, Depth, .drop=FALSE) %>%
-    summarise_if(is.numeric, mean) %>%
-    right_join(Window) %>%                                                  # Cut out rows outside of plotting window
+    dplyr::mutate(data = purrr::map(data$value, get_detritus)) %>%          # Extract detritus data from each file
+    tidyr::unnest(data) %>%                                                        # Extract all encoded data
+    dplyr::group_by(Longitude, Latitude, Depth, .drop=FALSE) %>%
+    dplyr::summarise_if(is.numeric, mean) %>%
+    dplyr::right_join(Window) %>%                                                  # Cut out rows outside of plotting window
     saveRDS(., file = paste("./Objects/Detritus/Det", Month, Year, "rds", sep = "."))    # save out a data object for one whole month
 }
 
@@ -901,12 +901,12 @@ summarise_ts_detritus <- function(saved) {
   # saved <- "./Objects/Detritus/Det.1.1988.rds"
 
   Averaged <- readRDS(file = saved) %>%                                        # Read in wide format data file
-    filter(!weights < 0) %>%                                                   # Drop points on land
-    mutate(weights = na_if(weights, 0)) %>%                                    # Replace 0 weights with NA so vector lengths match for weighted mean
-    drop_na() %>%                                                              # Drop points outside of the polygons and without weights
-    group_by(Shore, Year, Month, Depth) %>%
-    summarise(Detritus_avg = weighted.mean(Detritus, weights, na.rm = TRUE),   # Get monthly mean detrital nitrogen
-              Detritus_sd = weighted.sd(Detritus, weights, na.rm = TRUE)) %>%
-    ungroup()
+    dplyr::filter(!weights < 0) %>%                                            # Drop points on land
+    dplyr::mutate(weights = dplyr::na_if(weights, 0)) %>%                      # Replace 0 weights with NA so vector lengths match for weighted mean
+    tidyr::drop_na() %>%                                                       # Drop points outside of the polygons and without weights
+    dplyr::group_by(Shore, Year, Month, Depth) %>%
+    dplyr::summarise(Detritus_avg = stats::weighted.mean(Detritus, weights, na.rm = TRUE),   # Get monthly mean detrital nitrogen
+              Detritus_sd = radiant.data::weighted.sd(Detritus, weights, na.rm = TRUE)) %>%
+    dplyr::ungroup()
 
   return(Averaged) }
