@@ -4,12 +4,24 @@
 \alias{get_detritus}
 \title{Get Detritus}
 \usage{
-get_detritus(file)
+get_detritus(file, start, count, grid, shallow, s.weights, deep, d.weights)
 }
 \arguments{
 \item{file}{The name of a netcdf file containing the title variables.}
 
-\item{path}{The path to the NEMO-MEDUSA model outputs.}
+\item{start}{The indices to start reading data from in 3 dimensions.}
+
+\item{count}{The lengths of data reads in 3 dimensions.}
+
+\item{grid}{A dataframe to bind the extracted values to.}
+
+\item{shallow, }{A TRUE / FALSE vector indicating which depth layers should be combined into a shallow zone.}
+
+\item{s.weights}{An array of water thicknesses to use as weights for collapsing layers into a shallow zone.}
+
+\item{deep, }{A TRUE / FALSE vector indicating which depth layers should be combined into a deep zone.}
+
+\item{d.weights}{An array of water thicknesses to use as weights for collapsing layers into a deep zone.}
 }
 \value{
 A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for the title variable

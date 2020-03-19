@@ -4,10 +4,14 @@
 \alias{detritus_month}
 \title{Condense Daily netcdf Files into a Monthly Summary}
 \usage{
-detritus_month(data)
+detritus_month(data, targets, ...)
 }
 \arguments{
 \item{data}{A dataframe containing the metadata of multiple netcdf files from a common month.}
+
+\item{targets}{A dataframe containing the points from the grid we want to retain data for.}
+
+\item{...}{Additional arguments passed on to `get_detritus`.}
 }
 \value{
 The function returns a dataframe containing the monthly average shalllow and deep spatial grids for

@@ -488,25 +488,31 @@ get_zonal <- function(path, file) {
 #' `count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
 #' of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.
 #'
-#' @param path The path to the NEMO-MEDUSA model outputs.
 #' @param file The name of a netcdf file containing the title variables.
+#' @param start The indices to start reading data from in 3 dimensions.
+#' @param count The lengths of data reads in 3 dimensions.
+#' @param grid A dataframe to bind the extracted values to.
+#' @param shallow, A TRUE / FALSE vector indicating which depth layers should be combined into a shallow zone.
+#' @param s.weights An array of water thicknesses to use as weights for collapsing layers into a shallow zone.
+#' @param deep, A TRUE / FALSE vector indicating which depth layers should be combined into a deep zone.
+#' @param d.weights An array of water thicknesses to use as weights for collapsing layers into a deep zone.
 #' @return A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for the title variable
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_detritus <- function(file) {
+get_detritus <- function(file, start, count, grid, shallow, s.weights, deep, d.weights) {
 
   print(stringr::str_glue("Extracting detrital nitrogen"))
   nc_raw <- ncdf4::nc_open(file)                                             # Open up a netcdf file to see it's raw contents (var names)
-  nc_detritus <- ncdf4::ncvar_get(nc_raw, "DET", start3D, count3D)           # Pull detritus
+  nc_detritus <- ncdf4::ncvar_get(nc_raw, "DET", start, count)               # Pull detritus
   ncdf4::nc_close(nc_raw)                                                    # You must close an open netcdf file when finished to avoid data loss
 
-  shallow <- output %>%                                                      # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Detritus = as.numeric(stratify(nc_detritus, Shallow_mark, sw)), # Collapse shallow meridional currents into 2D and convert to long format
+  shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
+    dplyr::mutate(Detritus = as.numeric(stratify(nc_detritus, shallow, s.weights)), # Collapse shallow meridional currents into 2D and convert to long format
            Depth = "S")                                                      # Introduce depth column
 
-  deep <- output %>%                                                         # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Detritus = as.numeric(stratify(nc_detritus, Deep_mark, dw)), # Collapse, reshape and append deepwater data
+  deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
+    dplyr::mutate(Detritus = as.numeric(stratify(nc_detritus, deep, d.weights)), # Collapse, reshape and append deepwater data
            Depth = "D")                                                      # Collapse, reshape and append deepwater data
 
   all <- rbind(shallow, deep) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
@@ -602,20 +608,22 @@ whole_month <- function(data) {
 #' Also, working on independent monthly packets of data means we can parallelise any data processing for speed.
 #'
 #' @param data A dataframe containing the metadata of multiple netcdf files from a common month.
+#' @param targets A dataframe containing the points from the grid we want to retain data for.
+#' @param ... Additional arguments passed on to `get_detritus`.
 #' @return The function returns a dataframe containing the monthly average shalllow and deep spatial grids for
 #' detrital nitrogen.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-detritus_month <- function(data) {
+detritus_month <- function(data, targets, ...) {
 
   Month <- data[1,3] ; Year <- data[1,2]                                    # Pull date
 
   Month <- data %>%                                                         # Take the year
-    dplyr::mutate(data = purrr::map(data$value, get_detritus)) %>%          # Extract detritus data from each file
-    tidyr::unnest(data) %>%                                                        # Extract all encoded data
+    dplyr::mutate(data = purrr::map(data$value, get_detritus, ...)) %>%     # Extract detritus data from each file
+    tidyr::unnest(data) %>%                                                 # Extract all encoded data
     dplyr::group_by(Longitude, Latitude, Depth, .drop=FALSE) %>%
     dplyr::summarise_if(is.numeric, mean) %>%
-    dplyr::right_join(Window) %>%                                                  # Cut out rows outside of plotting window
+    dplyr::right_join(targets) %>%                                                  # Cut out rows outside of plotting window
     saveRDS(., file = paste("./Objects/Detritus/Det", Month, Year, "rds", sep = "."))    # save out a data object for one whole month
 }
 
