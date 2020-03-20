@@ -4,10 +4,12 @@
 \alias{stick_plot}
 \title{Create Stick Plots to Show Currents}
 \usage{
-stick_plot(data)
+stick_plot(data, zoom, pre)
 }
 \arguments{
-\item{data}{A dataframe containing the columns "Zonal" and "Meridional" for currents.}
+\item{data}{A list of predefined preferences for saving maps in the project (scale, width, height, units, dpi)}
+
+\item{zoom}{A call to `coord_sf` specifying the project plotting window.}
 }
 \value{
 The function creates a map of Water velocities. Colour is used to show speed, sticks are included to show direction.

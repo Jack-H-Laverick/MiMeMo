@@ -4,10 +4,12 @@
 \alias{reproj}
 \title{Reproject from Latitude and Longitude to Project CRS}
 \usage{
-reproj(data)
+reproj(data, crs)
 }
 \arguments{
 \item{data}{A dataframe containing Longitude and Latitude.}
+
+\item{crs}{The new Coordinate Reference System  to project to.}
 }
 \value{
 A dataframe, now with an x and y column specifying the coordinates for points in the projects Coordiante Reference System.

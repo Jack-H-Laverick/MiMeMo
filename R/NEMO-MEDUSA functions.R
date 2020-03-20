@@ -743,10 +743,10 @@ decadal <- function(saved) {
 
   import <- readRDS(file = saved) %>%                                   # Read in wide format data file
  #   select(-c(geometry, weights, Day, Bathymetry, Shore_dist)) %>%
-    select(-c(weights, Day, Bathymetry, Shore_dist)) %>%
-    rename(Decade = Year)
+    dplyr::select(-c(weights, Day, Bathymetry, Shore_dist)) %>%
+    dplyr::rename(Decade = Year)
 
-  str_sub(import$Decade, -1, -1) <- "0"                                 # Overwite the 4th digit with a 0 to get the decade
+  stringr::str_sub(import$Decade, -1, -1) <- "0"                        # Overwite the 4th digit with a 0 to get the decade
 
   return(import)
 }
@@ -783,9 +783,9 @@ strip_ice <- function(data) {
 summarise_sp <- function(decade) {
 
   Averaged <- decade %>%
-    group_by(Longitude, Latitude, Decade, Month, Shore, Depth) %>%     # Group by pixel and decade
-    summarise_all(mean, na.rm = TRUE) %>%                              # Average data columns
-    ungroup()                                                          # Ungroup
+    dplyr::group_by(Longitude, Latitude, Decade, Month, Shore, Depth) %>%     # Group by pixel and decade
+    dplyr::summarise_all(mean, na.rm = TRUE) %>%                              # Average data columns
+    dplyr::ungroup()                                                          # Ungroup
   return(Averaged)
 }
 
@@ -816,16 +816,17 @@ sfc_as_cols <- function(x, names = c("x","y")) {
 #'geometry column using `sfc_as_cols`, before the geometry column is dropped.
 #'
 #' @param data A dataframe containing Longitude and Latitude.
+#' @param crs The new Coordinate Reference System  to project to.
 #' @return A dataframe, now with an x and y column specifying the coordinates for points in the projects Coordiante Reference System.
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-reproj <- function(data) {
+reproj <- function(data, crs) {
 
   data %>%
-    st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>% # Specify original projection (crs)
-    st_transform(crs = crs) %>%                                   # Transform to crs specified in region file
-    sfc_as_cols() %>%                                             # Extract geometry column for geom_segment to work
-    st_set_geometry(NULL)                                         # Chuck geometry column
+    sf::st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>% # Specify original projection (crs)
+    sf::st_transform(crs = crs) %>%                                   # Transform to crs specified in region file
+    sfc_as_cols() %>%                                                 # Extract geometry column for geom_segment to work
+    sf::st_set_geometry(NULL)                                         # Chuck geometry column
 }
 
 #' Average into Time Series

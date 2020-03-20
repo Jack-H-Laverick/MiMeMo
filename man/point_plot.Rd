@@ -4,12 +4,14 @@
 \alias{point_plot}
 \title{Map Spatial Summaries}
 \usage{
-point_plot(data, var)
+point_plot(data, var, zoom)
 }
 \arguments{
 \item{data}{A dataframe containing the columns "Zonal" and "Meridional" for currents.}
 
 \item{var}{A "quoted" column name denoting how to colour the map.}
+
+\item{zoom}{A call to `coord_sf` specifying the project plotting window.}
 }
 \value{
 The function creates a facetted map of a summarised variable. Each facet shows a month.
