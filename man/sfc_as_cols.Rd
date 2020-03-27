@@ -23,6 +23,7 @@ Other NEMO-MEDUSA spatial tools:
 \code{\link{get_weights.old}()},
 \code{\link{get_weights}()},
 \code{\link{reproj}()},
-\code{\link{stratify}()}
+\code{\link{stratify}()},
+\code{\link{voronoi_grid}()}
 }
 \concept{NEMO-MEDUSA spatial tools}

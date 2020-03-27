@@ -4,12 +4,16 @@
 \alias{extract_OOB}
 \title{Extract the values from a grid under transects along the external boundaries of the model domain}
 \usage{
-extract_OOB(Depth, Data, variables)
+extract_OOB(Depth, Data, transects, intersections, variables)
 }
 \arguments{
 \item{Depth}{The depth layer to extract data from. Either "S" or "D" and inherited from `Sample_OOB`.}
 
 \item{Data}{The data object as passed from `Sample_OOB`.}
+
+\item{transects}{A nested list containing 2 sets of transects. Each set is an SF dataframe for sampling either the shallow or deep layer.}
+
+\item{intersections}{A nested list containing 2 sets of intersections. Each set indicates which grid cells a transect touches, for a depth layer.}
 
 \item{variables}{The variables to extract, inherited from `Sample_OOB`.}
 }

@@ -141,9 +141,7 @@ boundaries <- function(domain, crs) {
 #' @export
 check_grid <- function(segment, Weighted) {
 
-  Weighted <- transects
-
-  latlon <- transects[segment,] %>%
+  latlon <- Weighted[segment,] %>%
     sf::st_transform(4326) %>%                  # Convert to latitude and longitude
     sf::st_coordinates() %>%                    # Pull the coordinates
     round(digits = 3)                           # Round to drop conversion error
@@ -265,29 +263,21 @@ direction <- function(segment) {
 #' @param var The component of water movement to extract, either "Zonal" or "Meridional" velocities, inherited from `Sample`.
 #' @param Depth The depth layer to extract data from. Either "S" or "D" inherited from `Sample`.
 #' @param Data The data object as passed from `Sample`.
+#' @param transects A nested list containing 4 sets of transects. Each set is an SF dataframe for a combination of var and Depth.
+#' @param intersections A nested list containing 4 sets of intersections. Each set indicates which grid cells a transect touches, for a set of transects.
 #' @return The function returns a dataframe of transects and their average zonal \strong{OR} meridional water velocities at a depth.
 #' @family Boundary sampling functions
 #' @export
-extract <- function (var, Depth, Data) {
-
-#  Depth = "D" ; var = "Zonal"
-#  Depth = "S" ; var = "Meridional"
+extract <- function (var, Depth, Data, transects, intersections) {
 
   Data <- Data[[Depth]]
 
-  if(Depth == "S") Transects <- Shallow_transects       # Select the relevant transects for sampling
-  if(Depth == "D") Transects <- Deep_transects          # Select the relevant transects for sampling
-
-  if(Depth == "D" & var == "Zonal") Intersections <- Intersections_DZ          # Select the relevant transects for sampling
-  if(Depth == "D" & var == "Meridional") Intersections <- Intersections_DM          # Select the relevant transects for sampling
-  if(Depth == "S" & var == "Zonal") Intersections <- Intersections_SZ          # Select the relevant transects for sampling
-  if(Depth == "S" & var == "Meridional") Intersections <- Intersections_SM          # Select the relevant transects for sampling
-
-  Samples <- purrr::map(Intersections, function(x) mean(Data[x,var], na.rm = T)) %>% # Select the cells and calulate the average current per transect
+  Samples <- purrr::map(intersections[[Depth]][[var]],                       # Select the relevant set of intersections between transects and the grid
+                        function(x) mean(Data[x,var], na.rm = T)) %>%        # calulate the average current per transect
     unlist() %>%                                                             # Collapse list to vector
-    dplyr::mutate(Transects[[var]], Sample = .) %>%                                 # Copy transect meta-data over to the samples
-    tidyr::drop_na(Sample) %>%                                                      # NM points on land return NA, remove these
-    dplyr::mutate(Sample = dplyr::ifelse(Flip == TRUE, -1* Sample, Sample),                # Flip current direction if required
+    dplyr::mutate(transects[[Depth]][[var]], Sample = .) %>%                 # Copy transect meta-data over to the samples
+    tidyr::drop_na(Sample) %>%                                               # NM points on land return NA, remove these
+    dplyr::mutate(Sample = ifelse(Flip == TRUE, -1* Sample, Sample),         # Flip current direction if required
            Depth = Depth)
 
   return(Samples)
@@ -304,25 +294,25 @@ extract <- function (var, Depth, Data) {
 #' are summed to return net water movements for the given time step.
 #'
 #' @param file Path to the .rds object containing both Zonal and Meridional water velocities.
+#' @param ... Additional arguments to pass to `extract`.
 #' @return The function returns a dataframe of net water movements between model compartments
 #' and the external environment in a given month.
 #' @family Boundary sampling functions
 #' @export
-Sample <- function(file) {
+Sample <- function(file, ...) {
 
   #file <- "./Objects/Months/NM.1.1980.rds"
   #file <- "./Objects/Months/NM.1.1981.rds"
 
   Data <- readRDS(file) %>%                                                  # Read in a current file
     split(.$Depth) %>%                                                       # Seperate shallow and deep data
-    purrr::map(.x = ., .f = dplyr::left_join, x = cells) %>%                 # Reorder data onto the grid
-    purrr::map(sf::st_drop_geometry)                                         # Drop geometry column for efficient extraction
+    purrr::map(.x = ., .f = dplyr::left_join, x = cells)
 
     Summary <- purrr::map2(rep(c("Meridional", "Zonal"), each = 2),
-                  c("S", "D", "S", "D"), extract, Data = Data) %>%           # Extract for the combinations of depth and current
+                  c("S", "D", "S", "D"), extract, Data = Data, ...) %>%      # Extract for the combinations of depth and current
     data.table::rbindlist() %>%                                              # Bind
     dplyr::mutate(Flow = Sample * Weights,                                   # Weight the velocities by transect area
-           Direction = dplyr::ifelse(Sample > 0, "In", "Out")) %>%           # Create tag for flows in and out of the box
+           Direction = ifelse(Sample > 0, "In", "Out")) %>%           # Create tag for flows in and out of the box
     dplyr::group_by(Shore, Depth, Direction, Neighbour) %>%                  # Data to retain when summing
     dplyr::summarise(Flow = sum(Flow)) %>%                                   # Sum flows
     dplyr::ungroup() %>%                                                     # Ungroup for speed
@@ -345,12 +335,14 @@ Sample <- function(file) {
 #'
 #' @param Depth The depth layer to extract data from. Either "S" or "D" and inherited from `Sample_OOB`.
 #' @param Data The data object as passed from `Sample_OOB`.
+#' @param transects A nested list containing 2 sets of transects. Each set is an SF dataframe for sampling either the shallow or deep layer.
+#' @param intersections A nested list containing 2 sets of intersections. Each set indicates which grid cells a transect touches, for a depth layer.
 #' @param variables The variables to extract, inherited from `Sample_OOB`.
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature,
 #' and salinity values by depth.
 #' @family Boundary sampling functions
 #' @export
-extract_OOB <- function (Depth, Data, variables) {
+extract_OOB <- function (Depth, Data, transects, intersections, variables) {
 
   #  Depth = "D"
   #  Depth = "S"
@@ -358,14 +350,14 @@ extract_OOB <- function (Depth, Data, variables) {
   Data <- Data[[Depth]]
   #variables <- c("DIN", "Chlorophyll", "Temperature", "Salinity")
 
-  if(Depth == "S") { Transects <- Shallow_transects ; Intersections <- Intersections_S } # Select the relevant transects for sampling
-  if(Depth == "D") { Transects <- Deep_transects ; Intersections <- Intersections_D }    # Select the relevant transects for sampling
+#  if(Depth == "S") { Transects <- Shallow_transects ; Intersections <- Intersections_S } # Select the relevant transects for sampling
+#  if(Depth == "D") { Transects <- Deep_transects ; Intersections <- Intersections_D }    # Select the relevant transects for sampling
 
-  Samples <- purrr::map(Intersections, function(x) colMeans(Data[x, variables], na.rm = T)) %>% # Select the cells and calulate the average current per transect
-    dplyr::rbind_list() %>%                                                              # Collapse list to vector
-    dplyr::bind_cols(Transects, .) %>%                                                   # Copy transect meta-data over to the samples
-    tidyr::drop_na() %>%                                                                 # NM points on land return NA, remove these
-    dplyr::mutate(Depth = Depth)
+Samples <- purrr::map(intersections[[Depth]], function(x) colMeans(Data[x, variables], na.rm = T)) %>% # Select the cells and calulate the average current per transect
+  dplyr::rbind_list() %>%                                                              # Collapse list to vector
+  dplyr::bind_cols(transects[[Depth]], .) %>%                                          # Copy transect meta-data over to the samples
+  tidyr::drop_na() %>%                                                                 # NM points on land return NA, remove these
+  dplyr::mutate(Depth = Depth)
 
   return(Samples)
 }
@@ -380,25 +372,26 @@ extract_OOB <- function (Depth, Data, variables) {
 #' After extraction, `Sample_OOB` calculates the average for variables of interest by depth and shore zone.
 #'
 #' @param file Path to the .rds object containing data.
+#' @param variables The variables to extract, inherited from `Sample_OOB`.
+#' @param ... Additional arguments to pass to `extract_OOB`.
 #' @return The function returns a dataframe of average DIN, chlorophyll, temperature, and salinity at
 #' the external model boundary by compartment for a month.
 #' @family Boundary sampling functions
 #' @export
-Sample_OOB <- function(file) {
+Sample_OOB <- function(file, variables, ...) {
 
   #file <- "./Objects/Months/NM.1.1980.rds"
   #file <- "./Objects/Months/NM.1.1981.rds"
-  variables <- c("DIN", "Chlorophyll", "Temperature", "Salinity")
+#   variables <- c("DIN", "Chlorophyll", "Temperature", "Salinity")
 
   Data <- readRDS(file) %>%                                              # Read in a current file
     split(.$Depth) %>%                                                   # Seperate shallow and deep data
-    purrr::map(.x = ., .f = dplyr::left_join, x = cells) %>%             # Reorder data onto the grid
-    purrr::map(sf::st_drop_geometry)                                     # Drop geometry column for efficient extraction
+    purrr::map(.x = ., .f = dplyr::left_join, x = cells)                 # Reorder data onto the grid
 
-  Summary <- purrr::map(c("S", "D"), extract_OOB, Data, variables) %>%   # Extract for the combinations of depth and current
+  Summary <- purrr::map(c("S", "D"), extract_OOB, Data, variables = variables, ...) %>% # Extract for the combinations of depth and current
     data.table::rbindlist() %>%                                          # Bind
     dplyr::group_by(Shore, Depth) %>%                                    # Data to retain when summing
-    dplyr::select(variables) %>%
+    dplyr::select(eval(variables)) %>%
     dplyr::summarise_all(mean) %>%
     dplyr::ungroup() %>%                                                 # Ungroup for speed
     dplyr::mutate(Year = Data[["S"]]$Year[1],

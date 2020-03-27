@@ -4,7 +4,7 @@
 \alias{extract}
 \title{Extract the values from a grid under transects along the external boundaries of the model domain}
 \usage{
-extract(var, Depth, Data)
+extract(var, Depth, Data, transects, intersections)
 }
 \arguments{
 \item{var}{The component of water movement to extract, either "Zonal" or "Meridional" velocities, inherited from `Sample`.}
@@ -12,6 +12,10 @@ extract(var, Depth, Data)
 \item{Depth}{The depth layer to extract data from. Either "S" or "D" inherited from `Sample`.}
 
 \item{Data}{The data object as passed from `Sample`.}
+
+\item{transects}{A nested list containing 4 sets of transects. Each set is an SF dataframe for a combination of var and Depth.}
+
+\item{intersections}{A nested list containing 4 sets of intersections. Each set indicates which grid cells a transect touches, for a set of transects.}
 }
 \value{
 The function returns a dataframe of transects and their average zonal \strong{OR} meridional water velocities at a depth.

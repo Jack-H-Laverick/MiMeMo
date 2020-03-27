@@ -7,9 +7,11 @@
 stick_plot(data, zoom, pre)
 }
 \arguments{
-\item{data}{A list of predefined preferences for saving maps in the project (scale, width, height, units, dpi)}
+\item{data}{A dataframe containing the columns "Zonal" and "Meridional" for currents.}
 
 \item{zoom}{A call to `coord_sf` specifying the project plotting window.}
+
+\item{pre}{A list of predefined preferences for saving maps in the project (scale, width, height, units, dpi)}
 }
 \value{
 The function creates a map of Water velocities. Colour is used to show speed, sticks are included to show direction.

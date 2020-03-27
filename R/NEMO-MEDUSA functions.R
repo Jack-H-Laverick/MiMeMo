@@ -212,6 +212,34 @@ get_spatial <- function(file) {
   return(all)
 }
 
+#' Calculate the Domain Area per Grid Point
+#'
+#' This function takes an array of a variable, and an array of water thicknesses to perform a weighted average across depth. The depth
+#' window to be averaged can be specified, so this function can be used to create both shallow and deep layers (or more for that matter).
+#'
+#' @param points A Simple Feature object og the grid points within the model domain.
+#' @param area A Simple Feature object containing the model domain.
+#' @return the `points` object is returned, but instead of points, the geometry column now contains polygons representing the area closest to each point. A column for the size of this area is also gained.
+#' @family NEMO-MEDUSA spatial tools
+#' @export
+voronoi_grid <- function(points, area) {
+
+  result <- purrr::map(1:nrow(area), ~{                            # For each polygon in area
+    voronoi <- points %>%                                          # Take the grid points
+      sf::st_geometry() %>%                                        # To get sfc from sf
+      sf::st_union() %>%                                           # To get a sfc of MULTIPOINT type
+      sf::st_voronoi(envelope = sf::st_geometry(area[.x,])) %>%    # Voronoi polygon for the area
+      sf::st_collection_extract(type = "POLYGON") %>%              # A list of polygons
+      sf::st_sf() %>%                                              # From list to sf object
+      sf::st_join(points) %>%                                      # put names back
+      sf::st_intersection(area[.x,]) %>%                           # Cut to shape of NC state
+      dplyr::mutate(Cell_area = units::drop_units(sf::st_area(.))) # Area of each polygon
+  }) %>%
+    dplyr::bind_rows() %>%                                         # Combine the results from each area
+    sf::st_sf(geomc = .$geometry, crs = 4326)                      # Reinstate attributes of the geometry column
+
+}
+
 #' Summarise Across Depths in a NEMO-MEDUSA Array
 #'
 #' This function takes an array of a variable, and an array of water thicknesses to perform a weighted average across depth. The depth
@@ -714,8 +742,8 @@ get_air <- function(File, Type, Year) {
                               each = length(unique(Longitude))), times = length(unique(Time_step))),
            Time_step = rep(1:length(unique(Time_step)),
                            each = length(unique(Latitude)) * length(unique(Longitude)))) %>%
-    left_join(domains_mask) %>%                                              # Crop to domain
-    drop_na() %>%
+    right_join(domains_mask) %>%                                              # Crop to domain
+    #drop_na() %>%
     left_join(months) %>%                                                    # Assign a month to each time step
     mutate(Year = Year,                                                      # Attach Year
            Type = Type)                                                      # Attach variable name
@@ -723,7 +751,7 @@ get_air <- function(File, Type, Year) {
   if(Type == "SWF") Data <- group_by(Data, Month, Year, Type)                # We don't need to bother accounting for shore in light data
   if(Type == "T150") Data <- group_by(Data, Month, Year, Type, Shore)        # We care about shore for temperature, retain interesting columns
 
-  Summary <- summarise(Data, Measured = mean(Measured))                      # Average by time step.
+  Summary <- summarise(Data, Measured = weighted.mean(Measured, Cell_area))  # Average by time step.
 
   return(Summary)
 }
@@ -856,41 +884,41 @@ summarise_ts <- function(saved) {
   ## Try and get the vertical SDs to work
 
   Groups <- readRDS(file = saved) %>%                                          # Read in wide format data file
-    filter(!weights < 0) %>%                                                   # Drop points on land
-    mutate(weights = na_if(weights, 0)) %>%                                    # Replace 0 weights with NA so vector lengths match for weighted mean
-    drop_na(Year, Shore) %>%                                                   # Drop points outside of the polygons
-    group_by(Shore, Year, Month, Depth)
+    dplyr::filter(!weights < 0) %>%                                            # Drop points on land
+    dplyr::mutate(weights = dplyr::na_if(weights, 0)) %>%                      # Replace 0 weights with NA so vector lengths match for weighted mean
+    tidyr::drop_na(Year, Shore) %>%                                            # Drop points outside of the polygons
+    dplyr::group_by(Shore, Year, Month, Depth)
 
-  Ice <- filter(Groups, Ice_pres > 0) %>%                                      # Remove ice free pixels before averaging thicknesses
-    summarise(Ice_Thickness_avg = mean(Ice_Thickness, na.rm = TRUE),           # Get monthly mean sea ice thickness
+  Ice <- dplyr::filter(Groups, Ice_pres > 0) %>%                               # Remove ice free pixels before averaging thicknesses
+    dplyr::summarise(Ice_Thickness_avg = mean(Ice_Thickness, na.rm = TRUE),    # Get monthly mean sea ice thickness
               Snow_Thickness_avg = mean(Snow_Thickness, na.rm = TRUE),         # Get monthly mean snow thickness
               # SD
-              Ice_Thickness_sd = sd(Ice_Thickness, na.rm = TRUE),              # Get monthly mean sea ice thickness
-              Snow_Thickness_sd = sd(Snow_Thickness, na.rm = TRUE))            # Get monthly mean snow thickness
+              Ice_Thickness_sd = stats::sd(Ice_Thickness, na.rm = TRUE),       # Get monthly mean sea ice thickness
+              Snow_Thickness_sd = stats::sd(Snow_Thickness, na.rm = TRUE))     # Get monthly mean snow thickness
 
   Averaged <- Groups %>%
-    summarise(Salinity_avg = weighted.mean(Salinity, weights, na.rm = TRUE),   # Get monthly mean salinity
-              Temperature_avg = weighted.mean(Temperature, weights, na.rm = TRUE),
-              DIN_avg = weighted.mean(DIN, weights, na.rm = TRUE),
-              Chlorophyll_avg = weighted.mean(Chlorophyll, weights, na.rm = TRUE),
+    dplyr::summarise(Salinity_avg = stats::weighted.mean(Salinity, weights, na.rm = TRUE), # Get monthly mean salinity
+              Temperature_avg = stats::weighted.mean(Temperature, weights, na.rm = TRUE),
+              DIN_avg = stats::weighted.mean(DIN, weights, na.rm = TRUE),
+              Chlorophyll_avg = stats::weighted.mean(Chlorophyll, weights, na.rm = TRUE),
               Ice_pres = mean(Ice_pres, na.rm = TRUE),                         # Proprtion of pixels covered by ice
               Ice_conc_avg = mean(Ice_conc, na.rm = TRUE),                     # Get monthly mean sea ice concentration
-              Vertical_diffusivity_avg = weighted.mean(Vertical_diffusivity, weights, na.rm = TRUE),
-              Vertical_velocity_avg = weighted.mean(Vertical_velocity, weights, na.rm = TRUE),
-              Meridional_avg = weighted.mean(Meridional, weights, na.rm = TRUE),
-              Zonal_avg = weighted.mean(Zonal, weights, na.rm = TRUE),
+              Vertical_diffusivity_avg = stats::weighted.mean(Vertical_diffusivity, weights, na.rm = TRUE),
+              Vertical_velocity_avg = stats::weighted.mean(Vertical_velocity, weights, na.rm = TRUE),
+              Meridional_avg = stats::weighted.mean(Meridional, weights, na.rm = TRUE),
+              Zonal_avg = stats::weighted.mean(Zonal, weights, na.rm = TRUE),
               # SD
-              Salinity_sd = weighted.sd(Salinity, weights, na.rm = TRUE),      # Get monthly mean salinity
-              Temperature_sd = weighted.sd(Temperature, weights, na.rm = TRUE),
-              DIN_sd = weighted.sd(DIN, weights, na.rm = TRUE),
-              Chlorophyll_sd = weighted.sd(Chlorophyll, weights, na.rm = TRUE),
-              Ice_conc_sd = sd(Ice_conc, na.rm = TRUE),                        # Get monthly mean sea ice concentration
+              Salinity_sd = radiant.data::weighted.sd(Salinity, weights, na.rm = TRUE), # Get monthly mean salinity
+              Temperature_sd = radiant.data::weighted.sd(Temperature, weights, na.rm = TRUE),
+              DIN_sd = radiant.data::weighted.sd(DIN, weights, na.rm = TRUE),
+              Chlorophyll_sd = radiant.data::weighted.sd(Chlorophyll, weights, na.rm = TRUE),
+              Ice_conc_sd = stats::sd(Ice_conc, na.rm = TRUE),                 # Get monthly mean sea ice concentration
               #Vertical_diffusivity_sd = weighted.sd(Vertical_diffusivity, weights, na.rm = TRUE),
               #Vertical_velocity_sd = weighted.sd(Vertical_velocity, weights, na.rm = TRUE),
-              Meridional_sd = weighted.sd(Meridional, weights, na.rm = TRUE),
-              Zonal_sd = weighted.sd(Zonal, weights, na.rm = TRUE)) %>%
-      left_join(Ice) %>%                                                              # Add in ice and snow thicknesses
-      ungroup()
+              Meridional_sd = radiant.data::weighted.sd(Meridional, weights, na.rm = TRUE),
+              Zonal_sd = radiant.data::weighted.sd(Zonal, weights, na.rm = TRUE)) %>%
+      dplyr::left_join(Ice) %>%                                                # Add in ice and snow thicknesses
+      dplyr::ungroup()
 
   return(Averaged) }
 

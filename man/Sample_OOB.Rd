@@ -4,10 +4,14 @@
 \alias{Sample_OOB}
 \title{Sample along the external boundaries of the model domain}
 \usage{
-Sample_OOB(file)
+Sample_OOB(file, variables, ...)
 }
 \arguments{
 \item{file}{Path to the .rds object containing data.}
+
+\item{variables}{The variables to extract, inherited from `Sample_OOB`.}
+
+\item{...}{Additional arguments to pass to `extract_OOB`.}
 }
 \value{
 The function returns a dataframe of average DIN, chlorophyll, temperature, and salinity at

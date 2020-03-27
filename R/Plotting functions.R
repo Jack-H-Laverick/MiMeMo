@@ -235,7 +235,7 @@ point_plot <- function(data, var, zoom) {
 #'
 #' @param data A dataframe containing the columns "Zonal" and "Meridional" for currents.
 #' @param zoom A call to `coord_sf` specifying the project plotting window.
-#' @param data A list of predefined preferences for saving maps in the project (scale, width, height, units, dpi)
+#' @param pre A list of predefined preferences for saving maps in the project (scale, width, height, units, dpi)
 #' @return The function creates a map of Water velocities. Colour is used to show speed, sticks are included to show direction.
 #' The plot is saved into the NEMO-MEDUSA/Currents folder.
 #' @family NEMO-MEDUSA plots
@@ -269,6 +269,6 @@ stick_plot <- function(data, zoom, pre) {
     ggplot2::labs(caption = paste("Decade:", unique(data$Decade), "    Water layer:", unique(data$Depth)), x = NULL, y = NULL) +
     NULL
 
-  ggsave(paste("./Figures/NEMO-MEDUSA/currents/currents ", unique(data$Depth), unique(data$Decade), ".png"), plot = sticks,
-         scale = pre$scale, width = pre$width, height = pre$height, units = pre$units, dpi = pre$dpi) # Preferences for saving maps in the project
+  ggplot2::ggsave(paste("./Figures/NEMO-MEDUSA/currents/currents ", unique(data$Depth), unique(data$Decade), ".png"), plot = sticks,
+                  scale = pre$scale, width = pre$width, height = pre$height, units = pre$units, dpi = pre$dpi)
 }

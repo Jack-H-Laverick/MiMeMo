@@ -4,10 +4,12 @@
 \alias{Sample}
 \title{Sample water flows across transects along the boundaries of model compartments}
 \usage{
-Sample(file)
+Sample(file, ...)
 }
 \arguments{
 \item{file}{Path to the .rds object containing both Zonal and Meridional water velocities.}
+
+\item{...}{Additional arguments to pass to `extract`.}
 }
 \value{
 The function returns a dataframe of net water movements between model compartments
