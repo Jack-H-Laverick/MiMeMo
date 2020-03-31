@@ -772,7 +772,7 @@ get_air <- function(File, Type, Year) {
 #' @param Year The year the necdf file contains data for.
 #' @return A dataframe containing a monthly time series within a year of either average air temperature or surface
 #' irradiance. Air temperature is also split by shore zone.
-#' @importFrom data.table :=
+#' @importFrom data.table := as.data.table setnames merge
 #' @family NEMO-MEDUSA variable extractors
 #' @export
 get_air_dt <- function(File, Type, Year) {
@@ -786,15 +786,15 @@ nc_var <- ncvar_get(nc_raw, Type, c(Space$Limits$Lon_start, Space$Limits$Lat_sta
                     c(Space$Limits$Lon_count, Space$Limits$Lat_count, -1)) # cropped to window, with all time steps
 nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
 
-DT <- data.table::as.data.table(nc_var, value.name = "Measured") %>%       # Pull array
-  data.table::setnames(old = c("V1", "V2", "V3"), new = c("Longitude", "Latitude", "Time_step")) %>% # Name the columns
+DT <- as.data.table(nc_var, value.name = "Measured") %>%       # Pull array
+  setnames(old = c("V1", "V2", "V3"), new = c("Longitude", "Latitude", "Time_step")) %>% # Name the columns
   .[, c("Longitude", "Latitude", "Month", "Year", "Type") :=               # Names for new columns, read ':=' as mutate
          .(Space$Lons[Longitude],                                          # Replace the factor levels with dimension values
            Space$Lats[Latitude],                                           # Replace the factor levels with dimension values
            months[Time_step, "Month"],                                     # Assign months to time steps
            Year,                                                           # Add year
            Type)] %>%                                                      # Add variable name
-  data.table::merge(data.table::as.data.table(domains_mask), all.y = TRUE) # Crop to domain
+  data.table::merge(as.data.table(domains_mask), all.y = TRUE) # Crop to domain
 
 ## Variable specific summaries
 
