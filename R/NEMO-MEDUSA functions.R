@@ -787,7 +787,7 @@ nc_close(nc_raw)                                                           # You
 
 DT <- data.table::as.data.table(nc_var, value.name = "Measured") %>%       # Pull array
   data.table::setnames(old = c("V1", "V2", "V3"), new = c("Longitude", "Latitude", "Time_step")) %>% # Name the columns
-  .[, data.table::`:=`(Longitude = Space$Lons[Longitude],                              # Read ':=' as mutate
+  .[, data.table::":="(Longitude = Space$Lons[Longitude],                              # Read ':=' as mutate
            Latitude = Space$Lats[Latitude],                                # Replace the factor levels with dimension values
            Month = Month[Time_step, "Month"],                              # Assign months to time steps
            Year = Year,                                                    # Add year
