@@ -791,7 +791,7 @@ DT <- data.table::as.data.table(nc_var, value.name = "Measured") %>%       # Pul
   .[, c("Longitude", "Latitude", "Month", "Year", "Type") :=               # Names for new columns, read ':=' as mutate
          .(Space$Lons[Longitude],                                          # Replace the factor levels with dimension values
            Space$Lats[Latitude],                                           # Replace the factor levels with dimension values
-           Month[Time_step, "Month"],                                      # Assign months to time steps
+           months[Time_step, "Month"],                                     # Assign months to time steps
            Year,                                                           # Add year
            Type)] %>%                                                      # Add variable name
   data.table::merge(data.table::as.data.table(domains_mask), all.y = TRUE) # Crop to domain
