@@ -772,6 +772,7 @@ get_air <- function(File, Type, Year) {
 #' @param Year The year the necdf file contains data for.
 #' @return A dataframe containing a monthly time series within a year of either average air temperature or surface
 #' irradiance. Air temperature is also split by shore zone.
+#' @import data.table
 #' @family NEMO-MEDUSA variable extractors
 #' @export
 get_air_dt <- function(File, Type, Year) {
@@ -787,11 +788,12 @@ nc_close(nc_raw)                                                           # You
 
 DT <- data.table::as.data.table(nc_var, value.name = "Measured") %>%       # Pull array
   data.table::setnames(old = c("V1", "V2", "V3"), new = c("Longitude", "Latitude", "Time_step")) %>% # Name the columns
-  .[, data.table::":="(Longitude = Space$Lons[Longitude],                              # Read ':=' as mutate
-           Latitude = Space$Lats[Latitude],                                # Replace the factor levels with dimension values
-           Month = Month[Time_step, "Month"],                              # Assign months to time steps
-           Year = Year,                                                    # Add year
-           Type = Type)] %>%                                               # Add variable name
+  .[, c("Longitude", "Latitude", "Month", "Year", "Type") data.table::`:=` # Names for new columns, read ':=' as mutate
+         .(Space$Lons[Longitude],                                          # Replace the factor levels with dimension values
+           Space$Lats[Latitude],                                           # Replace the factor levels with dimension values
+           Month[Time_step, "Month"],                                      # Assign months to time steps
+           Year,                                                           # Add year
+           Type)] %>%                                                      # Add variable name
   data.table::merge(data.table::as.data.table(domains_mask), all.y = TRUE) # Crop to domain
 
 ## Variable specific summaries
