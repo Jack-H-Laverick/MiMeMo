@@ -726,8 +726,8 @@ Window <- function(file, w, e, s, n) {
 get_air <- function(File, Type, Year) {
 
   #File <- Airtemp_files$File[1] ; Type <- Airtemp_files$Type[1] ; Year <- Airtemp_files$Year[1] # test
-  if(Type == "SWF") months <- Light_months                                     # Get the file holding the months
-  if(Type == "T150") months <- Airtemp_months                                  # For the time steps of this data
+  if(Type == "SWF") months <- Light_months                                   # Get the file holding the months
+  if(Type == "T150") months <- Airtemp_months                                # For the time steps of this data
 
   nc_raw <- nc_open(File)                                                    # Open up a netcdf file to see it's raw contents (var names)
   nc_var <- ncvar_get(nc_raw, Type, c(Space$Limits$Lon_start, Space$Limits$Lat_start, 1),  # Extract the variable of interest
@@ -742,8 +742,7 @@ get_air <- function(File, Type, Year) {
                               each = length(unique(Longitude))), times = length(unique(Time_step))),
            Time_step = rep(1:length(unique(Time_step)),
                            each = length(unique(Latitude)) * length(unique(Longitude)))) %>%
-    right_join(domains_mask) %>%                                              # Crop to domain
-    #drop_na() %>%
+    right_join(domains_mask) %>%                                             # Crop to domain
     left_join(months) %>%                                                    # Assign a month to each time step
     mutate(Year = Year,                                                      # Attach Year
            Type = Type)                                                      # Attach variable name
@@ -754,6 +753,54 @@ get_air <- function(File, Type, Year) {
   Summary <- summarise(Data, Measured = weighted.mean(Measured, Cell_area))  # Average by time step.
 
   return(Summary)
+}
+
+#' Get Surface Irradiance & Air Temperature
+#'
+#' This function reads either title variable from a NEMO-MEDUSA model \strong{DRIVERS} file, and returns a monthly time series.
+#'
+#' The appropriate variable in the netcdf file is imported according to the `Type` parameter, only reading within an
+#' x/y window specified in `Space`. The function then drops points outside the model domain before constructing the monthly
+#' time series.
+#'
+#' Unlike other NEMO-MEDUSA related get_* functions, this function constructs the monthly time series directly. A wrapper function
+#' to handle time isn't required, as each netcdf file for driving data contains 360 day steps for a single year. `stratify` also
+#' isn't called, as these variables have no depth dimension.
+#'
+#' @param File The location of the netcdf file containing NEMO-MEDUSA driving data.
+#' @param Type The variable contained in the netcdf file either "T150" (air temperature) or "SWF" (surface irradiance).
+#' @param Year The year the necdf file contains data for.
+#' @return A dataframe containing a monthly time series within a year of either average air temperature or surface
+#' irradiance. Air temperature is also split by shore zone.
+#' @family NEMO-MEDUSA variable extractors
+#' @export
+get_air_dt <- function(File, Type, Year) {
+
+  #File <- Airtemp_files$File[1] ; Type <- Airtemp_files$Type[1] ; Year <- Airtemp_files$Year[1] # test
+  if(Type == "SWF") months <- Light_months                                 # Get the file holding the months
+  if(Type == "T150") months <- Airtemp_months                              # For the time steps of this data
+
+nc_raw <- nc_open(File)                                                    # Open up a netcdf file to see it's raw contents (var names)
+nc_var <- ncvar_get(nc_raw, Type, c(Space$Limits$Lon_start, Space$Limits$Lat_start, 1),  # Extract the variable of interest
+                    c(Space$Limits$Lon_count, Space$Limits$Lat_count, -1)) # cropped to window, with all time steps
+nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
+
+DT <- data.table::as.data.table(nc_var, value.name = "Measured") %>%       # Pull array
+  data.table::setnames(old = c("V1", "V2", "V3"), new = c("Longitude", "Latitude", "Time_step")) %>% # Name the columns
+  .[, ':='(Longitude = Space$Lons[Longitude],                              # Read ':=' as mutate
+           Latitude = Space$Lats[Latitude],                                # Replace the factor levels with dimension values
+           Month = Month[Time_step, "Month"],                              # Assign months to time steps
+           Year = Year,                                                    # Add year
+           Type = Type)] %>%                                               # Add variable name
+  data.table::merge(data.table::as.data.table(domains_mask), all.y = TRUE) # Crop to domain
+
+## Variable specific summaries
+
+if(Type == "SWF") Data <- DT[,by = .(Month, Year, Type),                   # We don't need to bother accounting for shore in light data
+                             .(Measured = weighted.mean(Measured, Cell_area))]  # Average by time ste, weighted by cell area
+if(Type == "T150") Data <- DT[,by= .(Month, Year, Type, Shore),            # We care about shore for temperature, retain interesting columns
+                             .(Measured = weighted.mean(Measured, Cell_area))]  # Average by time ste, weighted by cell area
+return(Data)
 }
 
 #### Data averaging                   ####

@@ -27,6 +27,7 @@ of the shallow zone, and the same for the deep zone. Latitude and longitudes are
 \seealso{
 Other NEMO-MEDUSA variable extractors: 
 \code{\link{detritus_month}()},
+\code{\link{get_air_dt}()},
 \code{\link{get_air}()},
 \code{\link{get_detritus}()},
 \code{\link{get_ice}()},

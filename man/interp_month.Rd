@@ -28,6 +28,7 @@ The daily dataframes are then passed back to `interp_month`, which averages agai
 \seealso{
 Other NEMO-MEDUSA variable extractors: 
 \code{\link{detritus_month}()},
+\code{\link{get_air_dt}()},
 \code{\link{get_air}()},
 \code{\link{get_bio}()},
 \code{\link{get_detritus}()},

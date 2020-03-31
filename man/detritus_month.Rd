@@ -33,6 +33,7 @@ Also, working on independent monthly packets of data means we can parallelise an
 }
 \seealso{
 Other NEMO-MEDUSA variable extractors: 
+\code{\link{get_air_dt}()},
 \code{\link{get_air}()},
 \code{\link{get_bio}()},
 \code{\link{get_detritus}()},
