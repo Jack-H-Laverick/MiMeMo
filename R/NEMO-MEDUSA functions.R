@@ -772,7 +772,7 @@ get_air <- function(File, Type, Year) {
 #' @param Year The year the necdf file contains data for.
 #' @return A dataframe containing a monthly time series within a year of either average air temperature or surface
 #' irradiance. Air temperature is also split by shore zone.
-#' @import data.table
+#' @importFrom data.table := as.data.table setnames
 #' @family NEMO-MEDUSA variable extractors
 #' @export
 get_air_dt <- function(File, Type, Year) {
@@ -794,7 +794,7 @@ DT <- as.data.table(nc_var, value.name = "Measured") %>%       # Pull array
            months[Time_step, "Month"],                                     # Assign months to time steps
            Year,                                                           # Add year
            Type)] %>%                                                      # Add variable name
-  data.table::merge(as.data.table(domains_mask), all.y = TRUE) # Crop to domain
+  merge(as.data.table(domains_mask), all.y = TRUE) # Crop to domain
 
 ## Variable specific summaries
 
