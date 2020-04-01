@@ -20,20 +20,43 @@ Introductory text
 
 ## EMEP
 
+Atmospheric deposition of reduced and oxidised Nitrogen from a model.
+
 ## EMCWF
+
+Significant wave height and direction.
 
 ## GEBCO
 
+Global bathymetry model.
+
 ## Globcolour
+
+Suspended particulate matter from satellite colour data.
 
 ## NEMO-MEDUSA
 
+Driving data **FOR** NEMO-MEDUSA includes surface irradiance and air temperature at the sea surface.
+
+NEMO-MEDUSA model **outputs** extracted for StrathE2EPolar include:
+Water temperature,
+DIN,
+Blah,
+
 ## NGU
+
+Sediment classes in the Barents Sea.
 
 # Fishing Fleet
 
 ## Global Fishing Watch
 
+Fishing effort from anonymised VMS signals and a model of vessel movement patterns.
+
 ## ICES
 
+Fisheries landings by species and country.
+
 # Target data
+
+Blanchard report

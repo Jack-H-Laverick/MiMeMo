@@ -25,5 +25,15 @@ The internal facing / development version can be downloaded from
 remotes::install_github("Jack-H-Laverick/MiMeMo.tools")
 ```
 
-<br/> ❗ Installation will fail if Robert Wilson’s `rcdo` package is
+<br/>
+
+<style>
+div.red { background-color:#fec0c0; border-radius: 5px; padding: 20px;}
+</style>
+
+<div class="red">
+
+❗ Installation will fail if Robert Wilson’s `rcdo` package is
 unavailable. This might be true for Windows users.
+
+</div>
