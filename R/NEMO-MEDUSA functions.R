@@ -608,20 +608,21 @@ type_in_month <- function(data, ...) {
 #' Also, working on independent monthly packets of data means we can parallelise any data processing for speed.
 #'
 #' @param data A dataframe containing the metadata of multiple netcdf files from a common month.
+#' @param crop
 #' @param ... Additional arguments to be passed to get_* functions.
 #' @return The function returns a dataframe containing the monthly average shalllow and deep spatial grids for
 #' \strong{all} the variables of interest in NEMO-MEDUSA outputs.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-whole_month <- function(data, ...) {
+whole_month <- function(data, crop, ...) {
 
   Month <- data[1,5] ; Year <- data[1,4]                                    # Pull date
 
   Month <- split(data, f = list(data$Type)) %>%                             # Split out the files for this month by type, so they can be averaged together
     purrr::map(type_in_month, ...) %>%                                      # Pull a whole month of data from a single file type
     purrr::reduce(dplyr::full_join) %>%                                     # Join together all the data packets
-  # dplyr::right_join(spine) %>%     # a)                                   # Cut out rows outside of polygons and attach compartment labels
-    dplyr::right_join(Window) %>%    # b)                                   # Cut out rows outside of plotting window
+  # dplyr::right_join(spine) %>%   # a)                                     # Cut out rows outside of polygons and attach compartment labels
+    dplyr::right_join(crop) %>%    # b)                                     # Cut out rows outside of plotting window
     saveRDS(., file = paste("./Objects/Months/NM", Month, Year, "rds", sep = "."))    # save out a data object for one whole month
 }
 
