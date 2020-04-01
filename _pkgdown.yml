@@ -84,6 +84,9 @@ navbar:
    - icon: fa-home
      href: index.html
   right:
+   - icon: fa-cart-arrow-down
+     text: "Data Sources"
+     href: articles/Data_Sources.html
    - icon: fa-file-code-o
      text: "Functions"
      href: reference/index.html

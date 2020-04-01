@@ -1,0 +1,39 @@
+---
+title: "Data Sources"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data_Sources}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Introductory text
+
+# Ecological Drivers
+
+## EMEP
+
+## EMCWF
+
+## GEBCO
+
+## Globcolour
+
+## NEMO-MEDUSA
+
+## NGU
+
+# Fishing Fleet
+
+## Global Fishing Watch
+
+## ICES
+
+# Target data
