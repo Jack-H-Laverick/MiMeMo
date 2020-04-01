@@ -492,7 +492,7 @@ get_zonal <- function(path, file, grid, space) {
   print(stringr::str_glue("{file} Extracting Zonal currents"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                               # Open up a netcdf file to see it's raw contents (var names)
   nc_zonal <- ncdf4::ncvar_get(nc_raw, "vozocrtx", space$start3D, space$count3D)         # Pull zonal current
-  nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
+  ncdf4::nc_close(nc_raw)                                                    # You must close an open netcdf file when finished to avoid data loss
 
   shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
     dplyr::mutate(Zonal = as.numeric(stratify(nc_zonal, space$shallow, space$s.weights)),# Collapse shallow meridional currents into 2D and convert to long format
@@ -736,7 +736,7 @@ get_air <- function(File, Type, Year) {
   nc_raw <- nc_open(File)                                                    # Open up a netcdf file to see it's raw contents (var names)
   nc_var <- ncvar_get(nc_raw, Type, c(Space$Limits$Lon_start, Space$Limits$Lat_start, 1),  # Extract the variable of interest
                       c(Space$Limits$Lon_count, Space$Limits$Lat_count, -1)) # cropped to window, with all time steps
-  nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
+  ncdf4::nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
 
   Data <- as.data.frame.table(nc_var, responseName = "Measured") %>%         # Reshape array as dataframe
     rename(Longitude = Var1, Latitude = Var2, Time_step = Var3) %>%          # Name the columns
