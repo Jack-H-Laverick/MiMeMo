@@ -791,10 +791,12 @@ nc_var <- ncvar_get(nc_raw, Type, c(Space$Limits$Lon_start, Space$Limits$Lat_sta
                     c(Space$Limits$Lon_count, Space$Limits$Lat_count, -1)) # cropped to window, with all time steps
 nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
 
-DT <- as.data.table(nc_var, value.name = "Measured") %>%       # Pull array
+DT <- as.data.table(nc_var, value.name = "Measured") %>%                   # Pull array
   setnames(old = c("V1", "V2", "V3"), new = c("Longitude", "Latitude", "Time_step")) %>% # Name the columns
-  .[, ':='(Longitude = Space$Lons[Longitude],                              # read ':=' as mutate
-           Latitude = Space$Lats[Latitude],                                # Replace the factor levels with dimension values
+  .[, ':='(Longitude = rep(1:length(unique(Space$Lons)),                    # read ':=' as mutate
+                           each = length(unique(Space$Lats)) * length(unique(Time_step))),
+           Latitude = rep(rep(Space$Lats,                                  # Replace the factor levels with dimension values
+                              each = length(unique(Time_step))), times = length(unique(Space$Lons))),
            Month = months[Time_step, "Month"],                             # Assign months to time steps
            Year = Year,                                                    # Add year
            Type = Type)] %>%                                               # Add variable name
