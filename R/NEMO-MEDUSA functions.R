@@ -276,11 +276,13 @@ stratify  <- function(data, depth, weights) {
 #'
 #' @param path The path to the NEMO-MEDUSA model outputs.
 #' @param file The name of a netcdf file containing the title variables.
+#' @param start3D
+#' @param count3D
 #' @return A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for title variables
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_sea   <- function(path, file) {
+get_sea   <- function(path, file, start3D, count3D) {
 
   print(stringr::str_glue("{file} Extracting Salinity, Temperature, and Sea Ice concentration"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
@@ -323,7 +325,7 @@ get_sea   <- function(path, file) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_bio   <- function(path, file) {
+get_bio   <- function(path, file, start3D, count3D) {
 
   print(stringr::str_glue("{file} Extracting Dissolved Inorganic Nitrogen and Chlorophyll"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
@@ -408,7 +410,7 @@ get_ice   <- function(path, file) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_vertical   <- function(path, file) {
+get_vertical   <- function(path, file, start3DW, count3DW) {
 
   print(stringr::str_glue("{file} Extracting Vertical water movements"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
@@ -448,7 +450,7 @@ get_vertical   <- function(path, file) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_merid <- function(path, file) {
+get_merid <- function(path, file, start3D, count3D) {
 
   print(stringr::str_glue("{file} Extracting Meridional currents"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                      # Open up a netcdf file to see it's raw contents (var names)
@@ -485,7 +487,7 @@ get_merid <- function(path, file) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_zonal <- function(path, file) {
+get_zonal <- function(path, file, start3D, count3D) {
 
   print(stringr::str_glue("{file} Extracting Zonal currents"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                               # Open up a netcdf file to see it's raw contents (var names)
@@ -567,11 +569,12 @@ get_detritus <- function(file, start, count, grid, shallow, s.weights, deep, d.w
 #' Also, working on independent monthly packets of data means we can parallelise any data processing for speed.
 #'
 #' @param data A dataframe containing the metadata of multiple netcdf files which share a type.
+#' @param ... Additional arguments passed to the relevant get_* function.
 #' @return The function returns a dataframe containing the monthly average shalllow and deep spatial grids for
 #' variables of interest.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-type_in_month <- function(data) {
+type_in_month <- function(data, ...) {
 
   Type <- data[1,3]                                                         # Pull type from the file
 
@@ -583,7 +586,7 @@ type_in_month <- function(data) {
   if(Type == "ptrc_T_") get <- get_bio
 
   Month.type <- data %>%                                                    # Take the year
-    dplyr::mutate(data = purrr::map2(Path, File, get)) %>%                  # Extract data from each file
+    dplyr::mutate(data = purrr::map2(Path, File, get, ...)) %>%             # Extract data from each file
     tidyr::unnest(data) %>%                                                 # Extract all encoded data
     dplyr::group_by(Longitude, Latitude, Depth, .drop=FALSE) %>%
     dplyr::summarise_if(is.numeric, mean)
@@ -605,16 +608,17 @@ type_in_month <- function(data) {
 #' Also, working on independent monthly packets of data means we can parallelise any data processing for speed.
 #'
 #' @param data A dataframe containing the metadata of multiple netcdf files from a common month.
+#' @param ... Additional arguments to be passed to get_* functions.
 #' @return The function returns a dataframe containing the monthly average shalllow and deep spatial grids for
 #' \strong{all} the variables of interest in NEMO-MEDUSA outputs.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-whole_month <- function(data) {
+whole_month <- function(data, ...) {
 
   Month <- data[1,5] ; Year <- data[1,4]                                    # Pull date
 
   Month <- split(data, f = list(data$Type)) %>%                             # Split out the files for this month by type, so they can be averaged together
-    purrr::map(type_in_month) %>%                                           # Pull a whole month of data from a single file type
+    purrr::map(type_in_month, ...) %>%                                      # Pull a whole month of data from a single file type
     purrr::reduce(dplyr::full_join) %>%                                     # Join together all the data packets
   # dplyr::right_join(spine) %>%     # a)                                   # Cut out rows outside of polygons and attach compartment labels
     dplyr::right_join(Window) %>%    # b)                                   # Cut out rows outside of plotting window
