@@ -419,13 +419,13 @@ get_vertical   <- function(path, file, grid, space) {
   ncdf4::nc_close(nc_raw)                                                      # You must close an open netcdf file when finished to avoid data loss
 
   shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$shallow_W, space$s.wweights)), # Collapse shallow DIN into 2D and convert to long format
-           Vertical_diffusivity = as.numeric(stratify(nc_dif, space$shallow_W, space$s.wweights)),     # Collapse shallow chlorophyll into 2D and convert to long format
+    dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$shallow_W, space$s.weights_W)), # Collapse shallow DIN into 2D and convert to long format
+           Vertical_diffusivity = as.numeric(stratify(nc_dif, space$shallow_W, space$s.wweights_W)),     # Collapse shallow chlorophyll into 2D and convert to long format
            Depth = "S")                                                        # Introduce depth column
 
   deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$deep_W, space$d.wweights)),
-           Vertical_diffusivity = as.numeric(stratify(nc_dif, space$deep_W, space$d.wweights)),
+    dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$deep_W, space$d.weights_W)),
+           Vertical_diffusivity = as.numeric(stratify(nc_dif, space$deep_W, space$d.weights_W)),
            Depth = "D")                                                        # Collapse, reshape and append deepwater data
 
   all <- rbind(shallow, deep) %>%                                              # Bind both sets, this pipeline avoids computationally demanding reshaping
