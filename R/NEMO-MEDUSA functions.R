@@ -458,16 +458,16 @@ get_merid <- function(path, file, grid, space) {
   ncdf4::nc_close(nc_raw)                                                    # You must close an open netcdf file when finished to avoid data loss
 
   shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
-    mutate(Meridional = as.numeric(stratify(nc_merid, space$shallow, space$s.weights)),  # Collapse shallow meridional currents into 2D and convert to long format
+    dplyr::mutate(Meridional = as.numeric(stratify(nc_merid, space$shallow, space$s.weights)),  # Collapse shallow meridional currents into 2D and convert to long format
            Depth = "S")                                                      # Introduce depth column
 
   deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
-    mutate(Meridional = as.numeric(stratify(nc_merid, space$deep, space$d.weights)),     # Collapse, reshape and append deepwater data
+    dplyr::mutate(Meridional = as.numeric(stratify(nc_merid, space$deep, space$d.weights)), # Collapse, reshape and append deepwater data
            Depth = "D")                                                      # Collapse, reshape and append deepwater data
 
   all <- rbind(shallow, deep) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
-    filter(Shore_dist > 0) %>%                                               # Remove points on land
-    mutate(Depth = as.factor(Depth))
+    dplyr::filter(Shore_dist > 0) %>%                                        # Remove points on land
+    dplyr::mutate(Depth = as.factor(Depth))
 
   return(all)
 }
