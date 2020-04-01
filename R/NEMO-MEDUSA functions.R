@@ -282,25 +282,25 @@ stratify  <- function(data, depth, weights) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_sea   <- function(path, file, start3D, count3D, grid, shallow, s.weights, deep, d.weights) {
+get_sea   <- function(path, file, grid, space) {
 
   print(stringr::str_glue("{file} Extracting Salinity, Temperature, and Sea Ice concentration"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
-  nc_saline <- ncdf4::ncvar_get(nc_raw, "vosaline", start3D, count3D)          # Extract an array of salinities
-  nc_temp <- ncdf4::ncvar_get(nc_raw, "votemper", start3D, count3D)            # Extract an array of temperatures
+  nc_saline <- ncdf4::ncvar_get(nc_raw, "vosaline", space$start3D, space$count3D)          # Extract an array of salinities
+  nc_temp <- ncdf4::ncvar_get(nc_raw, "votemper", space$start3D, space$count3D)            # Extract an array of temperatures
   nc_ice <- ncdf4::ncvar_get(nc_raw, "soicecov")                               # Extract a matrix of ice fractions
   ncdf4::nc_close(nc_raw)                                                      # You must close an open netcdf file when finished to avoid data loss
 
   shallow <- grid %>%                                                          # Grab the tidied dataframe of lat-longs
     dplyr::mutate(Ice_conc = as.numeric(nc_ice),                               # Append new variable to coordinates (no depths for ice)
-           Salinity = as.numeric(stratify(nc_saline, shallow, s.weights)),     # Collapse shallow salinity into 2D and convert to long format
-           Temperature = as.numeric(stratify(nc_temp, hallow, s.weights)),     # Collapse shallow temperatures into 2D and convert to long format
+           Salinity = as.numeric(stratify(nc_saline, space$shallow, space$s.weights)),     # Collapse shallow salinity into 2D and convert to long format
+           Temperature = as.numeric(stratify(nc_temp, space$shallow, space$s.weights)),     # Collapse shallow temperatures into 2D and convert to long format
            Depth = "S")                                                        # Introduce depth column
 
   deep <- grid %>%                                                             # Grab the tidied dataframe of lat-longs
     dplyr::mutate(Ice_conc = NA,                                               # Insert empty column to allow fast binding by position
-           Salinity = as.numeric(stratify(nc_saline, deep, d.weights)),
-           Temperature = as.numeric(stratify(nc_temp, deep, d.weights)),
+           Salinity = as.numeric(stratify(nc_saline, space$deep, space$d.weights)),
+           Temperature = as.numeric(stratify(nc_temp, space$deep, space$d.weights)),
            Depth = "D")                                                        # Collapse, reshape and append deepwater data
 
   all <- rbind(shallow, deep) %>%                                              # Bind both sets, this pipeline avoids computationally demanding reshaping
@@ -325,24 +325,24 @@ get_sea   <- function(path, file, start3D, count3D, grid, shallow, s.weights, de
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_bio   <- function(path, file, start3D, count3D, grid, shallow, s.weights, deep, d.weights) {
+get_bio   <- function(path, file, grid, space) {
 
   print(stringr::str_glue("{file} Extracting Dissolved Inorganic Nitrogen and Chlorophyll"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
-  nc_DIN <- ncdf4::ncvar_get(nc_raw, "DIN", start3D, count3D)                  # Extract an array for the variable
-  nc_CHD <- ncdf4::ncvar_get(nc_raw, "CHD", start3D, count3D)
-  nc_CHN <- ncdf4::ncvar_get(nc_raw, "CHN", start3D, count3D)
+  nc_DIN <- ncdf4::ncvar_get(nc_raw, "DIN", space$start3D, space$count3D)                  # Extract an array for the variable
+  nc_CHD <- ncdf4::ncvar_get(nc_raw, "CHD", space$start3D, space$count3D)
+  nc_CHN <- ncdf4::ncvar_get(nc_raw, "CHN", space$start3D, space$count3D)
   nc_Chl <- nc_CHD + nc_CHN ; rm(nc_CHD, nc_CHN)
   ncdf4::nc_close(nc_raw)                                                      # You must close an open netcdf file when finished to avoid data loss
 
   shallow <- grid %>%                                                          # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(DIN = as.numeric(stratify(nc_DIN, shallow, s.weights)),        # Collapse shallow DIN into 2D and convert to long format
-           Chlorophyll = as.numeric(stratify(nc_Chl, shallow, s.weights)),       # Collapse shallow chlorophyll into 2D and convert to long format
+    dplyr::mutate(DIN = as.numeric(stratify(nc_DIN, space$shallow, space$s.weights)),        # Collapse shallow DIN into 2D and convert to long format
+           Chlorophyll = as.numeric(stratify(nc_Chl, space$shallow, space$s.weights)),       # Collapse shallow chlorophyll into 2D and convert to long format
            Depth = "S")                                                        # Introduce depth column
 
   deep <- grid %>%                                                             # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(DIN = as.numeric(stratify(nc_DIN, deep, d.weights)),
-           Chlorophyll = as.numeric(stratify(nc_Chl, deep, d.weights)),
+    dplyr::mutate(DIN = as.numeric(stratify(nc_DIN, space$deep, space$d.weights)),
+           Chlorophyll = as.numeric(stratify(nc_Chl, space$deep, space$d.weights)),
            Depth = "D")                                                        # Collapse, reshape and append deepwater data
 
   all <- rbind(shallow, deep) %>%                                              # Bind both sets, this pipeline avoids computationally demanding reshaping
@@ -367,7 +367,7 @@ get_bio   <- function(path, file, start3D, count3D, grid, shallow, s.weights, de
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_ice   <- function(path, file, grid) {
+get_ice   <- function(path, file, grid, space) {
 
   print(stringr::str_glue("{file} Extracting Ice presence, and Ice and Snow thickness"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
@@ -410,22 +410,22 @@ get_ice   <- function(path, file, grid) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_vertical   <- function(path, file, start3DW, count3DW, grid, shallow_W, s.wweights, deep_W, d.wweights) {
+get_vertical   <- function(path, file, grid, space) {
 
   print(stringr::str_glue("{file} Extracting Vertical water movements"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
-  nc_vel <- ncvar_get(nc_raw, "vovecrtz", start3DW, count3DW)                  # Extract an array for the variable
-  nc_dif <- ncvar_get(nc_raw, "votkeavt", start3DW, count3DW)
+  nc_vel <- ncvar_get(nc_raw, "vovecrtz", space$start3DW, space$count3DW)                  # Extract an array for the variable
+  nc_dif <- ncvar_get(nc_raw, "votkeavt", space$start3DW, space$count3DW)
   ncdf4::nc_close(nc_raw)                                                      # You must close an open netcdf file when finished to avoid data loss
 
   shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, shallow_W, s.wweights)), # Collapse shallow DIN into 2D and convert to long format
-           Vertical_diffusivity = as.numeric(stratify(nc_dif, shallow_W, s.wweights)),     # Collapse shallow chlorophyll into 2D and convert to long format
+    dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$shallow_W, space$s.wweights)), # Collapse shallow DIN into 2D and convert to long format
+           Vertical_diffusivity = as.numeric(stratify(nc_dif, space$shallow_W, space$s.wweights)),     # Collapse shallow chlorophyll into 2D and convert to long format
            Depth = "S")                                                        # Introduce depth column
 
   deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, deep_W, d.wweights)),
-           Vertical_diffusivity = as.numeric(stratify(nc_dif, deep_W, d.wweights)),
+    dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$deep_W, space$d.wweights)),
+           Vertical_diffusivity = as.numeric(stratify(nc_dif, space$deep_W, space$d.wweights)),
            Depth = "D")                                                        # Collapse, reshape and append deepwater data
 
   all <- rbind(shallow, deep) %>%                                              # Bind both sets, this pipeline avoids computationally demanding reshaping
@@ -450,19 +450,19 @@ get_vertical   <- function(path, file, start3DW, count3DW, grid, shallow_W, s.ww
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_merid <- function(path, file, start3D, count3D, grid, shallow, s.weights, deep, d.weights) {
+get_merid <- function(path, file, grid, space) {
 
   print(stringr::str_glue("{file} Extracting Meridional currents"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                               # Open up a netcdf file to see it's raw contents (var names)
-  nc_merid <- ncdf4::ncvar_get(nc_raw, "vomecrty", start3D, count3D)         # Pull meridinal currents
+  nc_merid <- ncdf4::ncvar_get(nc_raw, "vomecrty", space$start3D, space$count3D)         # Pull meridinal currents
   ncdf4::nc_close(nc_raw)                                                    # You must close an open netcdf file when finished to avoid data loss
 
   shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
-    mutate(Meridional = as.numeric(stratify(nc_merid, shallow, s.weights)),  # Collapse shallow meridional currents into 2D and convert to long format
+    mutate(Meridional = as.numeric(stratify(nc_merid, space$shallow, space$s.weights)),  # Collapse shallow meridional currents into 2D and convert to long format
            Depth = "S")                                                      # Introduce depth column
 
   deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
-    mutate(Meridional = as.numeric(stratify(nc_merid, deep, d.weights)),     # Collapse, reshape and append deepwater data
+    mutate(Meridional = as.numeric(stratify(nc_merid, space$deep, space$d.weights)),     # Collapse, reshape and append deepwater data
            Depth = "D")                                                      # Collapse, reshape and append deepwater data
 
   all <- rbind(shallow, deep) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
@@ -487,19 +487,19 @@ get_merid <- function(path, file, start3D, count3D, grid, shallow, s.weights, de
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_zonal <- function(path, file, start3D, count3D, grid, shallow, s.weights, deep, d.weights) {
+get_zonal <- function(path, file, grid, space) {
 
   print(stringr::str_glue("{file} Extracting Zonal currents"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                               # Open up a netcdf file to see it's raw contents (var names)
-  nc_zonal <- ncdf4::ncvar_get(nc_raw, "vozocrtx", start3D, count3D)         # Pull zonal current
+  nc_zonal <- ncdf4::ncvar_get(nc_raw, "vozocrtx", space$start3D, space$count3D)         # Pull zonal current
   nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
 
   shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Zonal = as.numeric(stratify(nc_zonal, shallow, s.weights)),# Collapse shallow meridional currents into 2D and convert to long format
+    dplyr::mutate(Zonal = as.numeric(stratify(nc_zonal, space$shallow, space$s.weights)),# Collapse shallow meridional currents into 2D and convert to long format
            Depth = "S")                                                      # Introduce depth column
 
   deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Zonal = as.numeric(stratify(nc_zonal, deep, d.weights)),   # Collapse, reshape and append deepwater data
+    dplyr::mutate(Zonal = as.numeric(stratify(nc_zonal, space$deep, space$d.weights)),   # Collapse, reshape and append deepwater data
            Depth = "D")                                                      # Collapse, reshape and append deepwater data
 
   all <- rbind(shallow, deep) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
