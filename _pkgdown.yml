@@ -21,6 +21,7 @@ reference:
   - Sample_OOB
   - extract
   - extract_OOB
+
 - title: Global Fishing Watch
   desc: Extract fishing effort data.
   contents:
@@ -30,7 +31,9 @@ reference:
   - jacks_lazy_animation
   - jacks_polar_static
   - jacks_polar_animate
-- title: NEMO-MEDUSA spatial tools
+
+- title: NEMO-MEDUSA
+- subtitle: Spatial tools
   desc: Handle spatial weighting for averages, depth layers, and map projections.
   contents:
   - empty
@@ -41,7 +44,7 @@ reference:
   - Window
   - reproj
   - sfc_as_cols
-- title: NEMO-MEDUSA variable extractors
+- subtitle: Variable extractors
   desc: Extract ecological driving data.
   contents:
   - get_air
@@ -58,7 +61,7 @@ reference:
   - type_in_month
   - whole_month
   - detritus_month
-- title: NEMO-MEDUSA averages
+- subtitle: Averages
   desc: Average driving data into time series or decadal maps.
   contents:
   - decadal
@@ -66,7 +69,7 @@ reference:
   - summarise_sp
   - summarise_ts
   - summarise_ts_detritus
-- title: NEMO-MEDUSA plotting
+- subtitle: Plotting
   desc: Make plots.
   contents:
   - point_plot

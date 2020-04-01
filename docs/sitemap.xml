@@ -4,9 +4,6 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//index.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Arctic_boats.html</loc>
-  </url>
-  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/FAO_boats.html</loc>
   </url>
   <url>
@@ -49,7 +46,13 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_air.html</loc>
   </url>
   <url>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_air_dt.html</loc>
+  </url>
+  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_bio.html</loc>
+  </url>
+  <url>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_cropped_fishing.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_detritus.html</loc>
@@ -134,6 +137,9 @@
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/type_in_month.html</loc>
+  </url>
+  <url>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/voronoi_grid.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/whole_month.html</loc>

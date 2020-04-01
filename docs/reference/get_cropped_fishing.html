@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract the values from a grid under transects along the external boundaries of the model domain — extract_OOB • MiMeMo.tools</title>
+<title>Import Fishing Effort Within Specified Areas — get_cropped_fishing • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,8 @@
 
 
 
-<meta property="og:title" content="Extract the values from a grid under transects along the external boundaries of the model domain — extract_OOB" />
-<meta property="og:description" content="This function is a variant of extract which only considers the external boundaries (Out Of Bounds -&amp;gt; OOB) of the model domain
-for variables other than water movement." />
+<meta property="og:title" content="Import Fishing Effort Within Specified Areas — get_cropped_fishing" />
+<meta property="og:description" content="Import Fishing Effort Within Specified Areas" />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 
 
@@ -128,62 +127,42 @@ for variables other than water movement." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract the values from a grid under transects along the external boundaries of the model domain</h1>
+    <h1>Import Fishing Effort Within Specified Areas</h1>
     
-    <div class="hidden name"><code>extract_OOB.Rd</code></div>
+    <div class="hidden name"><code>get_cropped_fishing.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function is a variant of extract which only considers the external boundaries (Out Of Bounds -&gt; OOB) of the model domain
-for variables other than water movement.</p>
+    <p>Import Fishing Effort Within Specified Areas</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_OOB</span>(<span class='no'>Depth</span>, <span class='no'>Data</span>, <span class='no'>transects</span>, <span class='no'>intersections</span>, <span class='no'>variables</span>)</pre>
+    <pre class="usage"><span class='fu'>get_cropped_fishing</span>(<span class='no'>file</span>, <span class='no'>area</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Depth</th>
-      <td><p>The depth layer to extract data from. Either "S" or "D" and inherited from `Sample_OOB`.</p></td>
+      <th>file</th>
+      <td><p>The full name to a .csv file containing Global Fishing Watch data.</p></td>
     </tr>
     <tr>
-      <th>Data</th>
-      <td><p>The data object as passed from `Sample_OOB`.</p></td>
-    </tr>
-    <tr>
-      <th>transects</th>
-      <td><p>A nested list containing 2 sets of transects. Each set is an SF dataframe for sampling either the shallow or deep layer.</p></td>
-    </tr>
-    <tr>
-      <th>intersections</th>
-      <td><p>A nested list containing 2 sets of intersections. Each set indicates which grid cells a transect touches, for a depth layer.</p></td>
-    </tr>
-    <tr>
-      <th>variables</th>
-      <td><p>The variables to extract, inherited from `Sample_OOB`.</p></td>
+      <th>area</th>
+      <td><p>A Simple Feature object representing the areas to return fishing activity in.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of transects and their average DIN, chlorophyll, temperature,
-and salinity values by depth.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>A data object is inherited from `Sample_OOB` before using a precalculated set of indices of where
-transects intersect the grid for speedy extraction.</p>
-<p>Extracted values are attached to transects before returning to `Sample_OOB` for further averaging.</p>
+    <p>A dataframe of cells from a 0.01 degree grid which contain fishing activity,
+labelled by the FAO region they fall in.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other Boundary sampling functions: 
-<code><a href='Sample_OOB.html'>Sample_OOB</a>()</code>,
-<code><a href='Sample.html'>Sample</a>()</code>,
-<code><a href='boundaries.html'>boundaries</a>()</code>,
-<code><a href='check_grid.html'>check_grid</a>()</code>,
-<code><a href='direction.html'>direction</a>()</code>,
-<code><a href='extract.html'>extract</a>()</code>,
-<code><a href='to_segments.html'>to_segments</a>()</code></p></div>
+    <div class='dont-index'><p>Other Global Fishing Watch functions: 
+<code><a href='FAO_boats.html'>FAO_boats</a>()</code>,
+<code><a href='jacks_lazy_animation.html'>jacks_lazy_animation</a>()</code>,
+<code><a href='jacks_lazy_avg.html'>jacks_lazy_avg</a>()</code>,
+<code><a href='jacks_polar_animate.html'>jacks_polar_animate</a>()</code>,
+<code><a href='jacks_polar_static.html'>jacks_polar_static</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

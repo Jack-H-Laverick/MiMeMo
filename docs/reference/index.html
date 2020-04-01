@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@
 
 <meta property="og:title" content="Function reference" />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -62,7 +65,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -141,6 +144,11 @@
           <p class="section-desc"><p>Extract driving data at the perimeter of model compartments.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -197,12 +205,17 @@
           <p class="section-desc"><p>Extract fishing effort data.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
-          <p><code><a href="Arctic_boats.html">Arctic_boats()</a></code> </p>
+          <p><code><a href="get_cropped_fishing.html">get_cropped_fishing()</a></code> </p>
         </td>
-        <td><p>Extract the values from a grid under transects along the external boundaries of the model domain</p></td>
+        <td><p>Import Fishing Effort Within Specified Areas</p></td>
       </tr><tr>
         
         <td>
@@ -237,10 +250,24 @@
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-nemo-medusa-spatial-tools" class="hasAnchor"><a href="#section-nemo-medusa-spatial-tools" class="anchor"></a>NEMO-MEDUSA spatial tools</h2>
+          <h2 id="section-nemo-medusa" class="hasAnchor"><a href="#section-nemo-medusa" class="anchor"></a>NEMO-MEDUSA</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      <tr>
+        <th colspan="2">
+          <h3 id="section-spatial-tools" class="hasAnchor"><a href="#section-spatial-tools" class="anchor"></a>Spatial tools</h3>
           <p class="section-desc"><p>Handle spatial weighting for averages, depth layers, and map projections.</p></p>
         </th>
       </tr>
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -291,12 +318,17 @@
         <td><p>Pull Coordinates from a Simple Feature Geometry Column</p></td>
       </tr>
     </tbody><tbody>
+      
       <tr>
         <th colspan="2">
-          <h2 id="section-nemo-medusa-variable-extractors" class="hasAnchor"><a href="#section-nemo-medusa-variable-extractors" class="anchor"></a>NEMO-MEDUSA variable extractors</h2>
+          <h3 id="section-variable-extractors" class="hasAnchor"><a href="#section-variable-extractors" class="anchor"></a>Variable extractors</h3>
           <p class="section-desc"><p>Extract ecological driving data.</p></p>
         </th>
       </tr>
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -383,12 +415,17 @@
         <td><p>Condense Daily netcdf Files into a Monthly Summary</p></td>
       </tr>
     </tbody><tbody>
+      
       <tr>
         <th colspan="2">
-          <h2 id="section-nemo-medusa-averages" class="hasAnchor"><a href="#section-nemo-medusa-averages" class="anchor"></a>NEMO-MEDUSA averages</h2>
+          <h3 id="section-averages" class="hasAnchor"><a href="#section-averages" class="anchor"></a>Averages</h3>
           <p class="section-desc"><p>Average driving data into time series or decadal maps.</p></p>
         </th>
       </tr>
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -421,12 +458,17 @@
         <td><p>Average into Detrital Time Series</p></td>
       </tr>
     </tbody><tbody>
+      
       <tr>
         <th colspan="2">
-          <h2 id="section-nemo-medusa-plotting" class="hasAnchor"><a href="#section-nemo-medusa-plotting" class="anchor"></a>NEMO-MEDUSA plotting</h2>
+          <h3 id="section-plotting" class="hasAnchor"><a href="#section-plotting" class="anchor"></a>Plotting</h3>
           <p class="section-desc"><p>Make plots.</p></p>
         </th>
       </tr>
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -450,16 +492,10 @@
     </table>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-boundaries">Boundaries</a></li>
-      <li><a href="#section-global-fishing-watch">Global Fishing Watch</a></li>
-      <li><a href="#section-nemo-medusa-spatial-tools">NEMO-MEDUSA spatial tools</a></li>
-      <li><a href="#section-nemo-medusa-variable-extractors">NEMO-MEDUSA variable extractors</a></li>
-      <li><a href="#section-nemo-medusa-averages">NEMO-MEDUSA averages</a></li>
-      <li><a href="#section-nemo-medusa-plotting">NEMO-MEDUSA plotting</a></li>
-    </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -474,7 +510,7 @@
 
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>
