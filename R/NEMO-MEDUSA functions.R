@@ -420,7 +420,7 @@ get_vertical   <- function(path, file, grid, space) {
 
   shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
     dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$shallow_W, space$s.weights_W)), # Collapse shallow DIN into 2D and convert to long format
-           Vertical_diffusivity = as.numeric(stratify(nc_dif, space$shallow_W, space$s.wweights_W)),     # Collapse shallow chlorophyll into 2D and convert to long format
+           Vertical_diffusivity = as.numeric(stratify(nc_dif, space$shallow_W, space$s.weights_W)),     # Collapse shallow chlorophyll into 2D and convert to long format
            Depth = "S")                                                        # Introduce depth column
 
   deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
