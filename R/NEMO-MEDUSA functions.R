@@ -414,8 +414,8 @@ get_vertical   <- function(path, file, grid, space) {
 
   print(stringr::str_glue("{file} Extracting Vertical water movements"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
-  nc_vel <- ncvar_get(nc_raw, "vovecrtz", space$start3DW, space$count3DW)                  # Extract an array for the variable
-  nc_dif <- ncvar_get(nc_raw, "votkeavt", space$start3DW, space$count3DW)
+  nc_vel <- ncdf4::ncvar_get(nc_raw, "vovecrtz", space$start3DW, space$count3DW) # Extract an array for the variable
+  nc_dif <- ncdf4::ncvar_get(nc_raw, "votkeavt", space$start3DW, space$count3DW)
   ncdf4::nc_close(nc_raw)                                                      # You must close an open netcdf file when finished to avoid data loss
 
   shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
