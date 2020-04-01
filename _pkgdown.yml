@@ -44,10 +44,12 @@ reference:
   - Window
   - reproj
   - sfc_as_cols
+  - voronoi_grid
 - subtitle: Variable extractors
   desc: Extract ecological driving data.
   contents:
   - get_air
+  - get_air_dt
   - get_bio
   - get_detritus
   - get_ice
