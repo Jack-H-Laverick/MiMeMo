@@ -782,7 +782,7 @@ get_air <- function(File, Type, Year) {
 #' @export
 get_air_dt <- function(File, Type, Year) {
 
-  #File <- Airtemp_files$File[1] ; Type <- Airtemp_files$Type[1] ; Year <- Airtemp_files$Year[1] # test
+  #File <- all_files$File[1] ; Type <- all_files$Type[1] ; Year <- all_files$Year[1] # test
   if(Type == "SWF") months <- Light_months                                 # Get the file holding the months
   if(Type == "T150") months <- Airtemp_months                              # For the time steps of this data
 
@@ -793,14 +793,15 @@ nc_close(nc_raw)                                                           # You
 
 DT <- as.data.table(nc_var, value.name = "Measured") %>%                   # Pull array
   setnames(old = c("V1", "V2", "V3"), new = c("Longitude", "Latitude", "Time_step")) %>% # Name the columns
-  .[, ':='(Longitude = rep(1:length(unique(Space$Lons)),                    # read ':=' as mutate
-                           each = length(unique(Space$Lats)) * length(unique(Time_step))),
-           Latitude = rep(rep(Space$Lats,                                  # Replace the factor levels with dimension values
-                              each = length(unique(Time_step))), times = length(unique(Space$Lons))),
+  .[, ':='(Longitude = Space$Lons[Longitude],                              # read ':=' as mutate
+           Latitude = Space$Lats[Latitude],                                # Replace the factor levels with dimension values
            Month = months[Time_step, "Month"],                             # Assign months to time steps
            Year = Year,                                                    # Add year
-           Type = Type)] %>%                                               # Add variable name
-  merge(as.data.table(domains_mask), all.y = TRUE)                         # Crop to domain
+           Type = Type)]                                                   # Add variable name
+setkey(DT, Longitude, Latitude)                                            # Set key columns for speedy joins
+
+DT <- DT[domains_mask] #%>%
+  #merge(domains_mask, all.y = TRUE)                                        # Crop to domain
 
 ## Variable specific summaries
 
