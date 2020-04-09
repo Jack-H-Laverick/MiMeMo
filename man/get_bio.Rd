@@ -4,7 +4,7 @@
 \alias{get_bio}
 \title{Get Dissolved Inorganic Nitrogen & Chlorophyll a}
 \usage{
-get_bio(path, file)
+get_bio(path, file, grid, space)
 }
 \arguments{
 \item{path}{The path to the NEMO-MEDUSA model outputs.}

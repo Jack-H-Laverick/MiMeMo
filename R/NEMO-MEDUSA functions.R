@@ -845,12 +845,20 @@ decadal <- function(saved) {
 #' empty columns.
 #'
 #' @param data A dataframe containing a summarised month from NEMO-MEDUSA model outputs, at a single depth.
+#' @param dt Switch for using either data.table or dplyr methods (TRUE/FALSE respectively)
 #' @return If the `data` contains shallow data, no action is taken. If `data` contains deep data, columns for variables only
 #' relevant in the shallow zone are dropped.
 #' @family NEMO-MEDUSA averages
 #' @export
-strip_ice <- function(data) {
-  if(data$Depth[1] == "D") {select(data, -c(starts_with("Ice"), Snow_Thickness))} else data}
+strip_ice <- function(data, dt) {
+
+  if(dt == TRUE) {                                                                  # Run data.table method
+    data <- setDT(data)
+
+    if(data$Depth[1] == "D") data[, c("Ice_conc", "Ice_Thickness", "Snow_Thickness"):=NULL] else data
+  } else{                                                                           # Run dplyr method
+
+    if(data$Depth[1] == "D") {select(data, -c(starts_with("Ice"), Snow_Thickness))} else data}}
 
 #' Average into Decadal Grids
 #'
@@ -861,15 +869,22 @@ strip_ice <- function(data) {
 #'
 #' @param saved A dataframe containing a summarised month from NEMO-MEDUSA model outputs. It must contain the columns:
 #' Longitude, Latitude, Decade, Month, Shore, and Depth.
+#' @param dt Switch for using either data.table or dplyr methods (TRUE/FALSE respectively)
 #' @return A dataframe containing a summarised decade of spatialy resolved NEMO-MEDUSA outputs.
 #' @family NEMO-MEDUSA averages
 #' @export
-summarise_sp <- function(decade) {
+summarise_sp <- function(decade, dt) {
 
+if(dt == TRUE){                                                               # Run data.table method
+  # data.table::setDT(decade)                                                 # set as a data.table, not needed if decade is already a data.table
+  Averaged <- decade[, lapply(.SD, mean, na.rm = TRUE),                       # Average data columns which aren't groups
+                     by = c("Longitude", "Latitude", "Decade", "Month", "Shore", "Depth")] # Group by pixel and decade
+} else{                                                                       # Run dplyr method
   Averaged <- decade %>%
     dplyr::group_by(Longitude, Latitude, Decade, Month, Shore, Depth) %>%     # Group by pixel and decade
     dplyr::summarise_all(mean, na.rm = TRUE) %>%                              # Average data columns
     dplyr::ungroup()                                                          # Ungroup
+  }
   return(Averaged)
 }
 

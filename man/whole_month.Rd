@@ -4,10 +4,12 @@
 \alias{whole_month}
 \title{Condense Daily netcdf Files into a Monthly Summary}
 \usage{
-whole_month(data)
+whole_month(data, crop, ...)
 }
 \arguments{
 \item{data}{A dataframe containing the metadata of multiple netcdf files from a common month.}
+
+\item{...}{Additional arguments to be passed to get_* functions.}
 }
 \value{
 The function returns a dataframe containing the monthly average shalllow and deep spatial grids for

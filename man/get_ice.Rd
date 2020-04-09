@@ -4,7 +4,7 @@
 \alias{get_ice}
 \title{Get Ice Pesence & Thickness, & Snow Thickness}
 \usage{
-get_ice(path, file)
+get_ice(path, file, grid, space)
 }
 \arguments{
 \item{path}{The path to the NEMO-MEDUSA model outputs.}

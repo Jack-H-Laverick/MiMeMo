@@ -25,6 +25,8 @@ empty columns.
 \seealso{
 Other NEMO-MEDUSA averages: 
 \code{\link{decadal}()},
+\code{\link{strip_ice_dt}()},
+\code{\link{summarise_sp_dt}()},
 \code{\link{summarise_sp}()},
 \code{\link{summarise_ts_detritus}()},
 \code{\link{summarise_ts}()}

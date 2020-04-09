@@ -4,7 +4,7 @@
 \alias{get_vertical}
 \title{Get Vertical Velocity and Vertical Eddy Diffusivity}
 \usage{
-get_vertical(path, file)
+get_vertical(path, file, grid, space)
 }
 \arguments{
 \item{path}{The path to the NEMO-MEDUSA model outputs.}

@@ -32,7 +32,7 @@ get_cropped_fishing <- function (file, area) {
 #' @param variables The variables to extract, provided by Sample_OOB
 #' @return The function returns a dataframe of transects and their average DIN, chlorophyll, temperature, and salinity values by depth.
 #' @family Global Fishing Watch functions
-#' @export
+#'
 FAO_boats <- function (Data, Clip)             {
 
   colnames(Data)[2] <- "Latitude"                                             # Change column names for GIS functions

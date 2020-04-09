@@ -4,7 +4,7 @@
 \alias{get_merid}
 \title{Get Meridional Currents}
 \usage{
-get_merid(path, file)
+get_merid(path, file, grid, space)
 }
 \arguments{
 \item{path}{The path to the NEMO-MEDUSA model outputs.}

@@ -4,10 +4,12 @@
 \alias{type_in_month}
 \title{Condense Daily netcdf Files into a Month by Type}
 \usage{
-type_in_month(data)
+type_in_month(data, ...)
 }
 \arguments{
 \item{data}{A dataframe containing the metadata of multiple netcdf files which share a type.}
+
+\item{...}{Additional arguments passed to the relevant `get_*` function.}
 }
 \value{
 The function returns a dataframe containing the monthly average shalllow and deep spatial grids for
