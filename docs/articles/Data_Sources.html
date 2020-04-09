@@ -137,6 +137,63 @@
 <a href="#ngu" class="anchor"></a>NGU</h2>
 <p>Sediment classes in the Barents Sea.</p>
 </div>
+<div id="sinmod" class="section level2">
+<h2 class="hasAnchor">
+<a href="#sinmod" class="anchor"></a>SINMOD</h2>
+<p>Tidally resolved water velocity fields in the Arctic.</p>
+<div id="spatial-extent" class="section level4">
+<h4 class="hasAnchor">
+<a href="#spatial-extent" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
+<p>Arctic.</p>
+</div>
+<div id="temporal-extent" class="section level4">
+<h4 class="hasAnchor">
+<a href="#temporal-extent" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
+<ul>
+<li>
+<em>From</em> 2003/01/01.</li>
+<li>
+<em>To</em> 2018/12/28.</li>
+<li>
+<em>In</em> 336 timesteps (every 2 hours in a 28 day month).</li>
+<li>
+<em>Duration</em> 16 years.</li>
+</ul>
+</div>
+<div id="file-structure" class="section level4">
+<h4 class="hasAnchor">
+<a href="#file-structure" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
+<ul>
+<li>191 netcdf files.</li>
+<li>600gb total memory requirement.</li>
+<li>1 netcdf file contains a 3D spatial grid and all timesteps within a month.</li>
+</ul>
+</div>
+<div id="target-variables" class="section level4">
+<h4 class="hasAnchor">
+<a href="#target-variables" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#FFCC33;"></i> Target variables</h4>
+<ul>
+<li>“u_east”, Zonal veolcity.</li>
+<li>“v_north”, Meridional velocity.</li>
+</ul>
+</div>
+<div id="spatial-variables" class="section level4">
+<h4 class="hasAnchor">
+<a href="#spatial-variables" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#FFCC33;"></i> Spatial variables</h4>
+<ul>
+<li>“gridLats”, matrix of latitudes (curvilinear grid).</li>
+<li>“gridLons”, matrix of longitudes (curvilinear grid).</li>
+<li>“depths”, matrix of depths.</li>
+<li>“ldepths”, vector of depth layer thicknesses?</li>
+</ul>
+</div>
+<div id="other-variables" class="section level4">
+<h4 class="hasAnchor">
+<a href="#other-variables" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#FFCC33;"></i> Other variables</h4>
+<p>“w_east”, “w_north”, “w_velocity”, “vertical_diffusivity”, “NO3”, “PhytoF”, “PhytoD”, “temperature”, “salinity”, “ice_thickness”, “ice_compactness”, “freezing_rate”, “salinity_ice”, “uIce_east”, “vIce_north”, “uUnderIceE”, “vUnderIceN”, “elevation”.</p>
+<p><br><br></p>
+</div>
+</div>
 </div>
 <div id="fishing-fleet" class="section level1">
 <h1 class="hasAnchor">

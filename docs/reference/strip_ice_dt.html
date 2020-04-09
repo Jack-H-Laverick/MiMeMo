@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Meridional Currents — get_merid • MiMeMo.tools</title>
+<title>Strip Snow and Ice Variables at Depth — strip_ice_dt • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,8 @@
 
 
 
-<meta property="og:title" content="Get Meridional Currents — get_merid" />
-<meta property="og:description" content="This function reads in the title variable from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
-Meridional currents can be found in files labelled &quot;grid_V_&quot;." />
+<meta property="og:title" content="Strip Snow and Ice Variables at Depth — strip_ice_dt" />
+<meta property="og:description" content="This function removes the snow and ice columns from a dataframe if depth = &quot;D&quot;." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 
 
@@ -135,57 +134,45 @@ Meridional currents can be found in files labelled &quot;grid_V_&quot;." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Meridional Currents</h1>
+    <h1>Strip Snow and Ice Variables at Depth</h1>
     
-    <div class="hidden name"><code>get_merid.Rd</code></div>
+    <div class="hidden name"><code>strip_ice_dt.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in the title variable from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
-Meridional currents can be found in files labelled "grid_V_".</p>
+    <p>This function removes the snow and ice columns from a dataframe if depth = "D".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_merid</span>(<span class='no'>path</span>, <span class='no'>file</span>, <span class='no'>grid</span>, <span class='no'>space</span>)</pre>
+    <pre class="usage"><span class='fu'>strip_ice_dt</span>(<span class='no'>data</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
-      <td><p>The path to the NEMO-MEDUSA model outputs.</p></td>
-    </tr>
-    <tr>
-      <th>file</th>
-      <td><p>The name of a netcdf file containing the title variable.</p></td>
+      <th>data</th>
+      <td><p>A dataframe containing a summarised month from NEMO-MEDUSA model outputs, at a single depth.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe containing points and lat/lon coordinates, with the average NEMO-MEDUSA model outputs for the title variable
-in the shallow and deep zone. The dataframe contains the data for a single day.</p>
+    <p>If the `data` contains shallow data, no action is taken. If `data` contains deep data, columns for variables only
+relevant in the shallow zone are dropped.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Each variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
-`count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
-of the shallow zone, and the same for the deep zone. Latitude and longitudes are also attached to each horizontal pixel.</p>
+    <p>Some variables are only relevant in the shallow zone of StrathE2E polar. There is no sea-ice 60 m under the sea.
+This means, when dataframes containing both shallow and deep data are split by depth, empty columns can be introduced.
+These empty columns can cause problems in downstream functions, such as plotting by column. This function removes the
+empty columns.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other NEMO-MEDUSA variable extractors: 
-<code><a href='detritus_month.html'>detritus_month</a>()</code>,
-<code><a href='get_air_dt.html'>get_air_dt</a>()</code>,
-<code><a href='get_air.html'>get_air</a>()</code>,
-<code><a href='get_bio.html'>get_bio</a>()</code>,
-<code><a href='get_detritus.html'>get_detritus</a>()</code>,
-<code><a href='get_ice.html'>get_ice</a>()</code>,
-<code><a href='get_sea.html'>get_sea</a>()</code>,
-<code><a href='get_spatial.html'>get_spatial</a>()</code>,
-<code><a href='get_vertical.html'>get_vertical</a>()</code>,
-<code><a href='get_zonal.html'>get_zonal</a>()</code>,
-<code><a href='interp_month.html'>interp_month</a>()</code>,
-<code><a href='interp_vertical.html'>interp_vertical</a>()</code>,
-<code><a href='type_in_month.html'>type_in_month</a>()</code>,
-<code><a href='whole_month.html'>whole_month</a>()</code></p></div>
+    <div class='dont-index'><p>Other NEMO-MEDUSA averages: 
+<code><a href='decadal.html'>decadal</a>()</code>,
+<code><a href='strip_ice.html'>strip_ice</a>()</code>,
+<code><a href='summarise_sp_dt.html'>summarise_sp_dt</a>()</code>,
+<code><a href='summarise_sp.html'>summarise_sp</a>()</code>,
+<code><a href='summarise_ts_detritus.html'>summarise_ts_detritus</a>()</code>,
+<code><a href='summarise_ts.html'>summarise_ts</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

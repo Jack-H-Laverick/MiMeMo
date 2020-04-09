@@ -47,6 +47,52 @@ Blah,
 
 Sediment classes in the Barents Sea.
 
+## SINMOD
+
+Tidally resolved water velocity fields in the Arctic.
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Arctic. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 2003/01/01. 
+* *To* 2018/12/28.
+* *In* 336 timesteps (every 2 hours in a 28 day month).
+* *Duration* 16 years.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 191 netcdf files.
+* 600gb total memory requirement.
+* 1 netcdf file contains a 3D spatial grid and all timesteps within a month.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#FFCC33;"></i>  Target variables
+
+* "u_east", Zonal veolcity.
+* "v_north", Meridional velocity.
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#FFCC33;"></i>  Spatial variables
+
+* "gridLats", matrix of latitudes (curvilinear grid).
+* "gridLons", matrix of longitudes (curvilinear grid).
+* "depths", matrix of depths.
+* "ldepths", vector of depth layer thicknesses?
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#FFCC33;"></i>  Other variables
+
+"w_east", "w_north", "w_velocity", "vertical_diffusivity", "NO3", "PhytoF", "PhytoD", "temperature",
+"salinity", "ice_thickness", "ice_compactness", "freezing_rate", "salinity_ice", "uIce_east", "vIce_north", "uUnderIceE",           "vUnderIceN", "elevation".
+
+<br><br>
+
 # Fishing Fleet
 
 ## Global Fishing Watch
