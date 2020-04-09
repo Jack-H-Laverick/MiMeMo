@@ -31,7 +31,7 @@ remotes::install_github("Jack-H-Laverick/MiMeMo.tools")
 ```
 <br/>
 <style>
-div.red { background-color:#fec0c0; border-radius: 5px; padding: 20px;}
+div.red { background-color:#fec0c0; border-radius: 20px; padding: 10px;}
 </style>
 <div class = "red">
 

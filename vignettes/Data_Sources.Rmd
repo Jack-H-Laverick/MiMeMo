@@ -20,36 +20,44 @@ Introductory text
 
 ## EMEP
 
-Atmospheric deposition of reduced and oxidised Nitrogen from a model.
+<style>
+div.description { background-color:#FFCC33; border-radius: 20px; padding: 10px;}
+</style>
+<div class = "description"> 
+Atmospheric deposition of reduced and oxidised Nitrogen from a model. </div>
 
 ## EMCWF
 
-Significant wave height and direction.
+<div class = "description"> Significant wave height and direction. </div>
 
 ## GEBCO
 
-Global bathymetry model.
+<div class = "description"> Global bathymetry model. </div>
 
 ## Globcolour
 
-Suspended particulate matter from satellite colour data.
+<div class = "description"> Suspended particulate matter from satellite colour data. </div>
 
 ## NEMO-MEDUSA
 
-Driving data **FOR** NEMO-MEDUSA includes surface irradiance and air temperature at the sea surface.
+### Driving data
 
-NEMO-MEDUSA model **outputs** extracted for StrathE2EPolar include:
+<div class = "description"> Driving data **FOR** NEMO-MEDUSA includes surface irradiance and air temperature at the sea surface. </div>
+
+### Outputs
+
+<div class = "description"> NEMO-MEDUSA model **outputs** extracted for StrathE2EPolar include:
 Water temperature,
 DIN,
-Blah,
+Blah, </div>
 
 ## NGU
 
-Sediment classes in the Barents Sea.
+<div class = "description"> Sediment classes in the Barents Sea. </div>
 
 ## SINMOD
 
-Tidally resolved water velocity fields in the Arctic.
+<div class = "description"> Tidally resolved water velocity fields in the Arctic. </div>
 
 
 #### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
@@ -97,12 +105,12 @@ Arctic.
 
 ## Global Fishing Watch
 
-Fishing effort from anonymised VMS signals and a model of vessel movement patterns.
+<div class = "description"> Fishing effort from anonymised VMS signals and a model of vessel movement patterns. </div>
 
 ## ICES
 
-Fisheries landings by species and country.
+<div class = "description"> Fisheries landings by species and country. </div>
 
 # Target data
 
-Blanchard report
+## Blanchard report
