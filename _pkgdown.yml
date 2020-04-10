@@ -82,6 +82,10 @@ navbar:
   left:
    - icon: fa-home
      href: index.html
+   - icon: fa-project-diagram
+     text: "Scripts"
+     href: articles/Code_map.html
+
   right:
    - icon: fa-cart-arrow-down
      text: "Data Sources"
