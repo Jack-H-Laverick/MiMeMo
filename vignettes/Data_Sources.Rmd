@@ -14,17 +14,17 @@ knitr::opts_chunk$set(
 )
 ```
 
+<style>
+div.description { background-color:#FFCC33; border-radius: 20px; padding: 10px;}
+</style>
+
 Introductory text
 
 # Ecological Drivers
 
 ## EMEP
 
-<style>
-div.description { background-color:#FFCC33; border-radius: 20px; padding: 10px;}
-</style>
-<div class = "description"> 
-Atmospheric deposition of reduced and oxidised Nitrogen from a model. </div>
+<div class = "description"> Atmospheric deposition of reduced and oxidised Nitrogen from a model. </div>
 
 ## EMCWF
 
@@ -53,7 +53,43 @@ Blah, </div>
 
 ## NGU
 
-<div class = "description"> Sediment classes in the Barents Sea. </div>
+<div class = "description"> Sediment classes in the Barents Sea, overview document. </div>
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Barents Sea. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+Snapshot
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 1 shape file.
+* 8mb total memory requirement.
+* The file contains a collection of spatial polygons where sediment classes are expected to occur within the Barents Sea.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#FFCC33;"></i>  Target variable
+
+* "SEDKORNSTR", Sediment grain size code.
+* "SEDKO_NAVN" , Sediment grain size class name.
+ 
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#FFCC33;"></i>  Spatial variables
+
+Polygon boundaries embedded in shapefile.
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#FFCC33;"></i>  Other variables
+
+NA
+
+<br><br>
+
 
 ## SINMOD
 
@@ -106,6 +142,45 @@ Arctic.
 ## Global Fishing Watch
 
 <div class = "description"> Fishing effort from anonymised VMS signals and a model of vessel movement patterns. </div>
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Global. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 2012/01/01. 
+* *To* 2016/12/31.
+* *In* days.
+* *Duration* 5 years.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 1,827 csv files.
+* 18gb total memory requirement.
+* 1 csv file contains a list of pixels from the global grid where fishing was detected for a day.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#FFCC33;"></i>  Target variables
+
+* "geartype", fishing gear used.
+* "fishing_hours", total hours of fishing within a pixel for a given day).
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#FFCC33;"></i>  Spatial variables
+
+* "lat_bin", latitude * 100.
+* "lon_bin", longitude * 100
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#FFCC33;"></i>  Other variables
+
+"flag", "vessel_hours", "mmsi_present".
+
+<br>
 
 ## ICES
 
