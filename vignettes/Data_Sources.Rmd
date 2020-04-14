@@ -25,7 +25,49 @@ Below is a record of the data products synthesised during MiMeMo. I've kept trac
 
 ## EMEP
 
-<div class = "description"> Atmospheric deposition of reduced and oxidised Nitrogen from a model. </div>
+<div class = "description"> Modelled atmospheric deposition of reduced and oxidised Nitrogen from EMEP MSC-W. </div>
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Europe. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 2000/01/01. 
+* *To* 2017/12/28.
+* *In* months.
+* *Duration* 18 years.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 18 netcdf files.
+* 15gb total memory requirement.
+* 1 netcdf file contains a 2D spatial grid and all months within a year.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* "DDEP_OXN_m2Grid", mean dry deposition of oxidised nitrogen.
+* "WDEP_OXN", mean wet deposition of oxidised nitrogen.
+* "DDEP_RDN_m2Grid", mean dry deposition of reduced nitrogen.
+* "WDEP_RDN", mean wet deposition of reduced nitrogen.
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+*Located within netcdf dims, not as variables.*
+
+* "lon", vector of latitudes (rectilinear grid).
+* "lat", vector of longitudes (rectilinear grid).
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+"SURF_ugN_NOX", "SURF_ugN_RDN", "SURF_ugN_OXN", "WDEP_PREC", "WDEP_SOX", "SURF_MAXO3", "SURF_PM25water", "SOMO35", "DDEP_SOX_m2Grid", "DDEP_SOX_m2Conif", "DDEP_SOX_m2Decid", "DDEP_SOX_m2Seminat", "DDEP_OXN_m2Conif", "DDEP_OXN_m2Decid", "DDEP_OXN_m2Seminat", "DDEP_RDN_m2Conif", "DDEP_RDN_m2Decid", "DDEP_RDN_m2Seminat", "MMAOT40_IAM_DF", "MMAOT40_IAM_CR", "EUAOT40_Crops", "EUAOT40_Forests", "SURF_ug_SO2", "SURF_ug_NH3", "SURF_ug_HNO3", "SURF_ug_NO2", "SURF_ug_NO", "SURF_ug_SO4", "SURF_ug_NO3_F", "SURF_ug_NO3_C", "SURF_ug_NH4_F", "SURF_ppb_O3", "SURF_ug_PM10", "SURF_ug_PPM25", "SURF_ug_PPM_C", "SURF_ug_SS", "SURF_ug_DUST", "SURF_ug_ECFINE", "SURF_ug_ECCOARSE", "SURF_ug_PM25", "SURF_ug_PM25_rh50", "SURF_ug_PM10_rh50".
+<br><br>
+
 
 ## EMCWF
 
@@ -324,6 +366,51 @@ Global.
 ## ICES
 
 <div class = "description"> Fisheries landings by species and country. </div>
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Major fishing area 27. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 1903/01/01. 
+* *To* 2017/12/31.
+* *In* years.
+* *Duration* 115 years.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 1 csv file.
+* 37mb total memory requirement.
+* The file contains a list of landings by species, FAO areas, and flag for the whole time span.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* "tonnage", weight of fish landed.
+* "year", year of lannding.
+* "cname", country name.
+* "N.blocs", block of nations.
+* "Category", species guild.
+* "Subcategory", species guild.
+* "scientific", species name.
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+* "area", FAO region.
+* "area_orig", old FAO naming convention.
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+"ccode2", "ccode3", acronym", "tsn", "common".
+
+<br>
+
 
 # Target data
 

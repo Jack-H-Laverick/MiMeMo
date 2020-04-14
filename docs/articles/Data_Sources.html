@@ -120,23 +120,76 @@ div.description { background-color:#FFCC33; border-radius: 20px; padding: 10px;}
 <h2 class="hasAnchor">
 <a href="#emep" class="anchor"></a>EMEP</h2>
 <div class="description">
-Atmospheric deposition of reduced and oxidised Nitrogen from a model.
+Modelled atmospheric deposition of reduced and oxidised Nitrogen from EMEP MSC-W.
+</div>
+<div id="spatial-extent" class="section level4">
+<h4 class="hasAnchor">
+<a href="#spatial-extent" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
+<p>Europe.</p>
+</div>
+<div id="temporal-extent" class="section level4">
+<h4 class="hasAnchor">
+<a href="#temporal-extent" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
+<ul>
+<li>
+<em>From</em> 2000/01/01.</li>
+<li>
+<em>To</em> 2017/12/28.</li>
+<li>
+<em>In</em> months.</li>
+<li>
+<em>Duration</em> 18 years.</li>
+</ul>
+</div>
+<div id="file-structure" class="section level4">
+<h4 class="hasAnchor">
+<a href="#file-structure" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
+<ul>
+<li>18 netcdf files.</li>
+<li>15gb total memory requirement.</li>
+<li>1 netcdf file contains a 2D spatial grid and all months within a year.</li>
+</ul>
+</div>
+<div id="target-variables" class="section level4">
+<h4 class="hasAnchor">
+<a href="#target-variables" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
+<ul>
+<li>“DDEP_OXN_m2Grid”, mean dry deposition of oxidised nitrogen.</li>
+<li>“WDEP_OXN”, mean wet deposition of oxidised nitrogen.</li>
+<li>“DDEP_RDN_m2Grid”, mean dry deposition of reduced nitrogen.</li>
+<li>“WDEP_RDN”, mean wet deposition of reduced nitrogen.</li>
+</ul>
+</div>
+<div id="spatial-variables" class="section level4">
+<h4 class="hasAnchor">
+<a href="#spatial-variables" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
+<p><em>Located within netcdf dims, not as variables.</em></p>
+<ul>
+<li>“lon”, vector of latitudes (rectilinear grid).</li>
+<li>“lat”, vector of longitudes (rectilinear grid).</li>
+</ul>
+</div>
+<div id="other-variables" class="section level4">
+<h4 class="hasAnchor">
+<a href="#other-variables" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
+<p>“SURF_ugN_NOX”, “SURF_ugN_RDN”, “SURF_ugN_OXN”, “WDEP_PREC”, “WDEP_SOX”, “SURF_MAXO3”, “SURF_PM25water”, “SOMO35”, “DDEP_SOX_m2Grid”, “DDEP_SOX_m2Conif”, “DDEP_SOX_m2Decid”, “DDEP_SOX_m2Seminat”, “DDEP_OXN_m2Conif”, “DDEP_OXN_m2Decid”, “DDEP_OXN_m2Seminat”, “DDEP_RDN_m2Conif”, “DDEP_RDN_m2Decid”, “DDEP_RDN_m2Seminat”, “MMAOT40_IAM_DF”, “MMAOT40_IAM_CR”, “EUAOT40_Crops”, “EUAOT40_Forests”, “SURF_ug_SO2”, “SURF_ug_NH3”, “SURF_ug_HNO3”, “SURF_ug_NO2”, “SURF_ug_NO”, “SURF_ug_SO4”, “SURF_ug_NO3_F”, “SURF_ug_NO3_C”, “SURF_ug_NH4_F”, “SURF_ppb_O3”, “SURF_ug_PM10”, “SURF_ug_PPM25”, “SURF_ug_PPM_C”, “SURF_ug_SS”, “SURF_ug_DUST”, “SURF_ug_ECFINE”, “SURF_ug_ECCOARSE”, “SURF_ug_PM25”, “SURF_ug_PM25_rh50”, “SURF_ug_PM10_rh50”. <br><br></p>
 </div>
 </div>
 <div id="emcwf" class="section level2">
 <h2 class="hasAnchor">
 <a href="#emcwf" class="anchor"></a>EMCWF</h2>
 <div class="description">
-Significant wave height and direction.
+Significant wave height and direction from the CERA-20C “Ocean Wave Synoptic Monthly Means”.
 </div>
-<div id="spatial-extent" class="section level4">
+<div id="spatial-extent-1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#spatial-extent" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
-<p>Northern hemisphere. A global download is avaialable.</p>
+<a href="#spatial-extent-1" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
+<p>Northern hemisphere.</p>
+<p><em>A global download is avaialable.</em></p>
 </div>
-<div id="temporal-extent" class="section level4">
+<div id="temporal-extent-1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#temporal-extent" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
+<a href="#temporal-extent-1" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
 <p><em>Back to 1901 is avaiable as a daily time series if required.</em></p>
 <ul>
 <li>
@@ -149,36 +202,36 @@ Significant wave height and direction.
 <em>Duration</em> 11 years.</li>
 </ul>
 </div>
-<div id="file-structure" class="section level4">
+<div id="file-structure-1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#file-structure" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
+<a href="#file-structure-1" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
 <ul>
 <li>11 netcdf files.</li>
 <li>78.3gb total memory requirement.</li>
 <li>1 netcdf file contains a 2D spatial grid and all timesteps within a year.</li>
 </ul>
 </div>
-<div id="target-variables" class="section level4">
+<div id="target-variables-1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#target-variables" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
+<a href="#target-variables-1" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
 <ul>
 <li>“swh”, Mean significant wave height.</li>
 <li>“mwd”, Mean wave direction.</li>
 <li>“mwp”, Mean wave period.</li>
 </ul>
 </div>
-<div id="spatial-variables" class="section level4">
+<div id="spatial-variables-1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#spatial-variables" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
+<a href="#spatial-variables-1" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
 <p><em>Located within netcdf dims, not as variables.</em></p>
 <ul>
 <li>“latitude”, vector of latitudes (rectilinear grid).</li>
 <li>“longitude”, vector of longitudes (rectilinear grid).</li>
 </ul>
 </div>
-<div id="other-variables" class="section level4">
+<div id="other-variables-1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#other-variables" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
+<a href="#other-variables-1" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
 <p><em>Additional variables are available, but have not been downloaded from the web portal.</em></p>
 <p>“10 metre wind direction”, “10 metre wind speed”, “Air density over the oceans”, “Benjamin-Feir index”, “Coefficient of drag with waves”, “Free convective velocity over the oceans”, “Maximum individual wave height”, “Mean direction of total swell”, “Mean direction of wind waves”, “Mean period of total swell”, “Mean period of wind waves”, “Mean square slope of waves”, “Mean wave direction of first swell partition”, “Mean wave direction of second swell partition”, “Mean wave direction of third swell partition”, “Mean wave period based on first moment”, “Mean wave period based on first moment for swell”, “Mean wave period based on first moment for wind waves”, “Mean wave period based on second moment for swell”, “Mean wave period based on second moment for wind waves”, “Mean wave period of first swell partition”, “Mean wave period of second swell partition”, “Mean wave period of third swell partition”, “Mean zero-crossing wave period”, “Normalized energy flux into ocean”, “Normalized energy flux into waves”, “Normalized stress into ocean”, “Peak wave period”, “Period corresponding to maximum individual wave height”, “Significant height of total swell”, “Significant height of wind waves”, “Significant wave height of first swell partition”, “Significant wave height of second swell partition”, “Significant wave height of third swell partition”, “U-component stokes drift”, “V-component stokes drift”, “Wave Spectral Skewness”, “Wave spectral directional width”, “Wave spectral directional width for swell”, “Wave spectral directional width for wind waves”, “Wave spectral kurtosis”, “Wave spectral peakedness”.</p>
 <p><br><br></p>
@@ -188,45 +241,45 @@ Significant wave height and direction.
 <h2 class="hasAnchor">
 <a href="#gebco" class="anchor"></a>GEBCO</h2>
 <div class="description">
-Global bathymetry model.
+Global terrain model for ocean and land at 15 arc-second intervals.
 </div>
-<div id="spatial-extent-1" class="section level4">
+<div id="spatial-extent-2" class="section level4">
 <h4 class="hasAnchor">
-<a href="#spatial-extent-1" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
+<a href="#spatial-extent-2" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
 <p>Global.</p>
 </div>
-<div id="temporal-extent-1" class="section level4">
+<div id="temporal-extent-2" class="section level4">
 <h4 class="hasAnchor">
-<a href="#temporal-extent-1" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
+<a href="#temporal-extent-2" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
 <p>Snapshot, 2019.</p>
 </div>
-<div id="file-structure-1" class="section level4">
+<div id="file-structure-2" class="section level4">
 <h4 class="hasAnchor">
-<a href="#file-structure-1" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
+<a href="#file-structure-2" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
 <ul>
 <li>1 netcdf file.</li>
 <li>11gb total memory requirement.</li>
 <li>The file contains a global 2D spatial grid.</li>
 </ul>
 </div>
-<div id="target-variables-1" class="section level4">
+<div id="target-variables-2" class="section level4">
 <h4 class="hasAnchor">
-<a href="#target-variables-1" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
+<a href="#target-variables-2" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
 <ul>
 <li>“elevation”, bathymetry and topography.</li>
 </ul>
 </div>
-<div id="spatial-variables-1" class="section level4">
+<div id="spatial-variables-2" class="section level4">
 <h4 class="hasAnchor">
-<a href="#spatial-variables-1" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
+<a href="#spatial-variables-2" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
 <ul>
 <li>“lat”, vector of latitudes (rectilinear grid).</li>
 <li>“lon”, vector of longitudes (rectilinear grid).</li>
 </ul>
 </div>
-<div id="other-variables-1" class="section level4">
+<div id="other-variables-2" class="section level4">
 <h4 class="hasAnchor">
-<a href="#other-variables-1" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
+<a href="#other-variables-2" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
 <p>NA</p>
 <p><br><br></p>
 </div>
@@ -235,7 +288,68 @@ Global bathymetry model.
 <h2 class="hasAnchor">
 <a href="#globcolour" class="anchor"></a>Globcolour</h2>
 <div class="description">
-Suspended particulate matter from satellite colour data.
+Suspended particulate matter from binned monthly satellite colour data.
+</div>
+<div id="spatial-extent-3" class="section level4">
+<h4 class="hasAnchor">
+<a href="#spatial-extent-3" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
+<p>Global.</p>
+</div>
+<div id="temporal-extent-3" class="section level4">
+<h4 class="hasAnchor">
+<a href="#temporal-extent-3" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
+<ul>
+<li>
+<em>From</em> 1997/09/01.</li>
+<li>
+<em>To</em> 2020/31/28.</li>
+<li>
+<em>In</em> months.</li>
+<li>
+<em>Duration</em> 22 years.</li>
+</ul>
+</div>
+<div id="file-structure-3" class="section level4">
+<h4 class="hasAnchor">
+<a href="#file-structure-3" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
+<ul>
+<li>269 netcdf files.</li>
+<li>17.5gb total memory requirement.</li>
+<li>1 netcdf file contains a 2D spatial grid of mean values within a month.</li>
+</ul>
+</div>
+<div id="target-variables-3" class="section level4">
+<h4 class="hasAnchor">
+<a href="#target-variables-3" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
+<ul>
+<li>“SPM-0C5_mean”, mean inorganic suspended particulate matter in sea water.</li>
+</ul>
+</div>
+<div id="spatial-variables-3" class="section level4">
+<h4 class="hasAnchor">
+<a href="#spatial-variables-3" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
+<ul>
+<li>“col”, vector of longitudinal indices of the bins stored in the file.</li>
+<li>“center_lat”, vector of centre latitudes for each useful row.</li>
+<li>“centerlon”, vector of centre longitudes of the first left bin in a row.</li>
+<li>“lon_step”, vector of longitudinal steps for each useful row.</li>
+</ul>
+<p>Two dimensions are also required:</p>
+<ul>
+<li>“bin”, id for a pixel</li>
+<li>“row”, the row in the grid for a pixel.</li>
+</ul>
+<p>To get to coordinates in latitude and longitude:</p>
+<div class="sourceCode" id="cb1"><html><body><pre class="r">  <span class="no">index</span> <span class="kw">&lt;-</span> <span class="no">row</span>[<span class="no">bin</span>] - <span class="no">row</span>[<span class="fl">1</span>]+<span class="fl">1</span>
+  <span class="no">lat_bin</span> <span class="kw">=</span> <span class="no">center_lat</span>[<span class="no">index</span>]
+  <span class="no">lon_bin</span> <span class="kw">=</span> <span class="no">center_lon</span>[<span class="no">index</span>] + <span class="no">col</span>[<span class="no">bin</span>] * <span class="no">lon_step</span>[<span class="no">index</span>]</pre></body></html></div>
+</div>
+<div id="other-variables-3" class="section level4">
+<h4 class="hasAnchor">
+<a href="#other-variables-3" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
+<p><em>Additional variables are available, but have not been downloaded from the server.</em></p>
+<p>“CHL1”, “CHL-OC5”, “CHL2”, “TSM”, “PIC”, “POC”, “NFLH”, “WVCS”, “Txxx”, “Axxx”, “CF”, “ABSD”, “(N)RRSxxx”, “PAR”, “BBP”, “CDM”, “KD490”, “KDPAR”, “ZHL”, “ZEU”, “ZSD”, “CHL-CIA”, “BBPxxx-LOG”, “BBPS-LOG”, “PSD-XXX”, “POC-SURF”, “POC-INT”, “PP”, “PP-AM”, “PP-UITZ”, “PHYSAT”.</p>
+<p><br><br></p>
 </div>
 </div>
 <div id="nemo-medusa" class="section level2">
@@ -260,21 +374,21 @@ NEMO-MEDUSA model <strong>outputs</strong> extracted for StrathE2EPolar include:
 <h2 class="hasAnchor">
 <a href="#ngu" class="anchor"></a>NGU</h2>
 <div class="description">
-Sediment classes in the Barents Sea, overview document.
+Sediment classes in the Barents Sea, an overview document of likely bottom types from expert synthesis of multiple data sets.
 </div>
-<div id="spatial-extent-2" class="section level4">
+<div id="spatial-extent-4" class="section level4">
 <h4 class="hasAnchor">
-<a href="#spatial-extent-2" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
+<a href="#spatial-extent-4" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
 <p>Barents Sea.</p>
 </div>
-<div id="temporal-extent-2" class="section level4">
+<div id="temporal-extent-4" class="section level4">
 <h4 class="hasAnchor">
-<a href="#temporal-extent-2" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
+<a href="#temporal-extent-4" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
 <p>Snapshot, 2015.</p>
 </div>
-<div id="file-structure-2" class="section level4">
+<div id="file-structure-4" class="section level4">
 <h4 class="hasAnchor">
-<a href="#file-structure-2" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
+<a href="#file-structure-4" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
 <ul>
 <li>1 shape file.</li>
 <li>8mb total memory requirement.</li>
@@ -289,14 +403,14 @@ Sediment classes in the Barents Sea, overview document.
 <li>“SEDKO_NAVN” , Sediment grain size class name.</li>
 </ul>
 </div>
-<div id="spatial-variables-2" class="section level4">
+<div id="spatial-variables-4" class="section level4">
 <h4 class="hasAnchor">
-<a href="#spatial-variables-2" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
+<a href="#spatial-variables-4" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
 <p>Polygon boundaries embedded in shapefile.</p>
 </div>
-<div id="other-variables-2" class="section level4">
+<div id="other-variables-4" class="section level4">
 <h4 class="hasAnchor">
-<a href="#other-variables-2" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
+<a href="#other-variables-4" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
 <p>NA</p>
 <p><br><br></p>
 </div>
@@ -305,16 +419,16 @@ Sediment classes in the Barents Sea, overview document.
 <h2 class="hasAnchor">
 <a href="#sinmod" class="anchor"></a>SINMOD</h2>
 <div class="description">
-Tidally resolved water velocity fields in the Arctic.
+Tidally resolved water velocity fields in the Arctic. Numerical ocean model output.
 </div>
-<div id="spatial-extent-3" class="section level4">
+<div id="spatial-extent-5" class="section level4">
 <h4 class="hasAnchor">
-<a href="#spatial-extent-3" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
+<a href="#spatial-extent-5" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
 <p>Arctic.</p>
 </div>
-<div id="temporal-extent-3" class="section level4">
+<div id="temporal-extent-5" class="section level4">
 <h4 class="hasAnchor">
-<a href="#temporal-extent-3" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
+<a href="#temporal-extent-5" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
 <ul>
 <li>
 <em>From</em> 2003/01/01.</li>
@@ -326,26 +440,26 @@ Tidally resolved water velocity fields in the Arctic.
 <em>Duration</em> 16 years.</li>
 </ul>
 </div>
-<div id="file-structure-3" class="section level4">
+<div id="file-structure-5" class="section level4">
 <h4 class="hasAnchor">
-<a href="#file-structure-3" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
+<a href="#file-structure-5" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
 <ul>
 <li>191 netcdf files.</li>
 <li>600gb total memory requirement.</li>
 <li>1 netcdf file contains a 3D spatial grid and all timesteps within a month.</li>
 </ul>
 </div>
-<div id="target-variables-2" class="section level4">
+<div id="target-variables-4" class="section level4">
 <h4 class="hasAnchor">
-<a href="#target-variables-2" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
+<a href="#target-variables-4" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
 <ul>
 <li>“u_east”, Zonal veolcity.</li>
 <li>“v_north”, Meridional velocity.</li>
 </ul>
 </div>
-<div id="spatial-variables-3" class="section level4">
+<div id="spatial-variables-5" class="section level4">
 <h4 class="hasAnchor">
-<a href="#spatial-variables-3" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
+<a href="#spatial-variables-5" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
 <ul>
 <li>“gridLats”, matrix of latitudes (curvilinear grid).</li>
 <li>“gridLons”, matrix of longitudes (curvilinear grid).</li>
@@ -353,9 +467,9 @@ Tidally resolved water velocity fields in the Arctic.
 <li>“ldepths”, vector of depth layer thicknesses?</li>
 </ul>
 </div>
-<div id="other-variables-3" class="section level4">
+<div id="other-variables-5" class="section level4">
 <h4 class="hasAnchor">
-<a href="#other-variables-3" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
+<a href="#other-variables-5" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
 <p>“w_east”, “w_north”, “w_velocity”, “vertical_diffusivity”, “NO3”, “PhytoF”, “PhytoD”, “temperature”, “salinity”, “ice_thickness”, “ice_compactness”, “freezing_rate”, “salinity_ice”, “uIce_east”, “vIce_north”, “uUnderIceE”, “vUnderIceN”, “elevation”.</p>
 <p><br><br></p>
 </div>
@@ -370,14 +484,14 @@ Tidally resolved water velocity fields in the Arctic.
 <div class="description">
 Fishing effort from anonymised VMS signals and a model of vessel movement patterns.
 </div>
-<div id="spatial-extent-4" class="section level4">
+<div id="spatial-extent-6" class="section level4">
 <h4 class="hasAnchor">
-<a href="#spatial-extent-4" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
+<a href="#spatial-extent-6" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
 <p>Global.</p>
 </div>
-<div id="temporal-extent-4" class="section level4">
+<div id="temporal-extent-6" class="section level4">
 <h4 class="hasAnchor">
-<a href="#temporal-extent-4" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
+<a href="#temporal-extent-6" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
 <ul>
 <li>
 <em>From</em> 2012/01/01.</li>
@@ -389,34 +503,34 @@ Fishing effort from anonymised VMS signals and a model of vessel movement patter
 <em>Duration</em> 5 years.</li>
 </ul>
 </div>
-<div id="file-structure-4" class="section level4">
+<div id="file-structure-6" class="section level4">
 <h4 class="hasAnchor">
-<a href="#file-structure-4" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
+<a href="#file-structure-6" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
 <ul>
 <li>1,827 csv files.</li>
 <li>18gb total memory requirement.</li>
 <li>1 csv file contains a list of pixels from the global grid where fishing was detected for a day.</li>
 </ul>
 </div>
-<div id="target-variables-3" class="section level4">
+<div id="target-variables-5" class="section level4">
 <h4 class="hasAnchor">
-<a href="#target-variables-3" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
+<a href="#target-variables-5" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
 <ul>
 <li>“geartype”, fishing gear used.</li>
 <li>“fishing_hours”, total hours of fishing within a pixel for a given day).</li>
 </ul>
 </div>
-<div id="spatial-variables-4" class="section level4">
+<div id="spatial-variables-6" class="section level4">
 <h4 class="hasAnchor">
-<a href="#spatial-variables-4" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
+<a href="#spatial-variables-6" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
 <ul>
 <li>“lat_bin”, latitude * 100 (rectilinear grid).</li>
 <li>“lon_bin”, longitude * 100 (rectilinear grid).</li>
 </ul>
 </div>
-<div id="other-variables-4" class="section level4">
+<div id="other-variables-6" class="section level4">
 <h4 class="hasAnchor">
-<a href="#other-variables-4" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
+<a href="#other-variables-6" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
 <p>“flag”, “vessel_hours”, “mmsi_present”.</p>
 <p><br></p>
 </div>
@@ -426,6 +540,61 @@ Fishing effort from anonymised VMS signals and a model of vessel movement patter
 <a href="#ices" class="anchor"></a>ICES</h2>
 <div class="description">
 Fisheries landings by species and country.
+</div>
+<div id="spatial-extent-7" class="section level4">
+<h4 class="hasAnchor">
+<a href="#spatial-extent-7" class="anchor"></a><i class="fa fa-globe" aria-hidden="true" style="color:#003399;"></i> Spatial extent</h4>
+<p>Major fishing area 27.</p>
+</div>
+<div id="temporal-extent-7" class="section level4">
+<h4 class="hasAnchor">
+<a href="#temporal-extent-7" class="anchor"></a><i class="fa fa-stopwatch" aria-hidden="true" style="color:#003399;"></i> Temporal extent</h4>
+<ul>
+<li>
+<em>From</em> 1903/01/01.</li>
+<li>
+<em>To</em> 2017/12/31.</li>
+<li>
+<em>In</em> years.</li>
+<li>
+<em>Duration</em> 115 years.</li>
+</ul>
+</div>
+<div id="file-structure-7" class="section level4">
+<h4 class="hasAnchor">
+<a href="#file-structure-7" class="anchor"></a><i class="fa fa-folder" aria-hidden="true" style="color:#003399;"></i> File structure</h4>
+<ul>
+<li>1 csv file.</li>
+<li>37mb total memory requirement.</li>
+<li>The file contains a list of landings by species, FAO areas, and flag for the whole time span.</li>
+</ul>
+</div>
+<div id="target-variables-6" class="section level4">
+<h4 class="hasAnchor">
+<a href="#target-variables-6" class="anchor"></a><i class="fa fa-eye" aria-hidden="true" style="color:#003399;"></i> Target variables</h4>
+<ul>
+<li>“tonnage”, weight of fish landed.</li>
+<li>“year”, year of lannding.</li>
+<li>“cname”, country name.</li>
+<li>“N.blocs”, block of nations.</li>
+<li>“Category”, species guild.</li>
+<li>“Subcategory”, species guild.</li>
+<li>“scientific”, species name.</li>
+</ul>
+</div>
+<div id="spatial-variables-7" class="section level4">
+<h4 class="hasAnchor">
+<a href="#spatial-variables-7" class="anchor"></a><i class="fa fa-layer-group" aria-hidden="true" style="color:#003399;"></i> Spatial variables</h4>
+<ul>
+<li>“area”, FAO region.</li>
+<li>“area_orig”, old FAO naming convention.</li>
+</ul>
+</div>
+<div id="other-variables-7" class="section level4">
+<h4 class="hasAnchor">
+<a href="#other-variables-7" class="anchor"></a><i class="fa fa-plus" aria-hidden="true" style="color:#003399;"></i> Other variables</h4>
+<p>“ccode2”, “ccode3”, acronym“,”tsn“,”common".</p>
+<p><br></p>
 </div>
 </div>
 </div>
