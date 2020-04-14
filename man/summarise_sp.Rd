@@ -4,9 +4,11 @@
 \alias{summarise_sp}
 \title{Average into Decadal Grids}
 \usage{
-summarise_sp(decade)
+summarise_sp(decade, dt)
 }
 \arguments{
+\item{dt}{Switch for using either data.table or dplyr methods (TRUE/FALSE respectively)}
+
 \item{saved}{A dataframe containing a summarised month from NEMO-MEDUSA model outputs. It must contain the columns:
 Longitude, Latitude, Decade, Month, Shore, and Depth.}
 }
@@ -23,9 +25,7 @@ The mean for every other variable is calculated within these groups.
 \seealso{
 Other NEMO-MEDUSA averages: 
 \code{\link{decadal}()},
-\code{\link{strip_ice_dt}()},
 \code{\link{strip_ice}()},
-\code{\link{summarise_sp_dt}()},
 \code{\link{summarise_ts_detritus}()},
 \code{\link{summarise_ts}()}
 }

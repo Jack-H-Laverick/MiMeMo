@@ -150,11 +150,15 @@
     <p>This function averages cleaned NEMO-MEDUSA monthly summaries into decadal grids.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summarise_sp</span>(<span class='no'>decade</span>)</pre>
+    <pre class="usage"><span class='fu'>summarise_sp</span>(<span class='no'>decade</span>, <span class='no'>dt</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>dt</th>
+      <td><p>Switch for using either data.table or dplyr methods (TRUE/FALSE respectively)</p></td>
+    </tr>
     <tr>
       <th>saved</th>
       <td><p>A dataframe containing a summarised month from NEMO-MEDUSA model outputs. It must contain the columns:
@@ -173,9 +177,7 @@ The mean for every other variable is calculated within these groups.</p>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA averages: 
 <code><a href='decadal.html'>decadal</a>()</code>,
-<code><a href='strip_ice_dt.html'>strip_ice_dt</a>()</code>,
 <code><a href='strip_ice.html'>strip_ice</a>()</code>,
-<code><a href='summarise_sp_dt.html'>summarise_sp_dt</a>()</code>,
 <code><a href='summarise_ts_detritus.html'>summarise_ts_detritus</a>()</code>,
 <code><a href='summarise_ts.html'>summarise_ts</a>()</code></p></div>
 

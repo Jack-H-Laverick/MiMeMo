@@ -22,9 +22,7 @@ The mean for every target variable is calculated within these groups.
 \seealso{
 Other NEMO-MEDUSA averages: 
 \code{\link{decadal}()},
-\code{\link{strip_ice_dt}()},
 \code{\link{strip_ice}()},
-\code{\link{summarise_sp_dt}()},
 \code{\link{summarise_sp}()},
 \code{\link{summarise_ts_detritus}()}
 }

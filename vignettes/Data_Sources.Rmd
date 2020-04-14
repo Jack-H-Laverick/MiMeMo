@@ -18,7 +18,8 @@ knitr::opts_chunk$set(
 div.description { background-color:#FFCC33; border-radius: 20px; padding: 10px;}
 </style>
 
-Introductory text
+Below is a record of the data products synthesised during MiMeMo. I've kept track of the structure of the data to make it easier to quickly check what we have. This will also function as a README for anyone else who follows and wants signposting to sources, or to know what additional data could be downloaded. 
+
 
 # Ecological Drivers
 
@@ -28,15 +29,153 @@ Introductory text
 
 ## EMCWF
 
-<div class = "description"> Significant wave height and direction. </div>
+<div class = "description"> Significant wave height and direction from the CERA-20C "Ocean Wave Synoptic Monthly Means". </div>
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Northern hemisphere. 
+
+*A global download is avaialable.*
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+*Back to 1901 is avaiable as a daily time series if required.*
+
+* *From* 2000/01/01. 
+* *To* 2010/12/28.
+* *In* 96 timesteps (every 3 hours for a synoptic day per month).
+* *Duration* 11 years.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 11 netcdf files.
+* 78.3gb total memory requirement.
+* 1 netcdf file contains a 2D spatial grid and all timesteps within a year.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* "swh", Mean significant wave height.
+* "mwd", Mean wave direction.
+* "mwp", Mean wave period.
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+*Located within netcdf dims, not as variables.*
+
+* "latitude", vector of latitudes (rectilinear grid).
+* "longitude", vector of longitudes (rectilinear grid).
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+*Additional variables are available, but have not been downloaded from the web portal.*
+
+"10 metre wind direction", "10 metre wind speed", "Air density over the oceans", "Benjamin-Feir index", "Coefficient of drag with waves", "Free convective velocity over the oceans", "Maximum individual wave height", "Mean direction of total swell", "Mean direction of wind waves", "Mean period of total swell", "Mean period of wind waves", "Mean square slope of waves", "Mean wave direction of first swell partition", "Mean wave direction of second swell partition", "Mean wave direction of third swell partition", "Mean wave period based on first moment", "Mean wave period based on first moment for swell", "Mean wave period based on first moment for wind waves", "Mean wave period based on second moment for swell", "Mean wave period based on second moment for wind waves", "Mean wave period of first swell partition", "Mean wave period of second swell partition", "Mean wave period of third swell partition", "Mean zero-crossing wave period", "Normalized energy flux into ocean", "Normalized energy flux into waves", "Normalized stress into ocean", "Peak wave period", "Period corresponding to maximum individual wave height", "Significant height of total swell", "Significant height of wind waves", "Significant wave height of first swell partition", "Significant wave height of second swell partition", "Significant wave height of third swell partition", "U-component stokes drift", "V-component stokes drift", "Wave Spectral Skewness", "Wave spectral directional width", "Wave spectral directional width for swell", "Wave spectral directional width for wind waves", "Wave spectral kurtosis", "Wave spectral peakedness".
+
+<br><br>
 
 ## GEBCO
 
-<div class = "description"> Global bathymetry model. </div>
+<div class = "description"> Global terrain model for ocean and land at 15 arc-second intervals. </div>
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Global. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+Snapshot, 2019.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 1 netcdf file.
+* 11gb total memory requirement.
+* The file contains a global 2D spatial grid.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* "elevation", bathymetry and topography.
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+* "lat", vector of latitudes (rectilinear grid).
+* "lon", vector of longitudes (rectilinear grid).
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+NA
+
+<br><br>
+
 
 ## Globcolour
 
-<div class = "description"> Suspended particulate matter from satellite colour data. </div>
+<div class = "description"> Suspended particulate matter from binned monthly satellite colour data. </div>
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Global. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 1997/09/01. 
+* *To* 2020/31/28.
+* *In* months.
+* *Duration* 22 years.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 269 netcdf files.
+* 17.5gb total memory requirement.
+* 1 netcdf file contains a 2D spatial grid of mean values within a month.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* "SPM-0C5_mean", mean inorganic suspended particulate matter in sea water.
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+* "col", vector of longitudinal indices of the bins stored in the file.
+* "center_lat", vector of centre latitudes for each useful row.
+* "centerlon", vector of centre longitudes of the first left bin in a row.
+* "lon_step", vector of longitudinal steps for each useful row.
+
+Two dimensions are also required:
+
+* "bin", id for a pixel
+* "row", the row in the grid for a pixel.
+
+To get to coordinates in latitude and longitude:
+
+```{r code Globcolour coordinates, eval = FALSE, warning= FALSE}
+  index <- row[bin] - row[1]+1 
+  lat_bin = center_lat[index]
+  lon_bin = center_lon[index] + col[bin] * lon_step[index]
+```
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+*Additional variables are available, but have not been downloaded from the server.*
+
+"CHL1", "CHL-OC5", "CHL2", "TSM", "PIC", "POC", "NFLH", "WVCS", "Txxx", "Axxx", "CF", "ABSD", "(N)RRSxxx", "PAR", "BBP", "CDM", "KD490", "KDPAR", "ZHL", "ZEU", "ZSD", "CHL-CIA", "BBPxxx-LOG", "BBPS-LOG", "PSD-XXX", "POC-SURF", "POC-INT", "PP", "PP-AM", "PP-UITZ", "PHYSAT".
+
+<br><br>
+
 
 ## NEMO-MEDUSA
 
@@ -53,7 +192,7 @@ Blah, </div>
 
 ## NGU
 
-<div class = "description"> Sediment classes in the Barents Sea, overview document. </div>
+<div class = "description"> Sediment classes in the Barents Sea, an overview document of likely bottom types from expert synthesis of multiple data sets. </div>
 
 
 #### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
@@ -63,7 +202,7 @@ Barents Sea.
 
 #### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
 
-Snapshot
+Snapshot, 2015.
 
 
 #### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
@@ -73,18 +212,18 @@ Snapshot
 * The file contains a collection of spatial polygons where sediment classes are expected to occur within the Barents Sea.
 
 
-#### <i class="fa fa-eye" aria-hidden="true" style ="color:#FFCC33;"></i>  Target variable
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variable
 
 * "SEDKORNSTR", Sediment grain size code.
 * "SEDKO_NAVN" , Sediment grain size class name.
  
 
-#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#FFCC33;"></i>  Spatial variables
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
 
 Polygon boundaries embedded in shapefile.
 
 
-#### <i class="fa fa-plus" aria-hidden="true" style ="color:#FFCC33;"></i>  Other variables
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
 
 NA
 
@@ -93,7 +232,7 @@ NA
 
 ## SINMOD
 
-<div class = "description"> Tidally resolved water velocity fields in the Arctic. </div>
+<div class = "description"> Tidally resolved water velocity fields in the Arctic. Numerical ocean model output. </div>
 
 
 #### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
@@ -116,13 +255,13 @@ Arctic.
 * 1 netcdf file contains a 3D spatial grid and all timesteps within a month.
 
 
-#### <i class="fa fa-eye" aria-hidden="true" style ="color:#FFCC33;"></i>  Target variables
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
 
 * "u_east", Zonal veolcity.
 * "v_north", Meridional velocity.
 
 
-#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#FFCC33;"></i>  Spatial variables
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
 
 * "gridLats", matrix of latitudes (curvilinear grid).
 * "gridLons", matrix of longitudes (curvilinear grid).
@@ -130,10 +269,10 @@ Arctic.
 * "ldepths", vector of depth layer thicknesses?
 
 
-#### <i class="fa fa-plus" aria-hidden="true" style ="color:#FFCC33;"></i>  Other variables
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
 
 "w_east", "w_north", "w_velocity", "vertical_diffusivity", "NO3", "PhytoF", "PhytoD", "temperature",
-"salinity", "ice_thickness", "ice_compactness", "freezing_rate", "salinity_ice", "uIce_east", "vIce_north", "uUnderIceE",           "vUnderIceN", "elevation".
+"salinity", "ice_thickness", "ice_compactness", "freezing_rate", "salinity_ice", "uIce_east", "vIce_north", "uUnderIceE", "vUnderIceN", "elevation".
 
 <br><br>
 
@@ -164,19 +303,19 @@ Global.
 * 1 csv file contains a list of pixels from the global grid where fishing was detected for a day.
 
 
-#### <i class="fa fa-eye" aria-hidden="true" style ="color:#FFCC33;"></i>  Target variables
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
 
 * "geartype", fishing gear used.
 * "fishing_hours", total hours of fishing within a pixel for a given day).
 
 
-#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#FFCC33;"></i>  Spatial variables
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
 
-* "lat_bin", latitude * 100.
-* "lon_bin", longitude * 100
+* "lat_bin", latitude * 100  (rectilinear grid).
+* "lon_bin", longitude * 100  (rectilinear grid).
 
 
-#### <i class="fa fa-plus" aria-hidden="true" style ="color:#FFCC33;"></i>  Other variables
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
 
 "flag", "vessel_hours", "mmsi_present".
 

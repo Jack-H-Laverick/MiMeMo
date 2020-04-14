@@ -150,7 +150,7 @@
     <p>This function removes the snow and ice columns from a dataframe if depth = "D".</p>
     </div>
 
-    <pre class="usage"><span class='fu'>strip_ice</span>(<span class='no'>data</span>)</pre>
+    <pre class="usage"><span class='fu'>strip_ice</span>(<span class='no'>data</span>, <span class='no'>dt</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,6 +158,10 @@
     <tr>
       <th>data</th>
       <td><p>A dataframe containing a summarised month from NEMO-MEDUSA model outputs, at a single depth.</p></td>
+    </tr>
+    <tr>
+      <th>dt</th>
+      <td><p>Switch for using either data.table or dplyr methods (TRUE/FALSE respectively)</p></td>
     </tr>
     </table>
 
@@ -175,8 +179,6 @@ empty columns.</p>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA averages: 
 <code><a href='decadal.html'>decadal</a>()</code>,
-<code><a href='strip_ice_dt.html'>strip_ice_dt</a>()</code>,
-<code><a href='summarise_sp_dt.html'>summarise_sp_dt</a>()</code>,
 <code><a href='summarise_sp.html'>summarise_sp</a>()</code>,
 <code><a href='summarise_ts_detritus.html'>summarise_ts_detritus</a>()</code>,
 <code><a href='summarise_ts.html'>summarise_ts</a>()</code></p></div>

@@ -4,10 +4,12 @@
 \alias{strip_ice}
 \title{Strip Snow and Ice Variables at Depth}
 \usage{
-strip_ice(data)
+strip_ice(data, dt)
 }
 \arguments{
 \item{data}{A dataframe containing a summarised month from NEMO-MEDUSA model outputs, at a single depth.}
+
+\item{dt}{Switch for using either data.table or dplyr methods (TRUE/FALSE respectively)}
 }
 \value{
 If the `data` contains shallow data, no action is taken. If `data` contains deep data, columns for variables only
@@ -25,8 +27,6 @@ empty columns.
 \seealso{
 Other NEMO-MEDUSA averages: 
 \code{\link{decadal}()},
-\code{\link{strip_ice_dt}()},
-\code{\link{summarise_sp_dt}()},
 \code{\link{summarise_sp}()},
 \code{\link{summarise_ts_detritus}()},
 \code{\link{summarise_ts}()}
