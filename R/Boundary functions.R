@@ -189,15 +189,15 @@ direction <- function(segment) {
     minus <- c(0, -0.001)                                        # Adjust for point below the segment
     plus <-  c(0, +0.001)                                        # Adjust for point above the segment
     flow_shift <- c(+100, 0)                                     # Adjust for current indicator
-    flow_plot <- ggplot2::geom_segment(aes(xend= min(flow[,"X"]), y = min(flow[,"Y"]), # PLotting line for current indicator
-                                  x = max(flow[,"X"]), yend = max(flow[,"Y"])), arrow = arrow())
+  #  flow_plot <- ggplot2::geom_segment(aes(xend= min(flow[,"X"]), y = min(flow[,"Y"]), # PLotting line for current indicator
+  #                                x = max(flow[,"X"]), yend = max(flow[,"Y"])), arrow = arrow())
   }            # Change the shift used for test point relative midpoint
   if(Checked[segment,]$current == "Zonal")      {
     minus <- c(-0.001, 0)
     plus <-  c(+0.001, 0)
     flow_shift <- c(0, +100)
-    flow_plot <- ggplot2::geom_segment(aes(x = min(flow[,"X"]), y = min(flow[,"Y"]),
-                                  xend = max(flow[,"X"]), yend = max(flow[,"Y"])), arrow = arrow())
+  #  flow_plot <- ggplot2::geom_segment(aes(x = min(flow[,"X"]), y = min(flow[,"Y"]),
+  #                                xend = max(flow[,"X"]), yend = max(flow[,"Y"])), arrow = arrow())
   }            # Based on current of interest
 
   coords <- midpoint %>% sf::st_transform(4326)                  # Transform to lat-lon to ensure test points are perpendicular to the line
@@ -212,11 +212,11 @@ direction <- function(segment) {
   mid_plus <- sf::st_transform(mid_plus, crs) %>%                # change crs for plotting
     sf::st_cast("POINT")
 
-  flow <- sf::st_union(x = mid_plus, y = mid_minus) %>%          # Link and shift points to make an arrow to illustrate flow
-    sf::st_cast("LINESTRING") %>%
-    + flow_shift
-  sf::st_crs(flow) <- crs
-  flow <- sf::st_coordinates(flow)
+  #flow <- sf::st_union(x = mid_plus, y = mid_minus) %>%          # Link and shift points to make an arrow to illustrate flow
+  #  sf::st_cast("LINESTRING") %>%
+  #  + flow_shift
+  #sf::st_crs(flow) <- crs
+  #flow <- sf::st_coordinates(flow)
 
   test <- sf::st_sf(geometry = c(mid_plus, mid_minus), side = c("plus", "minus")) %>% # Create a full SF object to allow point in polygon analysis
     sf::st_join(domain, join = st_intersects) %>%                # Are the points either side of the boundary in a domain polygon?
@@ -242,93 +242,11 @@ direction <- function(segment) {
   #   coord_sf(xlim = c(window$xmin, window$xmax), ylim = c(window$ymin, window$ymax))
 
   summary <- dplyr::filter(test, Contained == "in") %>%          # Take the metadata associated with the point in the focal polygon
-    dplyr::select(Shore, Flip) %>%                               # Keep only interesting columns
+    dplyr::select(Flip) %>%                               # Keep only interesting columns
+    #dplyr::select(Shore, Flip) %>%                               # Keep only interesting columns
     sf::st_set_geometry(NULL) %>%                                # Drop unneccessary geometry
     dplyr::mutate(#Outside = filter(test, Contained == "in")$Shore,
            Neighbour = as.character(neighbour)) %>%              # Attach the neighbouring polygon
-    tidyr::replace_na(list(Neighbour = "Ocean"))                 # If there wasn't a neighbouring polygon, assign ocean
-
-  return(summary)
-}
-
-#' Test whether "positive" currents flow in or out of a model compartment at a segment
-#'
-#' This function takes a transect from the edge of a model compartment and works out where it is spatially. This is
-#' neccessary for correctly averaging variables along the whole boundary of a compartment.
-#'
-#' The function determines which model compartment is next to the focal compartment. The focal compartment is either the
-#' offshore or inshore polygon, with the offshore polygon selected ahead of the inshore polygon when these share a boundary.
-#' This defines the link between model compartments.
-#'
-#' Direction (in/out) is also calculated relative to the focal polygon. At the western boundary of a polygon, positive zonal
-#' currents \emph{(West to East)} indicate water flowing into the model compartment. However, at the Eastern boundary,
-#' flows from West to East now leave the model compartment. A True or False column called flip is included. If a positive value
-#' for a water velocity is leaving the polygon, or a negative flow value is entering the polygon, flip can be used to multiply
-#' by -1 to correctly sum the water movements from the perspective of the focal polygon.
-
-#' @param segment An SF line object representing a transect along the perimeter of a model domain polygon.
-#' @return The function returns a dataframe detailing which two model compartments are either side of the transect,
-#' and the direction of the exchange.
-#' @family Boundary sampling functions
-#' @export
-direction2 <- function(segment, domains, shore, current, crs) {
-
-  #segment <- 1                                                   # Testing function
-  #segment <- 24246
-
-  midpoint <- sf::st_line_sample(Checked[segment,], n = 1)       # Grab the midpoint of a line segment
-
-  domain <- dplyr::filter(domains, Shore == shore)               # Change the domain polygon to match the boundary segment
-
-  if(current == "Meridional") {
-    minus <- c(0, -0.001)                                        # Adjust for point below the segment
-    plus <-  c(0, +0.001)                                        # Adjust for point above the segment
-    flow_shift <- c(+100, 0)                                     # Adjust for current indicator
-  #  flow_plot <- ggplot2::geom_segment(aes(xend= min(flow[,"X"]), y = min(flow[,"Y"]), # Plotting line for current indicator
-  #                                         x = max(flow[,"X"]), yend = max(flow[,"Y"])), arrow = arrow())
-  }            # Change the shift used for test point relative midpoint
-  if(current == "Zonal") {
-    minus <- c(-0.001, 0)
-    plus <-  c(+0.001, 0)
-    flow_shift <- c(0, +100)
-  #  flow_plot <- ggplot2::geom_segment(aes(x = min(flow[,"X"]), y = min(flow[,"Y"]),
-  #                                         xend = max(flow[,"X"]), yend = max(flow[,"Y"])), arrow = arrow())
-  }            # Based on current of interest
-
-  coords <- midpoint %>% sf::st_transform(4326)                  # Transform to lat-lon to ensure test points are perpendicular to the line
-
-  mid_minus <- coords + minus                                    # Shift from the mid point
-  sf::st_crs(mid_minus) <- 4326                                  # set crs
-  mid_minus <- sf::st_transform(mid_minus, crs) %>%              # change crs for plotting
-    sf::st_cast("POINT")
-
-  mid_plus <- coords + plus                                      # Shift from the mid point
-  sf::st_crs(mid_plus) <- 4326                                   # set crs
-  mid_plus <- sf::st_transform(mid_plus, crs) %>%                # change crs for plotting
-    sf::st_cast("POINT")
-
-  flow <- sf::st_union(x = mid_plus, y = mid_minus) %>%          # Link and shift points to make an arrow to illustrate flow
-    sf::st_cast("LINESTRING") %>%
-    + flow_shift
-  sf::st_crs(flow) <- crs
-  flow <- sf::st_coordinates(flow)
-
-  test <- sf::st_sf(geometry = c(mid_plus, mid_minus), side = c("plus", "minus")) %>% # Create a full SF object to allow point in polygon analysis
-    sf::st_join(domain, join = st_intersects) %>%                # Are the points either side of the boundary in a domain polygon?
-    dplyr::mutate(Contained = dplyr::if_else(is.na(Shore), "out", "in")) %>%   # Label the points
-    dplyr::mutate(Flip = dplyr::if_else(side == "plus" & Contained == "out" |  # Determine whether positive currents flow in or out of the domain and so if they need to be flipped
-                                          side == "minus" & Contained == "in", TRUE, FALSE))
-
-  neighbour <- dplyr::filter(test, Contained == "out") %>%       # Grab the SF which is outside the focal polygon
-    sf::st_intersects(domains) %>%                               # Which polygon DOES this point sit in? (a list of 1 number)
-    as.numeric() %>%                                             # Drop unneccessary formatting
-    domains$Shore[.]                                             # Pull the shore label for the polygon
-
-  summary <- dplyr::filter(test, Contained == "in") %>%          # Take the metadata associated with the point in the focal polygon
-    dplyr::select(Shore, Flip) %>%                               # Keep only interesting columns
-    sf::st_drop_geometry() %>%                                   # Drop unneccessary geometry
-    dplyr::mutate(#Outside = filter(test, Contained == "in")$Shore,
-      Neighbour = as.character(neighbour)) %>%              # Attach the neighbouring polygon
     tidyr::replace_na(list(Neighbour = "Ocean"))                 # If there wasn't a neighbouring polygon, assign ocean
 
   return(summary)

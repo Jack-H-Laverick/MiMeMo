@@ -26,7 +26,6 @@ Other Boundary sampling functions:
 \code{\link{Sample_OOB}()},
 \code{\link{Sample}()},
 \code{\link{boundaries}()},
-\code{\link{direction2}()},
 \code{\link{direction}()},
 \code{\link{extract_OOB}()},
 \code{\link{extract}()},

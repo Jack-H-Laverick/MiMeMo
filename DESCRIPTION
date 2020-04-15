@@ -1,7 +1,7 @@
 Package: MiMeMo.tools
 Type: Package
 Title: Tools for extracting data for StrathE2E, during MiMeMo
-Version: 0.0.1
+Version: 1.0.0
 Authors@R: 
     person(given = "Jack H",
            family = "Laverick",

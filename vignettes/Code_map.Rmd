@@ -30,7 +30,9 @@ network <- readRDS("./network.rds")
 
 #### Build network widget ####
 
-v <-viridis(length(unique(network[[2]]$group)))                             # get viridis colours for each group
+#v <-viridis(length(unique(network[[2]]$group)))                                # get viridis colours for each group
+#v <-RColorBrewer::brewer.pal(length(unique(network[[2]]$group)), "Dark2")     # get viridis colours for each group
+v <-palettetown::ichooseyou("charizard", length(unique(network[[2]]$group)))                             # get viridis colours for each group
 
 visNetwork(network[[2]], network[[1]], width = "100%", height = "800") %>% # Build the network
   visHierarchicalLayout(direction = "UD") %>%                               # Use hierarchical layout from top to bottom
