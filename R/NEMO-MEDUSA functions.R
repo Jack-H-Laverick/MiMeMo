@@ -734,28 +734,28 @@ get_air <- function(File, Type, Year) {
   if(Type == "SWF") months <- Light_months                                   # Get the file holding the months
   if(Type == "T150") months <- Airtemp_months                                # For the time steps of this data
 
-  nc_raw <- nc_open(File)                                                    # Open up a netcdf file to see it's raw contents (var names)
-  nc_var <- ncvar_get(nc_raw, Type, c(Space$Limits$Lon_start, Space$Limits$Lat_start, 1),  # Extract the variable of interest
+  nc_raw <- ncdf4::nc_open(File)                                             # Open up a netcdf file to see it's raw contents (var names)
+  nc_var <- ncdf4::ncvar_get(nc_raw, Type, c(Space$Limits$Lon_start, Space$Limits$Lat_start, 1),  # Extract the variable of interest
                       c(Space$Limits$Lon_count, Space$Limits$Lat_count, -1)) # cropped to window, with all time steps
   ncdf4::nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
 
   Data <- as.data.frame.table(nc_var, responseName = "Measured") %>%         # Reshape array as dataframe
-    rename(Longitude = Var1, Latitude = Var2, Time_step = Var3) %>%          # Name the columns
-    mutate(Longitude = rep(rep(Space$Lons,                                   # Replace the factor levels with dimension values
+    dplyr::rename(Longitude = Var1, Latitude = Var2, Time_step = Var3) %>%   # Name the columns
+    dplyr::mutate(Longitude = rep(rep(Space$Lons,                            # Replace the factor levels with dimension values
                                times = length(unique(Latitude))), times = length(unique(Time_step))),
            Latitude = rep(rep(Space$Lats,
                               each = length(unique(Longitude))), times = length(unique(Time_step))),
            Time_step = rep(1:length(unique(Time_step)),
                            each = length(unique(Latitude)) * length(unique(Longitude)))) %>%
-    right_join(domains_mask) %>%                                             # Crop to domain
-    left_join(months) %>%                                                    # Assign a month to each time step
-    mutate(Year = Year,                                                      # Attach Year
+    dplyr::right_join(domains_mask) %>%                                      # Crop to domain
+    dplyr::left_join(months) %>%                                             # Assign a month to each time step
+    dplyr::mutate(Year = Year,                                               # Attach Year
            Type = Type)                                                      # Attach variable name
 
-  if(Type == "SWF") Data <- group_by(Data, Month, Year, Type)                # We don't need to bother accounting for shore in light data
-  if(Type == "T150") Data <- group_by(Data, Month, Year, Type, Shore)        # We care about shore for temperature, retain interesting columns
+  if(Type == "SWF") Data <- dplyr::group_by(Data, Month, Year, Type)         # We don't need to bother accounting for shore in light data
+  if(Type == "T150") Data <- dplyr::group_by(Data, Month, Year, Type, Shore) # We care about shore for temperature, retain interesting columns
 
-  Summary <- summarise(Data, Measured = weighted.mean(Measured, Cell_area))  # Average by time step.
+  Summary <- dplyr::summarise(Data, Measured = stats::weighted.mean(Measured, Cell_area)) # Average by time step.
 
   return(Summary)
 }
@@ -786,10 +786,10 @@ get_air_dt <- function(File, Type, Year) {
   if(Type == "SWF") months <- Light_months                                 # Get the file holding the months
   if(Type == "T150") months <- Airtemp_months                              # For the time steps of this data
 
-nc_raw <- nc_open(File)                                                    # Open up a netcdf file to see it's raw contents (var names)
-nc_var <- ncvar_get(nc_raw, Type, c(Space$Limits$Lon_start, Space$Limits$Lat_start, 1),  # Extract the variable of interest
+nc_raw <- ncdf4::nc_open(File)                                             # Open up a netcdf file to see it's raw contents (var names)
+nc_var <- ncdf4::ncvar_get(nc_raw, Type, c(Space$Limits$Lon_start, Space$Limits$Lat_start, 1),  # Extract the variable of interest
                     c(Space$Limits$Lon_count, Space$Limits$Lat_count, -1)) # cropped to window, with all time steps
-nc_close(nc_raw)                                                           # You must close an open netcdf file when finished to avoid data loss
+ncdf4::nc_close(nc_raw)                                                    # You must close an open netcdf file when finished to avoid data loss
 
 DT <- as.data.table(nc_var, value.name = "Measured") %>%                   # Pull array
   setnames(old = c("V1", "V2", "V3"), new = c("Longitude", "Latitude", "Time_step")) %>% # Name the columns

@@ -1,5 +1,5 @@
-# MiMeMo.tools 1.0.0 
-<span style="color:#FFCC33;">**15/04/2020**</span>
+# MiMeMo.tools 0.1.0 
+<span style="color:grey;">15/04/2020</span>
 
 * Finished checking that existing scripts execute correctly using MiMiMo.tools. Lots of bug hunting!
 * Added a scripts overiew page to the website.
