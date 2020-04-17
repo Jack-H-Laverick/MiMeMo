@@ -44,6 +44,7 @@ reference:
   - reproj
   - sfc_as_cols
   - voronoi_grid
+  - vectors_2_direction
 - subtitle: Variable extractors
   desc: Extract ecological driving data.
   contents:
