@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 )
 library(tidyverse) 
 library(visNetwork)
-library(viridis)
 
 ```
 
@@ -30,7 +29,7 @@ network <- readRDS("./network.rds")
 
 #### Build network widget ####
 
-#v <-viridis(length(unique(network[[2]]$group)))                                # get viridis colours for each group
+#v <-viridis::viridis(length(unique(network[[2]]$group)))                                # get viridis colours for each group
 #v <-RColorBrewer::brewer.pal(length(unique(network[[2]]$group)), "Dark2")     # get viridis colours for each group
 v <-palettetown::ichooseyou("charizard", length(unique(network[[2]]$group)))                             # get viridis colours for each group
 
@@ -116,7 +115,8 @@ ggplot(data, aes(x=as.factor(id), y=value, fill=group)) +       # Note that id i
   # Add text labels for axis marks
   annotate("text", x = rep(max(data$id),6), y = c(0, 60, 120, 180, 240, 300), label = c("0", "1", "2", "3", "4", "5") , color="grey", size=3 , angle=0, fontface="bold", hjust= 0.5) +
   geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity") +
-  scale_fill_viridis(discrete = T, name = NULL) +
+  #viridis::scale_fill_viridis(discrete = T, name = NULL) +
+  palettetown::scale_fill_poke(pokemon = "Charizard", name = NULL) +
   ylim(-150,400) +        # More - creates more space in the centre, if a bar is larger than max it won't display
   annotate("text", x = max(data$id), y = 350, label = paste0("Total project run time: ", round(sum(data$value, na.rm = T)/60, digits = 2), " hours"),
            size = 3) +
