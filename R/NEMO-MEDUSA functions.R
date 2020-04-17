@@ -240,6 +240,58 @@ voronoi_grid <- function(points, area) {
 
 }
 
+#' Get Latitudes, Longitudes, & Depths
+#'
+#' This function gets the latitudes, longitudes, and depths which define the spatial location of points in an array of NEMO-MEDUSA outputs.
+#'
+#' Each variable of interest in the netcdf file is imported, and then collected into a list.
+#'
+#' @param file The full name of a netcdf file.
+#' @return A list of three elements:
+#' \itemize{
+#'  \item{\emph{nc_lat -}}{ A matrix of latitudes which maps onto the first and second dimension of a NEMO-MEDUSA array.}
+#'  \item{\emph{nc_lon -}}{ A matrix of longitudes which maps onto the first and second dimension of a NEMO-MEDUSA array.}
+#'  \item{\emph{nc_depth -}}{ A vector of depths which match the third dimension of a NEMO-MEDUSA array.}
+#'  }
+#' @family NEMO-MEDUSA variable extractors
+#' @export
+get_spatial <- function(file) {
+  nc_raw <- nc_open(file)                              # Open up a netcdf file to see it's raw contents (var names)
+  nc_lat <- ncvar_get(nc_raw, "nav_lat")               # Extract a matrix of all the latitudes
+  nc_lon <- ncvar_get(nc_raw, "nav_lon")               # Extract a matrix of all the longitudes
+  nc_depth <- ncvar_get(nc_raw, "deptht")              # Extract a matrix of depths
+  nc_close(nc_raw)                                     # You must close an open netcdf file when finished to avoid data loss
+  all <- list("nc_lat" = nc_lat, "nc_lon" = nc_lon, "nc_depth" = nc_depth)
+  return(all)
+}
+
+#' Convert a U-V velocity field to speed and direction in degrees
+#'
+#' This function takes a vector of u and v velocities and calculates the direction and speed of the combined movement.
+#'
+#'This function was lifted from the `Rsenal` package, where it was originally used to calculate wind speeds. All I've done
+#'is built a wrapper which accounts for different conventions when describing wind and flow directions.
+#'
+#' @param u A vector of Zonal currents (from West to East).
+#' @param v A vector of Meridional currents (from South to North).
+#' @return a dataframe of two columns is returned. Speed contains the composite speed of both velocities on the same scale.
+#' Direction is the resolved direction of the flow in degrees, 0 heads north, 90 East, 180 South, 270 West.
+#' @family NEMO-MEDUSA spatial tools
+#' @export
+vectors_2_direction <- function (u, v) {
+  u <- -u                                        # This function was built to use wind direction
+  v <- -v                                        # Winds  are "opposite", people care about where wind comes from, not where it goes
+
+  # Lovingly lifted from the "Rsenal" package
+
+  degrees <- function(radians) 180 * radians/pi
+  mathdegs <- degrees(atan2(v, u))
+  wdcalc <- ifelse(mathdegs > 0, mathdegs, mathdegs + 360)
+  Direction <- ifelse(wdcalc < 270, 270 - wdcalc, 270 - wdcalc + 360)
+  Speed <- sqrt(u^2 + v^2)
+  return(cbind(Direction, Speed))
+  }
+
 #' Summarise Across Depths in a NEMO-MEDUSA Array
 #'
 #' This function takes an array of a variable, and an array of water thicknesses to perform a weighted average across depth. The depth
