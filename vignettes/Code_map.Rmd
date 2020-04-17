@@ -76,7 +76,8 @@ timings <- readRDS("./Run time.rds")
 data <- data.frame(
   individual= timings$Script,
   group= timings$Type,
-  value= timings$Minutes)
+  value= timings$Minutes) %>% 
+  separate(individual, into = c(NA, "individual",NA), sep = "[.]") # Drop leading script family for labelling bars.
 
 
 # Set a number of 'empty bar' to add at the end of each group
@@ -117,7 +118,7 @@ ggplot(data, aes(x=as.factor(id), y=value, fill=group)) +       # Note that id i
   geom_bar(aes(x=as.factor(id), y=value, fill=group), stat="identity") +
   #viridis::scale_fill_viridis(discrete = T, name = NULL) +
   palettetown::scale_fill_poke(pokemon = "Charizard", name = NULL) +
-  ylim(-150,400) +        # More - creates more space in the centre, if a bar is larger than max it won't display
+  ylim(-300,400) +        # More - creates more space in the centre, if a bar is larger than max it won't display
   annotate("text", x = max(data$id), y = 350, label = paste0("Total project run time: ", round(sum(data$value, na.rm = T)/60, digits = 2), " hours"),
            size = 3) +
   theme_minimal() +
@@ -125,7 +126,7 @@ ggplot(data, aes(x=as.factor(id), y=value, fill=group)) +       # Note that id i
         axis.text = element_blank(),
         axis.title = element_blank(),
         panel.grid = element_blank(),
-        plot.margin = unit(c(-2, -2,-2.5,-2), "cm")
+        plot.margin = unit(c(-1.8, -2.5,-2.5,-2.5), "cm")
        ) +
   coord_polar() + 
   geom_text(data=label_data, aes(x=id, y=value+10, label=individual, hjust=hjust), color="black", fontface="bold",alpha=0.6, size=2.5, angle= label_data$angle, inherit.aes = FALSE ) +
@@ -137,7 +138,7 @@ ggplot(data, aes(x=as.factor(id), y=value, fill=group)) +       # Note that id i
 
 ```
 
-## Script Objectives {.tabset}
+## Script Objectives
 
 In the future I plan to detail blow by blow what exactly each script does. This will likely take the form of a dropdown list of vignettes on this website. As there are about 40 scripts at the moment this isn't going to happen immediately. For now this section is here to briefly mention the purpose of each script.
  
