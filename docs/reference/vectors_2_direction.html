@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reproject from Latitude and Longitude to Project CRS — reproj • MiMeMo.tools</title>
+<title>Convert a U-V velocity field to speed and direction in degrees — vectors_2_direction • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,8 @@
 
 
 
-<meta property="og:title" content="Reproject from Latitude and Longitude to Project CRS — reproj" />
-<meta property="og:description" content="This function takes a dataframe containing a latitude and longitude column, and replaces them with an X and Y column of coordinates
-in a new CRS." />
+<meta property="og:title" content="Convert a U-V velocity field to speed and direction in degrees — vectors_2_direction" />
+<meta property="og:description" content="This function takes a vector of u and v velocities and calculates the direction and speed of the combined movement." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 
 
@@ -142,38 +141,38 @@ in a new CRS." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Reproject from Latitude and Longitude to Project CRS</h1>
+    <h1>Convert a U-V velocity field to speed and direction in degrees</h1>
     
-    <div class="hidden name"><code>reproj.Rd</code></div>
+    <div class="hidden name"><code>vectors_2_direction.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function takes a dataframe containing a latitude and longitude column, and replaces them with an X and Y column of coordinates
-in a new CRS.</p>
+    <p>This function takes a vector of u and v velocities and calculates the direction and speed of the combined movement.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>reproj</span>(<span class='no'>data</span>, <span class='no'>crs</span>)</pre>
+    <pre class="usage"><span class='fu'>vectors_2_direction</span>(<span class='no'>u</span>, <span class='no'>v</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A dataframe containing Longitude and Latitude.</p></td>
+      <th>u</th>
+      <td><p>A vector of Zonal currents (from West to East).</p></td>
     </tr>
     <tr>
-      <th>crs</th>
-      <td><p>The new Coordinate Reference System  to project to.</p></td>
+      <th>v</th>
+      <td><p>A vector of Meridional currents (from South to North).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe, now with an x and y column specifying the coordinates for points in the projects Coordiante Reference System.</p>
+    <p>a dataframe of two columns is returned. Speed contains the composite speed of both velocities on the same scale.
+Direction is the resolved direction of the flow in degrees, 0 heads north, 90 East, 180 South, 270 West.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function converts a dataframe into an SF object and reprojects into a new CRS. Two coordinate columns are extracted from the
-geometry column using `sfc_as_cols`, before the geometry column is dropped.</p>
+    <p>This function was lifted from the `Rsenal` package, where it was originally used to calculate wind speeds. All I've done
+is built a wrapper which accounts for different conventions when describing wind and flow directions.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA spatial tools: 
@@ -182,9 +181,9 @@ geometry column using `sfc_as_cols`, before the geometry column is dropped.</p>
 <code><a href='get_weights.W.html'>get_weights.W</a>()</code>,
 <code><a href='get_weights.old.html'>get_weights.old</a>()</code>,
 <code><a href='get_weights.html'>get_weights</a>()</code>,
+<code><a href='reproj.html'>reproj</a>()</code>,
 <code><a href='sfc_as_cols.html'>sfc_as_cols</a>()</code>,
 <code><a href='stratify.html'>stratify</a>()</code>,
-<code><a href='vectors_2_direction.html'>vectors_2_direction</a>()</code>,
 <code><a href='voronoi_grid.html'>voronoi_grid</a>()</code></p></div>
 
   </div>

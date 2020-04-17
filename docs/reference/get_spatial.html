@@ -47,7 +47,8 @@
 
 
 <meta property="og:title" content="Get Latitudes, Longitudes, &amp; Depths — get_spatial" />
-<meta property="og:description" content="This function gets the latitudes, longitudes, and depths which define the spatial location of points in an array of NEMO-MEDUSA outputs." />
+<meta property="og:description" content="This function gets the latitudes, longitudes, and depths which define the spatial location of points in an array of NEMO-MEDUSA outputs.
+This function gets the latitudes, longitudes, and depths which define the spatial location of points in an array of NEMO-MEDUSA outputs." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 
 
@@ -148,9 +149,12 @@
 
     <div class="ref-description">
     <p>This function gets the latitudes, longitudes, and depths which define the spatial location of points in an array of NEMO-MEDUSA outputs.</p>
+<p>This function gets the latitudes, longitudes, and depths which define the spatial location of points in an array of NEMO-MEDUSA outputs.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_spatial</span>(<span class='no'>file</span>)</pre>
+    <pre class="usage"><span class='fu'>get_spatial</span>(<span class='no'>file</span>)
+
+<span class='fu'>get_spatial</span>(<span class='no'>file</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,12 +173,34 @@
 <li><p><em>nc_depth -</em> A vector of depths which match the third dimension of a NEMO-MEDUSA array.</p></li>
 </ul>
 
+<p>A list of three elements:</p><ul>
+<li><p><em>nc_lat -</em> A matrix of latitudes which maps onto the first and second dimension of a NEMO-MEDUSA array.</p></li>
+<li><p><em>nc_lon -</em> A matrix of longitudes which maps onto the first and second dimension of a NEMO-MEDUSA array.</p></li>
+<li><p><em>nc_depth -</em> A vector of depths which match the third dimension of a NEMO-MEDUSA array.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Each variable of interest in the netcdf file is imported, and then collected into a list.</p>
+<p>Each variable of interest in the netcdf file is imported, and then collected into a list.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA variable extractors: 
+<code><a href='detritus_month.html'>detritus_month</a>()</code>,
+<code><a href='get_air_dt.html'>get_air_dt</a>()</code>,
+<code><a href='get_air.html'>get_air</a>()</code>,
+<code><a href='get_bio.html'>get_bio</a>()</code>,
+<code><a href='get_detritus.html'>get_detritus</a>()</code>,
+<code><a href='get_ice.html'>get_ice</a>()</code>,
+<code><a href='get_merid.html'>get_merid</a>()</code>,
+<code><a href='get_sea.html'>get_sea</a>()</code>,
+<code><a href='get_vertical.html'>get_vertical</a>()</code>,
+<code><a href='get_zonal.html'>get_zonal</a>()</code>,
+<code><a href='interp_month.html'>interp_month</a>()</code>,
+<code><a href='interp_vertical.html'>interp_vertical</a>()</code>,
+<code><a href='type_in_month.html'>type_in_month</a>()</code>,
+<code><a href='whole_month.html'>whole_month</a>()</code></p>
+<p>Other NEMO-MEDUSA variable extractors: 
 <code><a href='detritus_month.html'>detritus_month</a>()</code>,
 <code><a href='get_air_dt.html'>get_air_dt</a>()</code>,
 <code><a href='get_air.html'>get_air</a>()</code>,
