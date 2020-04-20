@@ -289,7 +289,7 @@ vectors_2_direction <- function (u, v) {
   wdcalc <- ifelse(mathdegs > 0, mathdegs, mathdegs + 360)
   Direction <- ifelse(wdcalc < 270, 270 - wdcalc, 270 - wdcalc + 360)
   Speed <- sqrt(u^2 + v^2)
-  return(cbind(Direction, Speed))
+  return(data.frame(Direction, Speed))
   }
 
 #' Summarise Across Depths in a NEMO-MEDUSA Array
@@ -743,7 +743,7 @@ Window <- function(file, w, e, s, n) {
 
   #file <- examples[1,]$File ; w = 0 ; e = 180 ; s = 0 ; n = 90
 
-  raw <- nc_open(file)
+  raw <- ncdf4::nc_open(file)
   lon <- raw$dim$longitude$vals %>% between(w, e)
   W <- min(which(lon == TRUE))
   E <- max(which(lon == TRUE))
