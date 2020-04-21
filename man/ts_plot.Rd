@@ -18,6 +18,7 @@ This function builds a time series, split by model compartment.
 }
 \seealso{
 Other NEMO-MEDUSA plots: 
+\code{\link{point_plot_voronoi}()},
 \code{\link{point_plot}()},
 \code{\link{stick_plot}()}
 }

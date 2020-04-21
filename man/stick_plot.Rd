@@ -22,6 +22,7 @@ This function builds a stick plot to map water velocities in the project window.
 }
 \seealso{
 Other NEMO-MEDUSA plots: 
+\code{\link{point_plot_voronoi}()},
 \code{\link{point_plot}()},
 \code{\link{ts_plot}()}
 }
