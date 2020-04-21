@@ -357,7 +357,17 @@ get_sea   <- function(path, file, grid, space) {
            Temperature = as.numeric(stratify(nc_temp, space$deep, space$d.weights)),
            Depth = "D")                                                        # Collapse, reshape and append deepwater data
 
-  all <- rbind(shallow, deep) %>%                                              # Bind both sets, this pipeline avoids computationally demanding reshaping
+  # shallow <- data.frame(Ice_conc = as.numeric(nc_ice),                           # Append new variable to coordinates (no depths for ice)
+  #                       Salinity = as.numeric(stratify(nc_saline, space$shallow, space$s.weights)),     # Collapse shallow salinity into 2D and convert to long format
+  #                       Temperature = as.numeric(stratify(nc_temp, space$shallow, space$s.weights)),     # Collapse shallow temperatures into 2D and convert to long format
+  #                       Depth = "S")                                             # Introduce depth column
+  #
+  # deep <- data.frame(Ice_conc = NA,                                              # Insert empty column to allow fast binding by position
+  #                    Salinity = as.numeric(stratify(nc_saline, space$deep, space$d.weights)),
+  #                    Temperature = as.numeric(stratify(nc_temp, space$deep, space$d.weights)),
+  #                    Depth = "D")                                                # Collapse, reshape and append deepwater data
+
+  all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
     dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
     dplyr::mutate(Depth = as.factor(Depth))
 
@@ -399,7 +409,7 @@ get_bio   <- function(path, file, grid, space) {
            Chlorophyll = as.numeric(stratify(nc_Chl, space$deep, space$d.weights)),
            Depth = "D")                                                        # Collapse, reshape and append deepwater data
 
-  all <- rbind(shallow, deep) %>%                                              # Bind both sets, this pipeline avoids computationally demanding reshaping
+  all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
     dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
     dplyr::mutate(Depth = as.factor(Depth))
 
@@ -442,7 +452,7 @@ get_ice   <- function(path, file, grid, space) {
            Snow_Thickness = NA,
            Depth = "D")                                                        # Introduce depth column
 
-  all <- rbind(shallow, deep) %>%                                              # Bind both sets, this pipeline avoids computationally demanding reshaping
+  all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
     dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
     dplyr::mutate(Depth = as.factor(Depth))
 
@@ -482,7 +492,7 @@ get_vertical   <- function(path, file, grid, space) {
            Vertical_diffusivity = as.numeric(stratify(nc_dif, space$deep_W, space$d.weights_W)),
            Depth = "D")                                                        # Collapse, reshape and append deepwater data
 
-  all <- rbind(shallow, deep) %>%                                              # Bind both sets, this pipeline avoids computationally demanding reshaping
+  all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
     dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
     dplyr::mutate(Depth = as.factor(Depth))
 
@@ -519,7 +529,7 @@ get_merid <- function(path, file, grid, space) {
     dplyr::mutate(Meridional = as.numeric(stratify(nc_merid, space$deep, space$d.weights)), # Collapse, reshape and append deepwater data
            Depth = "D")                                                      # Collapse, reshape and append deepwater data
 
-  all <- rbind(shallow, deep) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
+  all <- data.table::rbindlist(list(shallow, deep)) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
     dplyr::filter(Shore_dist > 0) %>%                                        # Remove points on land
     dplyr::mutate(Depth = as.factor(Depth))
 
@@ -556,7 +566,7 @@ get_zonal <- function(path, file, grid, space) {
     dplyr::mutate(Zonal = as.numeric(stratify(nc_zonal, space$deep, space$d.weights)),   # Collapse, reshape and append deepwater data
            Depth = "D")                                                      # Collapse, reshape and append deepwater data
 
-  all <- rbind(shallow, deep) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
+  all <- data.table::rbindlist(list(shallow, deep)) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
     dplyr::filter(Shore_dist > 0) %>%                                        # Remove points on land
     dplyr::mutate(Depth = as.factor(Depth))
 
@@ -599,7 +609,7 @@ get_detritus <- function(file, start, count, grid, shallow, s.weights, deep, d.w
     dplyr::mutate(Detritus = as.numeric(stratify(nc_detritus, deep, d.weights)), # Collapse, reshape and append deepwater data
            Depth = "D")                                                      # Collapse, reshape and append deepwater data
 
-  all <- rbind(shallow, deep) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
+  all <- data.table::rbindlist(list(shallow, deep)) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
     dplyr::filter(Shore_dist > 0) %>%                                               # Remove points on land
     dplyr::mutate(Depth = as.factor(Depth))
 
@@ -639,11 +649,20 @@ type_in_month <- function(data, ...) {
   if(Type == "icemod_") get <- get_ice
   if(Type == "ptrc_T_") get <- get_bio
 
-  Month.type <- data %>%                                                    # Take the year
-    dplyr::mutate(data = purrr::map2(Path, File, get, ...)) %>%             # Extract data from each file
-    tidyr::unnest(data) %>%                                                 # Extract all encoded data
+  # Month.type <- data %>%                                                    # Take the year
+  #   dplyr::mutate(data = purrr::map2(Path, File, get, ...)) %>%             # Extract data from each file
+  #   tidyr::unnest(data) %>%                                                 # Extract all encoded data
+  #   dplyr::group_by(Longitude, Latitude, Depth, .drop=FALSE) %>%
+  #   dplyr::summarise_if(is.numeric, mean)
+
+## dodge slow unnesting
+  Month.type <- purrr::map2(data$Path, data$File, get, ...) %>%                        # Extract data from each file
+    data.table::rbindlist() %>%                                               # Extract all encoded data
     dplyr::group_by(Longitude, Latitude, Depth, .drop=FALSE) %>%
-    dplyr::summarise_if(is.numeric, mean)
+    dplyr::summarise_if(is.numeric, mean) %>%
+    dplyr::mutate(Year = as.integer(data[1, 4]),
+                  Month =  as.integer(data[1, 5]))       # Quickly add Year and month
+
   return(Month.type)
 }
 
@@ -881,7 +900,7 @@ decadal <- function(saved) {
 
   import <- readRDS(file = saved) %>%                                   # Read in wide format data file
  #   select(-c(geometry, weights, Day, Bathymetry, Shore_dist)) %>%
-    dplyr::select(-c(weights, Day, Bathymetry, Shore_dist)) %>%
+    dplyr::select(-c(weights, Bathymetry, Shore_dist)) %>%    # Sped up extractor no longer has a Day column
     dplyr::rename(Decade = Year)
 
   stringr::str_sub(import$Decade, -1, -1) <- "0"                        # Overwite the 4th digit with a 0 to get the decade
