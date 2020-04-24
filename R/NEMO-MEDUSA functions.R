@@ -287,9 +287,9 @@ vectors_2_direction <- function (u, v) {
   degrees <- function(radians) 180 * radians/pi
   mathdegs <- degrees(atan2(v, u))
   wdcalc <- ifelse(mathdegs > 0, mathdegs, mathdegs + 360)
-  Direction <- ifelse(wdcalc < 270, 270 - wdcalc, 270 - wdcalc + 360)
-  Speed <- sqrt(u^2 + v^2)
-  return(data.frame(Direction, Speed))
+  uvDirection <- ifelse(wdcalc < 270, 270 - wdcalc, 270 - wdcalc + 360)
+  uvSpeed <- sqrt(u^2 + v^2)
+  return(cbind(uvDirection, uvSpeed))
   }
 
 #' Summarise Across Depths in a NEMO-MEDUSA Array
