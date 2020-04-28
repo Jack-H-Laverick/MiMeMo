@@ -78,6 +78,12 @@ reference:
   - ts_plot
   - stick_plot
 
+- title: Sediment
+- subtitle: Water movements
+  desc: Align tidal and wave data from different sources.
+  contents:
+  - reshape_SINMOD
+
 navbar:
   type: inverse
   left:

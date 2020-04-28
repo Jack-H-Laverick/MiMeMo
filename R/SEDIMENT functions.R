@@ -1,6 +1,66 @@
 
 #### Water movement tools    ####
 
+#' Subset a SINMOD file to depth-averaged water velocities in an area.
+#'
+#' This function is a wrapper for system calls to NCO functions. A single SINMOD netcdf file contains a
+#' large grid covering the Arctic with extra variables we don't need. This function crops the spatial extent,
+#' performs a weighted average across depth layers, and limits to variables `u_east` and `v_north`.
+#'
+#' Performing the reshaping directly on the netcdf files means I can host a small subset locally on my machine. This avoids
+#' costly queries to the idrive later on. These files can also then be concatenated into a single netcdf file, allowing data
+#' to be read into R pixel by pixel, unlike saving a clipped dataframe as a .rds object.
+#'
+#' @param path a character string directing to the source file location.
+#' @param file the name of a netcdf file to process.
+#' @param out_dir a character string directing to the folder the new files should be written to.
+#' @param window a named list containing `xmin`, `xmax`, `ymin`, `ymax`, the window to crop to.
+#' @return A netcdf file containing depth averaged UV water velocities cropped to the target window.
+#' @family water movements
+#' @export
+reshape_SINMOD <- function(path, file, out_dir, window) {
+
+  #path <- unique(all_files$path) ; file <- all_files$file[1]               # test
+
+  ff_new <- paste0(out_dir, "SINMOD_", file)                             # Combine file name and new path
+
+  if(!file.exists(ff_new)) {                                             # If the file doesn't exist, make a new one
+    ff_dir <- dirname(ff_new)                                            # Get the directory of the new file
+    if(!dir.exists(ff_dir))                                              # If that folder doesn't exist
+      dir.create(ff_dir, recursive = TRUE)                               # Create the folder
+
+    temp_file1 <- tempfile("dummy", tmpdir = ff_dir)
+    temp_file2 <- tempfile("dummy", tmpdir = ff_dir)
+
+    file.copy(paste0(path, file), ff_new)                                # Copy the i drive file to the new name/location
+
+    ## Run command line functions
+    # str_glue and {} allows us to programmatically buils character strings to run in Konsole.
+    # Keep only these variables (-x -v means drop these variables),clip x and y dimensions
+    # (names xc and yc specified in the file), from a file, saving result as new file.
+    system(stringr::str_glue("ncea -v u_east,v_north,LayerDepths -d xc,{window$xmin},{window$xmax} -d yc,{window$ymin},{window$ymax} {ff_new} {temp_file1}"))
+
+    # Weighted averages, over depth (zc), using layer depths, from a file, saving result
+    system(stringr::str_glue("ncwa -a zc -w LayerDepths {temp_file1} {temp_file2}"))
+
+    file.rename(temp_file2, ff_new)                                       # Name sensibly
+
+    unlink(temp_file1)                                                    # Delete the intermediate step
+
+  }
+  usethis::ui_done("{usethis::ui_field(file)} cropped.")      # Announce finished file
+
+}
+
+#' Calculate bed shear stress at a location
+#'
+#' This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
+#' and then calculates the bed shear stress through time.
+#'
+#' @param pixel a numeric value indicating the row number of a dataframe of target coordinates.
+#' @param tide_packets a list of dataframes containing instructions for processing all SINMOD files which share a year.
+#' @return A dataframe containing a time series of bed shear stress metrics for a location.
+#' @family water movements
 #' @export
 mync_get_pixel <- function(File, var, pixel_x, pixel_y) {
 
@@ -10,6 +70,15 @@ mync_get_pixel <- function(File, var, pixel_x, pixel_y) {
   # Setting na.rm = TRUE replaces iced NAs with 0s
 }         # Import a variable clipped to Window
 
+#' Calculate bed shear stress at a location
+#'
+#' This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
+#' and then calculates the bed shear stress through time.
+#'
+#' @param pixel a numeric value indicating the row number of a dataframe of target coordinates.
+#' @param tide_packets a list of dataframes containing instructions for processing all SINMOD files which share a year.
+#' @return A dataframe containing a time series of bed shear stress metrics for a location.
+#' @family water movements
 #' @export
 get_waves_ts <- function(File, vars, Year, pixel_x, pixel_y) {
 
@@ -30,6 +99,15 @@ get_waves_ts <- function(File, vars, Year, pixel_x, pixel_y) {
   return(TS)
 }    # Pull significant wave height monthly time series per zone in a year file
 
+#' Calculate bed shear stress at a location
+#'
+#' This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
+#' and then calculates the bed shear stress through time.
+#'
+#' @param pixel a numeric value indicating the row number of a dataframe of target coordinates.
+#' @param tide_packets a list of dataframes containing instructions for processing all SINMOD files which share a year.
+#' @return A dataframe containing a time series of bed shear stress metrics for a location.
+#' @family water movements
 #' @export
 sample_waves <- function(pixel) {
 
@@ -47,6 +125,15 @@ sample_waves <- function(pixel) {
   days <- cbind(days[, !colnames(days) %in% c("Year", "Month", "Day", "Hour")], Wave_step)  # Replace time columns with time step
 }
 
+#' Calculate bed shear stress at a location
+#'
+#' This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
+#' and then calculates the bed shear stress through time.
+#'
+#' @param pixel a numeric value indicating the row number of a dataframe of target coordinates.
+#' @param tide_packets a list of dataframes containing instructions for processing all SINMOD files which share a year.
+#' @return A dataframe containing a time series of bed shear stress metrics for a location.
+#' @family water movements
 #' @export
 get_tides_ts <- function(File, month, vars, pixel_x, pixel_y) {
 
@@ -61,6 +148,15 @@ get_tides_ts <- function(File, month, vars, pixel_x, pixel_y) {
 
 }   # Pull the depth averaged currents from a file
 
+#' Calculate bed shear stress at a location
+#'
+#' This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
+#' and then calculates the bed shear stress through time.
+#'
+#' @param pixel a numeric value indicating the row number of a dataframe of target coordinates.
+#' @param tide_packets a list of dataframes containing instructions for processing all SINMOD files which share a year.
+#' @return A dataframe containing a time series of bed shear stress metrics for a location.
+#' @family water movements
 #' @export
 sample_tides_year <- function(packet, pixel) {
 
@@ -84,8 +180,8 @@ sample_tides_year <- function(packet, pixel) {
 #' This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
 #' and then calculates the bed shear stress through time.
 #'
-#' @pixel a numeric value indicating the row number of a dataframe of target coordinates.
-#' @tide_packets a list of dataframes containing instructions for processing all SINMOD files which share a year.
+#' @param pixel a numeric value indicating the row number of a dataframe of target coordinates.
+#' @param tide_packets a list of dataframes containing instructions for processing all SINMOD files which share a year.
 #' @return A dataframe containing a time series of bed shear stress metrics for a location.
 #' @family water movements
 #' @export
