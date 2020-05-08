@@ -14,7 +14,7 @@
 #' @param path a character string directing to the source file location.
 #' @param file the name of a netcdf file to process.
 #' @param out_dir a character string directing to the folder the new files should be written to.
-#' @param window a named list containing `xmin`, `xmax`, `ymin`, `ymax`, the window to crop to.
+#' @param window a named list containing `xmin`, `xmax`, `ymin`, `ymax`, the indices of the window to crop to.
 #' @return A netcdf file containing depth averaged UV water velocities cropped to the target window.
 #' @family water movements
 #' @export
