@@ -1033,12 +1033,14 @@ summarise_ts <- function(saved) {
     tidyr::drop_na(Year, Shore) %>%                                            # Drop points outside of the polygons
     dplyr::group_by(Shore, Year, Month, Depth)
 
-  Ice <- dplyr::filter(Groups, Ice_pres > 0) %>%                               # Remove ice free pixels before averaging thicknesses
+  Ice <- dplyr::filter(Groups, Ice_pres > 0) %>%                               # Remove ice free pixels before averaging
     dplyr::summarise(Ice_Thickness_avg = mean(Ice_Thickness, na.rm = TRUE),    # Get monthly mean sea ice thickness
               Snow_Thickness_avg = mean(Snow_Thickness, na.rm = TRUE),         # Get monthly mean snow thickness
+              Ice_conc_avg = mean(Ice_conc, na.rm = TRUE),                     # Get monthly mean sea ice concentration
               # SD
               Ice_Thickness_sd = stats::sd(Ice_Thickness, na.rm = TRUE),       # Get monthly mean sea ice thickness
-              Snow_Thickness_sd = stats::sd(Snow_Thickness, na.rm = TRUE))     # Get monthly mean snow thickness
+              Snow_Thickness_sd = stats::sd(Snow_Thickness, na.rm = TRUE),     # Get monthly mean snow thickness
+              Ice_conc_sd = stats::sd(Ice_conc, na.rm = TRUE))                 # Get monthly mean sea ice concentration
 
   Averaged <- Groups %>%
     dplyr::summarise(Salinity_avg = stats::weighted.mean(Salinity, weights, na.rm = TRUE), # Get monthly mean salinity
@@ -1046,7 +1048,6 @@ summarise_ts <- function(saved) {
               DIN_avg = stats::weighted.mean(DIN, weights, na.rm = TRUE),
               Chlorophyll_avg = stats::weighted.mean(Chlorophyll, weights, na.rm = TRUE),
               Ice_pres = mean(Ice_pres, na.rm = TRUE),                         # Proprtion of pixels covered by ice
-              Ice_conc_avg = mean(Ice_conc, na.rm = TRUE),                     # Get monthly mean sea ice concentration
               Vertical_diffusivity_avg = stats::weighted.mean(Vertical_diffusivity, weights, na.rm = TRUE),
               Vertical_velocity_avg = stats::weighted.mean(Vertical_velocity, weights, na.rm = TRUE),
               Meridional_avg = stats::weighted.mean(Meridional, weights, na.rm = TRUE),
@@ -1056,7 +1057,6 @@ summarise_ts <- function(saved) {
               Temperature_sd = radiant.data::weighted.sd(Temperature, weights, na.rm = TRUE),
               DIN_sd = radiant.data::weighted.sd(DIN, weights, na.rm = TRUE),
               Chlorophyll_sd = radiant.data::weighted.sd(Chlorophyll, weights, na.rm = TRUE),
-              Ice_conc_sd = stats::sd(Ice_conc, na.rm = TRUE),                 # Get monthly mean sea ice concentration
               #Vertical_diffusivity_sd = weighted.sd(Vertical_diffusivity, weights, na.rm = TRUE),
               #Vertical_velocity_sd = weighted.sd(Vertical_velocity, weights, na.rm = TRUE),
               Meridional_sd = radiant.data::weighted.sd(Meridional, weights, na.rm = TRUE),
