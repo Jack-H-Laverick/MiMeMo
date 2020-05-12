@@ -92,6 +92,10 @@ navbar:
    - icon: fa-project-diagram
      text: "Scripts"
      href: articles/Code_map.html
+   - text: "Barents Sea"
+     href: https://jack-h-laverick.github.io/MiMeMo.BarentsSea/
+   - text: "Greenland"
+     href: https://jack-h-laverick.github.io/MiMeMo.EastGreenlandShelf/
 
   right:
    - icon: fa-cart-arrow-down

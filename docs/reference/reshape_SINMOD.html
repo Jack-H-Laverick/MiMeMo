@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Stick Plots to Show Currents — stick_plot • MiMeMo.tools</title>
+<title>Subset a SINMOD file to depth-averaged water velocities in an area. — reshape_SINMOD • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,10 @@
 
 
 
-<meta property="og:title" content="Create Stick Plots to Show Currents — stick_plot" />
-<meta property="og:description" content="This function builds a stick plot to map water velocities in the project window." />
+<meta property="og:title" content="Subset a SINMOD file to depth-averaged water velocities in an area. — reshape_SINMOD" />
+<meta property="og:description" content="This function is a wrapper for system calls to NCO functions. A single SINMOD netcdf file contains a
+large grid covering the Arctic with extra variables we don't need. This function crops the spatial extent,
+performs a weighted average across depth layers, and limits to variables `u_east` and `v_north`." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 
 
@@ -155,44 +157,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create Stick Plots to Show Currents</h1>
+    <h1>Subset a SINMOD file to depth-averaged water velocities in an area.</h1>
     
-    <div class="hidden name"><code>stick_plot.Rd</code></div>
+    <div class="hidden name"><code>reshape_SINMOD.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function builds a stick plot to map water velocities in the project window.</p>
+    <p>This function is a wrapper for system calls to NCO functions. A single SINMOD netcdf file contains a
+large grid covering the Arctic with extra variables we don't need. This function crops the spatial extent,
+performs a weighted average across depth layers, and limits to variables `u_east` and `v_north`.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>stick_plot</span>(<span class='no'>data</span>, <span class='no'>zoom</span>, <span class='no'>pre</span>)</pre>
+    <pre class="usage"><span class='fu'>reshape_SINMOD</span>(<span class='no'>path</span>, <span class='no'>file</span>, <span class='no'>out_dir</span>, <span class='no'>window</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A dataframe containing the columns "Zonal" and "Meridional" for currents.</p></td>
+      <th>path</th>
+      <td><p>a character string directing to the source file location.</p></td>
     </tr>
     <tr>
-      <th>zoom</th>
-      <td><p>A call to `coord_sf` specifying the project plotting window.</p></td>
+      <th>file</th>
+      <td><p>the name of a netcdf file to process.</p></td>
     </tr>
     <tr>
-      <th>pre</th>
-      <td><p>A list of predefined preferences for saving maps in the project (scale, width, height, units, dpi)</p></td>
+      <th>out_dir</th>
+      <td><p>a character string directing to the folder the new files should be written to.</p></td>
+    </tr>
+    <tr>
+      <th>window</th>
+      <td><p>a named list containing `xmin`, `xmax`, `ymin`, `ymax`, the window to crop to.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function creates a map of Water velocities. Colour is used to show speed, sticks are included to show direction.
-The plot is saved into the NEMO-MEDUSA/Currents folder.</p>
+    <p>A netcdf file containing depth averaged UV water velocities cropped to the target window.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Performing the reshaping directly on the netcdf files means I can host a small subset locally on my machine. This avoids
+costly queries to the idrive later on. These files can also then be concatenated into a single netcdf file, allowing data
+to be read into R pixel by pixel, unlike saving a clipped dataframe as a .rds object.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other NEMO-MEDUSA plots: 
-<code><a href='point_plot_voronoi.html'>point_plot_voronoi</a>()</code>,
-<code><a href='point_plot.html'>point_plot</a>()</code>,
-<code><a href='ts_plot.html'>ts_plot</a>()</code></p></div>
+    <div class='dont-index'><p>Other water movements: 
+<code><a href='get_bed_shear_stress.html'>get_bed_shear_stress</a>()</code>,
+<code><a href='get_tides_ts.html'>get_tides_ts</a>()</code>,
+<code><a href='get_waves_ts.html'>get_waves_ts</a>()</code>,
+<code><a href='mync_get_pixel.html'>mync_get_pixel</a>()</code>,
+<code><a href='sample_tides_year.html'>sample_tides_year</a>()</code>,
+<code><a href='sample_waves.html'>sample_waves</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

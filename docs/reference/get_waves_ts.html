@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Stick Plots to Show Currents — stick_plot • MiMeMo.tools</title>
+<title>Calculate bed shear stress at a location — get_waves_ts • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,9 @@
 
 
 
-<meta property="og:title" content="Create Stick Plots to Show Currents — stick_plot" />
-<meta property="og:description" content="This function builds a stick plot to map water velocities in the project window." />
+<meta property="og:title" content="Calculate bed shear stress at a location — get_waves_ts" />
+<meta property="og:description" content="This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
+and then calculates the bed shear stress through time." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 
 
@@ -155,44 +156,43 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create Stick Plots to Show Currents</h1>
+    <h1>Calculate bed shear stress at a location</h1>
     
-    <div class="hidden name"><code>stick_plot.Rd</code></div>
+    <div class="hidden name"><code>get_waves_ts.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function builds a stick plot to map water velocities in the project window.</p>
+    <p>This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
+and then calculates the bed shear stress through time.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>stick_plot</span>(<span class='no'>data</span>, <span class='no'>zoom</span>, <span class='no'>pre</span>)</pre>
+    <pre class="usage"><span class='fu'>get_waves_ts</span>(<span class='no'>File</span>, <span class='no'>vars</span>, <span class='no'>Year</span>, <span class='no'>pixel_x</span>, <span class='no'>pixel_y</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>A dataframe containing the columns "Zonal" and "Meridional" for currents.</p></td>
+      <th>pixel</th>
+      <td><p>a numeric value indicating the row number of a dataframe of target coordinates.</p></td>
     </tr>
     <tr>
-      <th>zoom</th>
-      <td><p>A call to `coord_sf` specifying the project plotting window.</p></td>
-    </tr>
-    <tr>
-      <th>pre</th>
-      <td><p>A list of predefined preferences for saving maps in the project (scale, width, height, units, dpi)</p></td>
+      <th>tide_packets</th>
+      <td><p>a list of dataframes containing instructions for processing all SINMOD files which share a year.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function creates a map of Water velocities. Colour is used to show speed, sticks are included to show direction.
-The plot is saved into the NEMO-MEDUSA/Currents folder.</p>
+    <p>A dataframe containing a time series of bed shear stress metrics for a location.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other NEMO-MEDUSA plots: 
-<code><a href='point_plot_voronoi.html'>point_plot_voronoi</a>()</code>,
-<code><a href='point_plot.html'>point_plot</a>()</code>,
-<code><a href='ts_plot.html'>ts_plot</a>()</code></p></div>
+    <div class='dont-index'><p>Other water movements: 
+<code><a href='get_bed_shear_stress.html'>get_bed_shear_stress</a>()</code>,
+<code><a href='get_tides_ts.html'>get_tides_ts</a>()</code>,
+<code><a href='mync_get_pixel.html'>mync_get_pixel</a>()</code>,
+<code><a href='reshape_SINMOD.html'>reshape_SINMOD</a>()</code>,
+<code><a href='sample_tides_year.html'>sample_tides_year</a>()</code>,
+<code><a href='sample_waves.html'>sample_waves</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
