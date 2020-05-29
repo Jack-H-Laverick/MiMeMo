@@ -39,18 +39,18 @@ empty <- function(x) all(is.na(x))
 #' @return An array of water layer thicknesses to match the dimensions of a NEMO-MEDUSA array.
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-get_weights <- function(top, bottom) {
+get_weights <- function(top, bottom, bathymetry) {
   #top <- 200                                                                    # shallowest depth of the slice
   #bottom <- 1000                                                                # What's the bottom of the slice? for incorporating into a function
 
-  weights <- array(NA, c(235,190,38))                                          # Initialise an array to hold weights
+  weights <- array(NA, c(nrow(bathymetry), ncol(bathymetry),38))               # Initialise an array to hold weights
   first <- weights[,,1]
-  first[] <- mean(Space$nc_depth[1:2]) - top %>% rep(times = 44650)            # Water above the first midpoint minus the depth at the top of the slice
-  marks <- mask_bathy > mean(Space$nc_depth[1:2])                              # Which cells contain model outputs deeper than the seafloor?
-  first[!marks] <- mask_bathy[!marks] - top                                    # Replace these with the depth to sea floor
+  first[] <- mean(Space$nc_depth[1:2]) - top %>% rep(times = length(bathymetry))# Water above the first midpoint minus the depth at the top of the slice
+  marks <- bathymetry > mean(Space$nc_depth[1:2])                              # Which cells contain model outputs deeper than the seafloor?
+  first[!marks] <- bathymetry[!marks] - top                                    # Replace these with the depth to sea floor
   weights[,,1] <- first
 
-  weights[,,38] <- mask_bathy - mean(Space$nc_depth[37:38])                    # The remaining water column thickness is the sea floor - the deepest midpoint.
+  weights[,,38] <- bathymetry - mean(Space$nc_depth[37:38])                    # The remaining water column thickness is the sea floor - the deepest midpoint.
 
   for (i in 2:37) {
     #i <- 23
@@ -60,10 +60,10 @@ get_weights <- function(top, bottom) {
     if(top > last_midpoint) above <- top else above <- last_midpoint             # If the top of the slice is deeper than the previous midpoint, use the top of the slice
     if(bottom < next_midpoint) below <- bottom else below <- next_midpoint       # If the next midpoint is deeper than the bottom of the slice, use the bottom of the slice
 
-    weights[,,i] <- below - above %>% rep(times = 44650)                         # Calculate layer thickness and repeat to fill the array
+    weights[,,i] <- below - above %>% rep(times = length(bathymetry))                         # Calculate layer thickness and repeat to fill the array
 
-    marks <- mask_bathy > below                                                  # Is the seafloor deeper than the bottom of the layer?
-    weights[,,i][!marks] <- mask_bathy[!marks] - above                           # If not, replace these with the depth to sea floor - the top of the water layer
+    marks <- bathymetry > below                                                  # Is the seafloor deeper than the bottom of the layer?
+    weights[,,i][!marks] <- bathymetry[!marks] - above                           # If not, replace these with the depth to sea floor - the top of the water layer
 
   }                                                          # Roll through each matrix and calculate the water thickness using the next depth, bottom of the slice, or bathymetry, whichever is smaller
   no_weight <- weights[] <= 0; weights[no_weight] <- NA                        # Finally if a weight is <= 0 get NA
@@ -98,16 +98,16 @@ get_weights <- function(top, bottom) {
 #' @return An array of water layer thicknesses to match the dimensions of a NEMO-MEDUSA array.
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-get_weights.W <- function(top, bottom) {
+get_weights.W <- function(top, bottom, bathymetry) {
 
-  weights <- array(NA, c(235,190,39))                                            # Initialise an array to hold weights
+  weights <- array(NA, c(nrow(bathymetry),ncol(bathymetry),39))                  # Initialise an array to hold weights
   first <- weights[,,1]
-  first[] <- mean(DepthsW[1:2]) - top %>% rep(times = 44650)                     # Water above the first midpoint minus the depth at the top of the slice
-  marks <- mask_bathy > mean(DepthsW[1:2])                                       # Which cells contain model outputs deeper than the seafloor?
-  first[!marks] <- mask_bathy[!marks] - top                                      # Replace these with the depth to sea floor
+  first[] <- mean(DepthsW[1:2]) - top %>% rep(times = length(bathymetry))        # Water above the first midpoint minus the depth at the top of the slice
+  marks <- bathymetry > mean(DepthsW[1:2])                                       # Which cells contain model outputs deeper than the seafloor?
+  first[!marks] <- bathymetry[!marks] - top                                      # Replace these with the depth to sea floor
   weights[,,1] <- first
 
-  weights[,,39] <- mask_bathy - mean(DepthsW[38:39])                             # The remaining water column thickness is the sea floor - the deepest midpoint.
+  weights[,,39] <- bathymetry - mean(DepthsW[38:39])                             # The remaining water column thickness is the sea floor - the deepest midpoint.
 
   for (i in 2:38) {
     #i <- 23
@@ -117,10 +117,10 @@ get_weights.W <- function(top, bottom) {
     if(top > last_midpoint) above <- top else above <- last_midpoint             # If the top of the slice is deeper than the previous midpoint, use the top of the slice
     if(bottom < next_midpoint) below <- bottom else below <- next_midpoint       # If the next midpoint is deeper than the bottom of the slice, use the bottom of the slice
 
-    weights[,,i] <- below - above %>% rep(times = 44650)                         # Calculate layer thickness and repeat to fill the array
+    weights[,,i] <- below - above %>% rep(times = length(bathymetry))            # Calculate layer thickness and repeat to fill the array
 
-    marks <- mask_bathy > below                                                  # Is the seafloor deeper than the bottom of the layer?
-    weights[,,i][!marks] <- mask_bathy[!marks] - above                           # If not, replace these with the depth to sea floor - the top of the water layer
+    marks <- bathymetry > below                                                  # Is the seafloor deeper than the bottom of the layer?
+    weights[,,i][!marks] <- bathymetry[!marks] - above                           # If not, replace these with the depth to sea floor - the top of the water layer
 
   }                                                          # Roll through each matrix and calculate the water thickness using the next depth, bottom of the slice, or bathymetry, whichever is smaller
   no_weight <- weights[] <= 0; weights[no_weight] <- NA                        # Finally if a weight is <= 0 get NA
@@ -336,26 +336,26 @@ stratify  <- function(data, depth, weights) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_sea   <- function(path, file, grid, space) {
+get_sea   <- function(path, file, space) {
 
   print(stringr::str_glue("{file} Extracting Salinity, Temperature, and Sea Ice concentration"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
   nc_saline <- ncdf4::ncvar_get(nc_raw, "vosaline", space$start3D, space$count3D)          # Extract an array of salinities
   nc_temp <- ncdf4::ncvar_get(nc_raw, "votemper", space$start3D, space$count3D)            # Extract an array of temperatures
-  nc_ice <- ncdf4::ncvar_get(nc_raw, "soicecov")                               # Extract a matrix of ice fractions
+  nc_ice <- ncdf4::ncvar_get(nc_raw, "soicecov", space$start3D[-3], space$count3D[-3])                               # Extract a matrix of ice fractions
   ncdf4::nc_close(nc_raw)                                                      # You must close an open netcdf file when finished to avoid data loss
 
-  shallow <- grid %>%                                                          # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Ice_conc = as.numeric(nc_ice),                               # Append new variable to coordinates (no depths for ice)
-           Salinity = as.numeric(stratify(nc_saline, space$shallow, space$s.weights)),     # Collapse shallow salinity into 2D and convert to long format
-           Temperature = as.numeric(stratify(nc_temp, space$shallow, space$s.weights)),     # Collapse shallow temperatures into 2D and convert to long format
-           Depth = "S")                                                        # Introduce depth column
-
-  deep <- grid %>%                                                             # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Ice_conc = NA,                                               # Insert empty column to allow fast binding by position
-           Salinity = as.numeric(stratify(nc_saline, space$deep, space$d.weights)),
-           Temperature = as.numeric(stratify(nc_temp, space$deep, space$d.weights)),
-           Depth = "D")                                                        # Collapse, reshape and append deepwater data
+# shallow <- grid %>%                                                          # Grab the tidied dataframe of lat-longs
+#   dplyr::mutate(Ice_conc = as.numeric(nc_ice),                               # Append new variable to coordinates (no depths for ice)
+#          Salinity = as.numeric(stratify(nc_saline, space$shallow, space$s.weights)),     # Collapse shallow salinity into 2D and convert to long format
+#          Temperature = as.numeric(stratify(nc_temp, space$shallow, space$s.weights)),     # Collapse shallow temperatures into 2D and convert to long format
+#          Depth = 1)                                                        # Introduce depth column
+#
+# deep <- grid %>%                                                             # Grab the tidied dataframe of lat-longs
+#   dplyr::mutate(Ice_conc = NA,                                               # Insert empty column to allow fast binding by position
+#          Salinity = as.numeric(stratify(nc_saline, space$deep, space$d.weights)),
+#          Temperature = as.numeric(stratify(nc_temp, space$deep, space$d.weights)),
+#          Depth = 2)                                                        # Collapse, reshape and append deepwater data
 
   # shallow <- data.frame(Ice_conc = as.numeric(nc_ice),                           # Append new variable to coordinates (no depths for ice)
   #                       Salinity = as.numeric(stratify(nc_saline, space$shallow, space$s.weights)),     # Collapse shallow salinity into 2D and convert to long format
@@ -367,11 +367,35 @@ get_sea   <- function(path, file, grid, space) {
   #                    Temperature = as.numeric(stratify(nc_temp, space$deep, space$d.weights)),
   #                    Depth = "D")                                                # Collapse, reshape and append deepwater data
 
-  all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
-    dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
-    dplyr::mutate(Depth = as.factor(Depth))
+#  all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
+#    dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
+#    dplyr::mutate(Depth = as.numeric(Depth))
 
-  return(all)
+  # shallow <- cbind(                                                          # Grab the tidied dataframe of lat-longs
+  #   Ice_conc = as.numeric(nc_ice),                               # Append new variable to coordinates (no depths for ice)
+  #                 Salinity = as.numeric(stratify(nc_saline, space$shallow, space$s.weights)),     # Collapse shallow salinity into 2D and convert to long format
+  #                 Temperature = as.numeric(stratify(nc_temp, space$shallow, space$s.weights)),     # Collapse shallow temperatures into 2D and convert to long format
+  #                 Depth = 1)                                                        # Introduce depth column
+  #
+  # deep <- cbind(                                                             # Grab the tidied dataframe of lat-longs
+  #   Ice_conc = NA,                                               # Insert empty column to allow fast binding by position
+  #                 Salinity = as.numeric(stratify(nc_saline, space$deep, space$d.weights)),
+  #                 Temperature = as.numeric(stratify(nc_temp, space$deep, space$d.weights)),
+  #                 Depth = 2)                                                        # Collapse, reshape and append deepwater data
+  #
+  #  all <- rbind(shallow, deep) #%>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
+    #dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
+    #dplyr::mutate(Depth = as.numeric(Depth))
+
+  all <- cbind(                                                          # Grab the tidied dataframe of lat-longs
+    Ice_conc = c(as.numeric(nc_ice),                               # Append new variable to coordinates (no depths for ice)
+                 rep(NA, length(nc_ice))),
+    Salinity = c(as.numeric(stratify(nc_saline, space$shallow, space$s.weights)),     # Collapse shallow salinity into 2D and convert to long format
+                as.numeric(stratify(nc_saline, space$deep, space$d.weights))),
+    Temperature = c(as.numeric(stratify(nc_temp, space$shallow, space$s.weights)),     # Collapse shallow temperatures into 2D and convert to long format
+                    as.numeric(stratify(nc_temp, space$deep, space$d.weights))))
+
+    return(all)
 }
 
 #' Get Dissolved Inorganic Nitrogen & Chlorophyll a
@@ -389,7 +413,7 @@ get_sea   <- function(path, file, grid, space) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_bio   <- function(path, file, grid, space) {
+get_bio   <- function(path, file, space) {
 
   print(stringr::str_glue("{file} Extracting Dissolved Inorganic Nitrogen and Chlorophyll"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
@@ -399,21 +423,41 @@ get_bio   <- function(path, file, grid, space) {
   nc_Chl <- nc_CHD + nc_CHN ; rm(nc_CHD, nc_CHN)
   ncdf4::nc_close(nc_raw)                                                      # You must close an open netcdf file when finished to avoid data loss
 
-  shallow <- grid %>%                                                          # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(DIN = as.numeric(stratify(nc_DIN, space$shallow, space$s.weights)),        # Collapse shallow DIN into 2D and convert to long format
-           Chlorophyll = as.numeric(stratify(nc_Chl, space$shallow, space$s.weights)),       # Collapse shallow chlorophyll into 2D and convert to long format
-           Depth = "S")                                                        # Introduce depth column
+  # shallow <- grid %>%                                                          # Grab the tidied dataframe of lat-longs
+  #   dplyr::mutate(DIN = as.numeric(stratify(nc_DIN, space$shallow, space$s.weights)),        # Collapse shallow DIN into 2D and convert to long format
+  #          Chlorophyll = as.numeric(stratify(nc_Chl, space$shallow, space$s.weights)),       # Collapse shallow chlorophyll into 2D and convert to long format
+  #          Depth = 1)                                                        # Introduce depth column
+  #
+  # deep <- grid %>%                                                             # Grab the tidied dataframe of lat-longs
+  #   dplyr::mutate(DIN = as.numeric(stratify(nc_DIN, space$deep, space$d.weights)),
+  #          Chlorophyll = as.numeric(stratify(nc_Chl, space$deep, space$d.weights)),
+  #          Depth = 2)                                                        # Collapse, reshape and append deepwater data
+  #
+  # all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
+  #   dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
+  #   dplyr::mutate(Depth = as.numeric(Depth))
 
-  deep <- grid %>%                                                             # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(DIN = as.numeric(stratify(nc_DIN, space$deep, space$d.weights)),
-           Chlorophyll = as.numeric(stratify(nc_Chl, space$deep, space$d.weights)),
-           Depth = "D")                                                        # Collapse, reshape and append deepwater data
+  # shallow <- cbind(                                                          # Grab the tidied dataframe of lat-longs
+  #   DIN = as.numeric(stratify(nc_DIN, space$shallow, space$s.weights)),        # Collapse shallow DIN into 2D and convert to long format
+  #                 Chlorophyll = as.numeric(stratify(nc_Chl, space$shallow, space$s.weights)),       # Collapse shallow chlorophyll into 2D and convert to long format
+  #                 Depth = 1)                                                        # Introduce depth column
+  #
+  # deep <- cbind(                                                             # Grab the tidied dataframe of lat-longs
+  #   DIN = as.numeric(stratify(nc_DIN, space$deep, space$d.weights)),
+  #                 Chlorophyll = as.numeric(stratify(nc_Chl, space$deep, space$d.weights)),
+  #                 Depth = 2)                                                        # Collapse, reshape and append deepwater data
+  #
+  # all <- rbind(shallow, deep) #%>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
+  #  dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
+  #  dplyr::mutate(Depth = as.numeric(Depth))
 
-  all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
-    dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
-    dplyr::mutate(Depth = as.factor(Depth))
+  all <- cbind(                                                          # Grab the tidied dataframe of lat-longs
+    DIN = c(as.numeric(stratify(nc_DIN, space$shallow, space$s.weights)),        # Collapse shallow DIN into 2D and convert to long format
+            as.numeric(stratify(nc_DIN, space$deep, space$d.weights))),
+    Chlorophyll = c(as.numeric(stratify(nc_Chl, space$shallow, space$s.weights)),       # Collapse shallow chlorophyll into 2D and convert to long format
+                    as.numeric(stratify(nc_Chl, space$deep, space$d.weights))))
 
-  return(all)
+    return(all)
 }
 
 #' Get Ice Pesence & Thickness, & Snow Thickness
@@ -431,32 +475,58 @@ get_bio   <- function(path, file, grid, space) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_ice   <- function(path, file, grid, space) {
+get_ice   <- function(path, file, space) {
 
   print(stringr::str_glue("{file} Extracting Ice presence, and Ice and Snow thickness"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
-  nc_Ice <- ncdf4::ncvar_get(nc_raw, "ice_pres")                               # Extract a matrix of ice presence
-  nc_Ithick <- ncdf4::ncvar_get(nc_raw, "iicethic")                            # Extract ice thicknesses
-  nc_Sthick <- ncdf4::ncvar_get(nc_raw, "isnowthi")                            # Extract snow thicknesses
+  nc_Ice <- ncdf4::ncvar_get(nc_raw, "ice_pres", space$start3D[-3], space$count3D[-3])# Extract a matrix of ice presence
+  nc_Ithick <- ncdf4::ncvar_get(nc_raw, "iicethic", space$start3D[-3], space$count3D[-3]) # Extract ice thicknesses
+  nc_Sthick <- ncdf4::ncvar_get(nc_raw, "isnowthi", space$start3D[-3], space$count3D[-3]) # Extract snow thicknesses
   ncdf4::nc_close(nc_raw)                                                      # You must close an open netcdf file when finished to avoid data loss
 
-  shallow <- grid %>%                                                          # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Ice_pres = as.numeric(nc_Ice),
-           Ice_Thickness = as.numeric(nc_Ithick),
-           Snow_Thickness = as.numeric(nc_Sthick),
-           Depth = "S")                                                        # Introduce depth column
+  # shallow <- grid %>%                                                          # Grab the tidied dataframe of lat-longs
+  #   dplyr::mutate(Ice_pres = as.numeric(nc_Ice),
+  #          Ice_Thickness = as.numeric(nc_Ithick),
+  #          Snow_Thickness = as.numeric(nc_Sthick),
+  #          Depth = 1)                                                        # Introduce depth column
+  #
+  # deep <- grid %>%                                                             # Grab the tidied dataframe of lat-longs
+  #   dplyr::mutate(Ice_pres = NA,
+  #          Ice_Thickness = NA,
+  #          Snow_Thickness = NA,
+  #          Depth = 2)                                                        # Introduce depth column
+  #
+  # all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
+  #   dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
+  #   dplyr::mutate(Depth = as.numeric(Depth))
 
-  deep <- grid %>%                                                             # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Ice_pres = NA,
-           Ice_Thickness = NA,
-           Snow_Thickness = NA,
-           Depth = "D")                                                        # Introduce depth column
+  # shallow <- cbind(                                                          # Grab the tidied dataframe of lat-longs
+  #   Ice_pres = as.numeric(nc_Ice),
+  #                 Ice_Thickness = as.numeric(nc_Ithick),
+  #                 Snow_Thickness = as.numeric(nc_Sthick),
+  #                 Depth = 1)                                                        # Introduce depth column
+  #
+  # deep <- cbind(                                                             # Grab the tidied dataframe of lat-longs
+  #   Ice_pres = NA,
+  #                 Ice_Thickness = NA,
+  #                 Snow_Thickness = NA,
+  #                 Depth = rep(2, times = nrow(shallow)))                      # Introduce depth column
+  #
+  # all <- rbind(shallow, deep) #%>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
+  #  dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
+  #  dplyr::mutate(Depth = as.numeric(Depth))
 
-  all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
-    dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
-    dplyr::mutate(Depth = as.factor(Depth))
+  length <- length(nc_Ice)
 
-  return(all)
+  all <- cbind(                                                          # Grab the tidied dataframe of lat-longs
+    Ice_pres = c(as.numeric(nc_Ice),
+                 rep(NA, length)),
+    Ice_Thickness = c(as.numeric(nc_Ithick),
+                      rep(NA, length)),
+    Snow_Thickness = c(as.numeric(nc_Sthick),
+                       rep(NA, length)))
+
+    return(all)
 }
 
 #' Get Vertical Velocity and Vertical Eddy Diffusivity
@@ -474,7 +544,7 @@ get_ice   <- function(path, file, grid, space) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_vertical   <- function(path, file, grid, space) {
+get_vertical   <- function(path, file, space) {
 
   print(stringr::str_glue("{file} Extracting Vertical water movements"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
@@ -482,19 +552,38 @@ get_vertical   <- function(path, file, grid, space) {
   nc_dif <- ncdf4::ncvar_get(nc_raw, "votkeavt", space$start3DW, space$count3DW)
   ncdf4::nc_close(nc_raw)                                                      # You must close an open netcdf file when finished to avoid data loss
 
-  shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$shallow_W, space$s.weights_W)), # Collapse shallow DIN into 2D and convert to long format
-           Vertical_diffusivity = as.numeric(stratify(nc_dif, space$shallow_W, space$s.weights_W)),     # Collapse shallow chlorophyll into 2D and convert to long format
-           Depth = "S")                                                        # Introduce depth column
+  # shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
+  #   dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$shallow_W, space$s.weights_W)), # Collapse shallow DIN into 2D and convert to long format
+  #          Vertical_diffusivity = as.numeric(stratify(nc_dif, space$shallow_W, space$s.weights_W)),     # Collapse shallow chlorophyll into 2D and convert to long format
+  #          Depth = 1)                                                        # Introduce depth column
+  #
+  # deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
+  #   dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$deep_W, space$d.weights_W)),
+  #          Vertical_diffusivity = as.numeric(stratify(nc_dif, space$deep_W, space$d.weights_W)),
+  #          Depth = 2)                                                        # Collapse, reshape and append deepwater data
+  #
+  # all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
+  #   dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
+  #   dplyr::mutate(Depth = as.numeric(Depth))
+  # shallow <- cbind(                                                       # Grab the tidied dataframe of lat-longs
+  #   Vertical_velocity = as.numeric(stratify(nc_vel, space$shallow_W, space$s.weights_W)), # Collapse shallow DIN into 2D and convert to long format
+  #                 Vertical_diffusivity = as.numeric(stratify(nc_dif, space$shallow_W, space$s.weights_W)),     # Collapse shallow chlorophyll into 2D and convert to long format
+  #                 Depth = 1)                                                        # Introduce depth column
+  #
+  # deep <- cbind(                                                           # Grab the tidied dataframe of lat-longs
+  #   Vertical_velocity = as.numeric(stratify(nc_vel, space$deep_W, space$d.weights_W)),
+  #                 Vertical_diffusivity = as.numeric(stratify(nc_dif, space$deep_W, space$d.weights_W)),
+  #                 Depth = 2)                                                        # Collapse, reshape and append deepwater data
+  #
+  # all <- rbind(shallow, deep) #%>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
+    #dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
+    #dplyr::mutate(Depth = as.numeric(Depth))
 
-  deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Vertical_velocity = as.numeric(stratify(nc_vel, space$deep_W, space$d.weights_W)),
-           Vertical_diffusivity = as.numeric(stratify(nc_dif, space$deep_W, space$d.weights_W)),
-           Depth = "D")                                                        # Collapse, reshape and append deepwater data
-
-  all <- data.table::rbindlist(list(shallow, deep)) %>%                        # Bind both sets, this pipeline avoids computationally demanding reshaping
-    dplyr::filter(Shore_dist > 0) %>%                                          # Remove points on land
-    dplyr::mutate(Depth = as.factor(Depth))
+  all <- cbind(                                                       # Grab the tidied dataframe of lat-longs
+    Vertical_velocity = c(as.numeric(stratify(nc_vel, space$shallow_W, space$s.weights_W)), # Collapse shallow DIN into 2D and convert to long format
+                          as.numeric(stratify(nc_vel, space$deep_W, space$d.weights_W))),
+    Vertical_diffusivity = c(as.numeric(stratify(nc_dif, space$shallow_W, space$s.weights_W)),     # Collapse shallow chlorophyll into 2D and convert to long format
+                             as.numeric(stratify(nc_dif, space$deep_W, space$d.weights_W))))
 
   return(all)
 }
@@ -514,25 +603,39 @@ get_vertical   <- function(path, file, grid, space) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_merid <- function(path, file, grid, space) {
+get_merid <- function(path, file, space) {
 
   print(stringr::str_glue("{file} Extracting Meridional currents"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                               # Open up a netcdf file to see it's raw contents (var names)
   nc_merid <- ncdf4::ncvar_get(nc_raw, "vomecrty", space$start3D, space$count3D)         # Pull meridinal currents
   ncdf4::nc_close(nc_raw)                                                    # You must close an open netcdf file when finished to avoid data loss
 
-  shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Meridional = as.numeric(stratify(nc_merid, space$shallow, space$s.weights)),  # Collapse shallow meridional currents into 2D and convert to long format
-           Depth = "S")                                                      # Introduce depth column
+  # shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
+  #   dplyr::mutate(Meridional = as.numeric(stratify(nc_merid, space$shallow, space$s.weights)),  # Collapse shallow meridional currents into 2D and convert to long format
+  #          Depth = 1)                                                      # Introduce depth column
+  #
+  # deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
+  #   dplyr::mutate(Meridional = as.numeric(stratify(nc_merid, space$deep, space$d.weights)), # Collapse, reshape and append deepwater data
+  #          Depth = 2)                                                      # Collapse, reshape and append deepwater data
+  #
+  # all <- data.table::rbindlist(list(shallow, deep)) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
+  #   dplyr::filter(Shore_dist > 0) %>%                                        # Remove points on land
+  #   dplyr::mutate(Depth = as.numeric(Depth))
+  # shallow <- cbind(                                                        # Grab the tidied dataframe of lat-longs
+  #   Meridional = as.numeric(stratify(nc_merid, space$shallow, space$s.weights)),  # Collapse shallow meridional currents into 2D and convert to long format
+  #                 Depth = 1)                                                      # Introduce depth column
+  #
+  # deep <- cbind(                                                           # Grab the tidied dataframe of lat-longs
+  #   Meridional = as.numeric(stratify(nc_merid, space$deep, space$d.weights)), # Collapse, reshape and append deepwater data
+  #                 Depth = 2)                                                      # Collapse, reshape and append deepwater data
 
-  deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Meridional = as.numeric(stratify(nc_merid, space$deep, space$d.weights)), # Collapse, reshape and append deepwater data
-           Depth = "D")                                                      # Collapse, reshape and append deepwater data
+#  all <- rbind(shallow, deep) #%>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
+  #  dplyr::filter(Shore_dist > 0) %>%                                        # Remove points on land
+  #  dplyr::mutate(Depth = as.numeric(Depth))
 
-  all <- data.table::rbindlist(list(shallow, deep)) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
-    dplyr::filter(Shore_dist > 0) %>%                                        # Remove points on land
-    dplyr::mutate(Depth = as.factor(Depth))
-
+  all <- cbind(                                                        # Grab the tidied dataframe of lat-longs
+    Meridional = c(as.numeric(stratify(nc_merid, space$shallow, space$s.weights)),  # Collapse shallow meridional currents into 2D and convert to long format
+                   as.numeric(stratify(nc_merid, space$deep, space$d.weights)))) # Collapse, reshape and append deepwater data
   return(all)
 }
 
@@ -551,24 +654,44 @@ get_merid <- function(path, file, grid, space) {
 #' in the shallow and deep zone. The dataframe contains the data for a single day.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-get_zonal <- function(path, file, grid, space) {
+get_zonal <- function(path, file, space) {
 
   print(stringr::str_glue("{file} Extracting Zonal currents"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                               # Open up a netcdf file to see it's raw contents (var names)
   nc_zonal <- ncdf4::ncvar_get(nc_raw, "vozocrtx", space$start3D, space$count3D)         # Pull zonal current
   ncdf4::nc_close(nc_raw)                                                    # You must close an open netcdf file when finished to avoid data loss
 
-  shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Zonal = as.numeric(stratify(nc_zonal, space$shallow, space$s.weights)),# Collapse shallow meridional currents into 2D and convert to long format
-           Depth = "S")                                                      # Introduce depth column
+  # shallow <- grid %>%                                                        # Grab the tidied dataframe of lat-longs
+  #   dplyr::mutate(Zonal = as.numeric(stratify(nc_zonal, space$shallow, space$s.weights)),# Collapse shallow meridional currents into 2D and convert to long format
+  #          Depth = 1)                                                      # Introduce depth column
+  #
+  # deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
+  #   dplyr::mutate(Zonal = as.numeric(stratify(nc_zonal, space$deep, space$d.weights)),   # Collapse, reshape and append deepwater data
+  #          Depth = 2)                                                      # Collapse, reshape and append deepwater data
 
-  deep <- grid %>%                                                           # Grab the tidied dataframe of lat-longs
-    dplyr::mutate(Zonal = as.numeric(stratify(nc_zonal, space$deep, space$d.weights)),   # Collapse, reshape and append deepwater data
-           Depth = "D")                                                      # Collapse, reshape and append deepwater data
+  # all <- data.table::rbindlist(list(shallow, deep)) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
+  #   dplyr::filter(Shore_dist > 0) %>%                                        # Remove points on land
+  #   dplyr::mutate(Depth = as.numeric(Depth))
 
-  all <- data.table::rbindlist(list(shallow, deep)) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
-    dplyr::filter(Shore_dist > 0) %>%                                        # Remove points on land
-    dplyr::mutate(Depth = as.factor(Depth))
+   # shallow <- cbind(                                                         # Create a matrix
+   #             Zonal = as.numeric(stratify(nc_zonal, space$shallow, space$s.weights)),# Collapse shallow meridional currents into 2D and convert to long format
+   #             Depth = 1)                                                      # Introduce depth column
+   #
+   # deep <- cbind(                                                            # Create a matrix
+   #             Zonal = as.numeric(stratify(nc_zonal, space$deep, space$d.weights)),   # Collapse, reshape and append deepwater data
+   #             Depth = 2)                                                      # Collapse, reshape and append deepwater data
+   #
+   # all <- rbind(shallow, deep)# %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
+    # dplyr::filter(Shore_dist > 0) %>%                                        # Remove points on land
+    # dplyr::mutate(Depth = as.numeric(Depth))
+
+  # all <- data.table::rbindlist(list(shallow, deep)) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
+  #   dplyr::filter(Shore_dist > 0) %>%                                        # Remove points on land
+  #   dplyr::mutate(Depth = as.numeric(Depth))
+
+  all <- cbind(                                                                # Create a matrix
+    Zonal = c(as.numeric(stratify(nc_zonal, space$shallow, space$s.weights)),  # Collapse shallow meridional currents into 2D and convert to long format
+              as.numeric(stratify(nc_zonal, space$deep, space$d.weights))))    # Collapse, reshape and append deepwater data)                                                      # Introduce depth column
 
   return(all)
 }
@@ -611,7 +734,7 @@ get_detritus <- function(file, start, count, grid, shallow, s.weights, deep, d.w
 
   all <- data.table::rbindlist(list(shallow, deep)) %>%                                            # Bind both sets, this pipeline avoids computationally demanding reshaping
     dplyr::filter(Shore_dist > 0) %>%                                               # Remove points on land
-    dplyr::mutate(Depth = as.factor(Depth))
+    dplyr::mutate(Depth = as.numeric(Depth))
 
   return(all)
 }
@@ -656,13 +779,24 @@ type_in_month <- function(data, ...) {
   #   dplyr::summarise_if(is.numeric, mean)
 
 ## dodge slow unnesting
-  Month.type <- purrr::map2(data$Path, data$File, get, ...) %>%                        # Extract data from each file
-    data.table::rbindlist() %>%                                               # Extract all encoded data
-    dplyr::group_by(Longitude, Latitude, Depth, .drop=FALSE) %>%
-    dplyr::summarise_if(is.numeric, mean) %>%
-    dplyr::mutate(Year = as.integer(data[1, 4]),
-                  Month =  as.integer(data[1, 5]))       # Quickly add Year and month
+  # Month.type <- purrr::map2(data$Path, data$File, get, ...) %>%               # Extract data from each file
+  #   data.table::rbindlist() %>%                                               # Extract all encoded data
+  #   dplyr::group_by(Longitude, Latitude, Depth, .drop=FALSE) %>%
+  #   dplyr::summarise_if(is.numeric, mean) %>%
+  #   dplyr::ungroup() %>%
+  #   dplyr::mutate(Year = as.integer(data[1, 4]),
+  #                 Month =  as.integer(data[1, 5]))       # Quickly add Year and month
 
+  Month.type <- purrr::map2(data$Path, data$File, get, ...) %>%
+    #purrr::map(~{select(.x, -Depth) %>% as.matrix(.x) }) %>%
+#    purrr::map(as.matrix) %>%
+    abind::abind(along = 3) %>%                     # stack dataframes behind each other
+    rowMeans(dims = 2) #%>%
+   # as.data.frame() %>%
+   #  dplyr::mutate(Year = as.integer(data[1, 4]),
+   #                Month =  as.integer(data[1, 5]))       # Quickly add Year and month
+    # cbind(Year = as.integer(data[1, 4]),
+    #               Month =  as.integer(data[1, 5]))
   return(Month.type)
 }
 
@@ -687,14 +821,21 @@ type_in_month <- function(data, ...) {
 #' \strong{all} the variables of interest in NEMO-MEDUSA outputs.
 #' @family NEMO-MEDUSA variable extractors
 #' @export
-whole_month <- function(data, crop, ...) {
+whole_month <- function(data, crop, grid, ...) {
 
   Month <- data[1,5] ; Year <- data[1,4]                                    # Pull date
 
   Month <- split(data, f = list(data$Type)) %>%                             # Split out the files for this month by type, so they can be averaged together
     purrr::map(type_in_month, ...) %>%                                      # Pull a whole month of data from a single file type
-    purrr::reduce(dplyr::full_join) %>%                                     # Join together all the data packets
-  # dplyr::right_join(spine) %>%   # a)                                     # Cut out rows outside of polygons and attach compartment labels
+ #   purrr::reduce(dplyr::full_join) %>%                                    # Join together all the data packets
+    do.call(cbind, .) %>%                                                   # Join together all the data packets
+#    .[, !duplicated(colnames(.))] %>%
+    cbind(grid) %>%                                                         # Add coordinates and depth labels
+    filter(Shore_dist > 0) %>%                                              # Drop points on land
+    mutate(Year = as.integer(Year),                                         # Add time
+           #Depth = as.factor(ifelse(Depth ==1, "S", "D")),                 # Recode depths from numeric to character
+           Month =  as.integer(Month)) %>%
+    # dplyr::right_join(spine) %>%   # a)                                   # Cut out rows outside of polygons and attach compartment labels
     dplyr::right_join(crop) %>%    # b)                                     # Cut out rows outside of plotting window
     saveRDS(., file = paste("./Objects/Months/NM", Month, Year, "rds", sep = "."))    # save out a data object for one whole month
 }
@@ -725,7 +866,7 @@ detritus_month <- function(data, targets, ...) {
   Month <- data[1,3] ; Year <- data[1,2]                                    # Pull date
 
   Month <- data %>%                                                         # Take the year
-    dplyr::mutate(data = purrr::map(data$value, get_detritus, ...)) %>%     # Extract detritus data from each file
+    dplyr::mutate(data = purrr::map(data$File, get_detritus, ...)) %>%     # Extract detritus data from each file
     tidyr::unnest(data) %>%                                                 # Extract all encoded data
     dplyr::group_by(Longitude, Latitude, Depth, .drop=FALSE) %>%
     dplyr::summarise_if(is.numeric, mean) %>%
@@ -972,7 +1113,7 @@ if(dt == TRUE){                                                               # 
 sfc_as_cols <- function(x, names = c("x","y")) {
   stopifnot(inherits(x,"sf") && inherits(sf::st_geometry(x),"sfc_POINT"))
   ret <- sf::st_coordinates(x)
-  ret <- tibble::as_tibble(ret)
+  ret <- as.data.frame(ret)
   stopifnot(length(names) == ncol(ret))
   x <- x[ , !names(x) %in% names]
   ret <- setNames(ret,names)
