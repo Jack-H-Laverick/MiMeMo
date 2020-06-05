@@ -308,7 +308,7 @@ stratify  <- function(data, depth, weights) {
   # data <- nc_zonal ; depth <- Deep_mark ; weights <- dw                   # testing
 
   new <- data[,,depth] * weights[,,depth]                                      # Select slice of depths to average, multiply values by the weights
-  empties <- apply(new, c(1,2), empty)                                         # Find pixels with all depths shown by NA (locations of fake 0s)
+  empties <- emptyRcpp(new)                                                 # Find pixels with all depths shown by NA (locations of fake 0s)
 
 #  new2 <- apply(new, c(1,2), sum, na.rm = TRUE)                                # Sum the weighted values at a pixel
   new2 <- rowSums(new, dims = 2, na.rm = TRUE)                                 # fast (C) sum the weighted values at a pixel
