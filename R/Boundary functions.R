@@ -355,8 +355,8 @@ extract_OOB <- function (Depth, Data, transects, intersections, variables) {
 #  if(Depth == "D") { Transects <- Deep_transects ; Intersections <- Intersections_D }    # Select the relevant transects for sampling
 
 Samples <- purrr::map(intersections[[Depth]], function(x) colMeans(Data[x, variables], na.rm = T)) %>% # Select the cells and calulate the average current per transect
-  dplyr::rbind_list() %>%                                                              # Collapse list to vector
-  dplyr::bind_cols(transects[[Depth]], .) %>%                                          # Copy transect meta-data over to the samples
+  do.call(rbind, .) %>%                                                              # Collapse list to vector
+  cbind(transects[[Depth]], .) %>%                                          # Copy transect meta-data over to the samples
   tidyr::drop_na() %>%                                                                 # NM points on land return NA, remove these
   dplyr::mutate(Depth = Depth)
 
@@ -389,8 +389,8 @@ Sample_OOB <- function(file, variables, ...) {
     split(.$Depth) %>%                                                   # Seperate shallow and deep data
     purrr::map(.x = ., .f = dplyr::left_join, x = cells)                 # Reorder data onto the grid
 
-  Summary <- purrr::map(c("S", "D"), extract_OOB, Data, variables = variables, ...) %>% # Extract for the combinations of depth and current
-    data.table::rbindlist() %>%                                          # Bind
+  Summary <- rbind(extract_OOB("S", Data, variables = variables, ...),    # Extract data from shallow OOB transects
+                   extract_OOB("D", Data, variables =variables, ...)) %>% # Extract data from deep OOB transects
     dplyr::group_by(Shore, Depth) %>%                                    # Data to retain when summing
     dplyr::select(eval(variables)) %>%
     dplyr::summarise_all(mean) %>%
