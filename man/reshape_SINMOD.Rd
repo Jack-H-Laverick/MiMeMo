@@ -13,7 +13,7 @@ reshape_SINMOD(path, file, out_dir, window)
 
 \item{out_dir}{a character string directing to the folder the new files should be written to.}
 
-\item{window}{a named list containing `xmin`, `xmax`, `ymin`, `ymax`, the window to crop to.}
+\item{window}{a named list containing `xmin`, `xmax`, `ymin`, `ymax`, the indices of the window to crop to.}
 }
 \value{
 A netcdf file containing depth averaged UV water velocities cropped to the target window.

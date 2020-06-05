@@ -15,6 +15,7 @@ Encoding: UTF-8
 LazyData: true
 URL: https://jack-h-laverick.github.io/MiMeMo.tools/, https:github.com/Jack-H-Laverick/MiMeMo.tools
 BugReports: https:github.com/Jack-H-Laverick/MiMeMo.tools/issues
+LinkingTo: Rcpp, RcppArmadillo
 Imports:
   dplyr,
   tidyr,
@@ -23,7 +24,9 @@ Imports:
   tibble,
   data.table,
   sf,
-  rcdo
+  rcdo,
+  Rcpp,
+  RcppArmadillo
 RoxygenNote: 7.1.0
 Suggests: 
     knitr,

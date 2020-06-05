@@ -4,7 +4,7 @@
 \alias{get_zonal}
 \title{Get Zonal Currents}
 \usage{
-get_zonal(path, file, grid, space)
+get_zonal(path, file, space)
 }
 \arguments{
 \item{path}{The path to the NEMO-MEDUSA model outputs.}

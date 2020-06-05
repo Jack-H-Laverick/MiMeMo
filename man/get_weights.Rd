@@ -4,7 +4,7 @@
 \alias{get_weights}
 \title{Calculate Water Layer Thicknesses Within an Array}
 \usage{
-get_weights(top, bottom)
+get_weights(top, bottom, bathymetry)
 }
 \arguments{
 \item{top}{The shallowest depth in the depth window.}

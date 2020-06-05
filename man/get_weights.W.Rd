@@ -4,7 +4,7 @@
 \alias{get_weights.W}
 \title{Calculate Water Layer Thicknesses Within an Array (Velocities)}
 \usage{
-get_weights.W(top, bottom)
+get_weights.W(top, bottom, bathymetry)
 }
 \arguments{
 \item{top}{The shallowest depth in the depth window.}

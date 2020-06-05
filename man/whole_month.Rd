@@ -4,7 +4,7 @@
 \alias{whole_month}
 \title{Condense Daily netcdf Files into a Monthly Summary}
 \usage{
-whole_month(data, crop, ...)
+whole_month(data, crop, grid, ...)
 }
 \arguments{
 \item{data}{A dataframe containing the metadata of multiple netcdf files from a common month.}

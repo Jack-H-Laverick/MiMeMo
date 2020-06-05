@@ -4,7 +4,7 @@
 \alias{get_sea}
 \title{Get Salinity, Temperature & Sea Ice Concentration}
 \usage{
-get_sea(path, file, grid, space)
+get_sea(path, file, space)
 }
 \arguments{
 \item{path}{The path to the NEMO-MEDUSA model outputs.}
