@@ -242,11 +242,9 @@ direction <- function(segment) {
   #   coord_sf(xlim = c(window$xmin, window$xmax), ylim = c(window$ymin, window$ymax))
 
   summary <- dplyr::filter(test, Contained == "in") %>%          # Take the metadata associated with the point in the focal polygon
-    dplyr::select(Flip) %>%                               # Keep only interesting columns
-    #dplyr::select(Shore, Flip) %>%                               # Keep only interesting columns
+    dplyr::select(Flip) %>%                                      # Keep only interesting columns
     sf::st_set_geometry(NULL) %>%                                # Drop unneccessary geometry
-    dplyr::mutate(#Outside = filter(test, Contained == "in")$Shore,
-           Neighbour = as.character(neighbour)) %>%              # Attach the neighbouring polygon
+    dplyr::mutate(Neighbour = as.character(neighbour)) %>%       # Attach the neighbouring polygon
     tidyr::replace_na(list(Neighbour = "Ocean"))                 # If there wasn't a neighbouring polygon, assign ocean
 
   return(summary)
@@ -345,14 +343,7 @@ Sample <- function(file, ...) {
 #' @export
 extract_OOB <- function (Depth, Data, transects, intersections, variables) {
 
-  #  Depth = "D"
-  #  Depth = "S"
-
   Data <- Data[[Depth]]
-  #variables <- c("DIN", "Chlorophyll", "Temperature", "Salinity")
-
-#  if(Depth == "S") { Transects <- Shallow_transects ; Intersections <- Intersections_S } # Select the relevant transects for sampling
-#  if(Depth == "D") { Transects <- Deep_transects ; Intersections <- Intersections_D }    # Select the relevant transects for sampling
 
 Samples <- purrr::map(intersections[[Depth]], function(x) colMeans(Data[x, variables], na.rm = T)) %>% # Select the cells and calulate the average current per transect
   do.call(rbind, .) %>%                                                              # Collapse list to vector
