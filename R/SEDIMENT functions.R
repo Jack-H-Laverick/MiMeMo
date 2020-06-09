@@ -38,7 +38,7 @@ reshape_SINMOD <- function(path, file, out_dir, window) {
     # str_glue and {} allows us to programmatically buils character strings to run in Konsole.
     # Keep only these variables (-x -v means drop these variables),clip x and y dimensions
     # (names xc and yc specified in the file), from a file, saving result as new file.
-    system(stringr::str_glue("ncea -v u_east,v_north,elevation,LayerDepths -d xc,{window$xmin},{window$xmax} -d yc,{window$ymin},{window$ymax} {ff_new} {temp_file1}"))
+    system(stringr::str_glue("ncea -v u_east,v_north,LayerDepths -d xc,{window$xmin},{window$xmax} -d yc,{window$ymin},{window$ymax} {ff_new} {temp_file1}"))
 
     # Weighted averages, over depth (zc), using layer depths, from a file, saving result
     system(stringr::str_glue("ncwa -a zc -w LayerDepths {temp_file1} {temp_file2}"))
