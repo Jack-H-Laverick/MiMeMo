@@ -373,6 +373,7 @@ get_bio   <- function(path, file, space) {
   print(stringr::str_glue("{file} Extracting Dissolved Inorganic Nitrogen and Chlorophyll"))
   nc_raw <- ncdf4::nc_open(paste0(path, file))                                 # Open up a netcdf file to see it's raw contents (var names)
   nc_DIN <- ncdf4::ncvar_get(nc_raw, "DIN", space$start3D, space$count3D)      # Extract an array for the variable
+  nc_DET <- ncdf4::ncvar_get(nc_raw, "DET", space$start3D, space$count3D)
   nc_CHD <- ncdf4::ncvar_get(nc_raw, "CHD", space$start3D, space$count3D)
   nc_CHN <- ncdf4::ncvar_get(nc_raw, "CHN", space$start3D, space$count3D)
   nc_Chl <- nc_CHD + nc_CHN ; rm(nc_CHD, nc_CHN)
@@ -381,6 +382,8 @@ get_bio   <- function(path, file, space) {
   all <- cbind(                                                                # Bind as matrix
     DIN = c(as.numeric(stratify(nc_DIN, space$shallow, space$s.weights)),      # Collapse shallow DIN into 2D and convert to long format
             as.numeric(stratify(nc_DIN, space$deep, space$d.weights))),        # and deep as one column
+    Detritus = c(as.numeric(stratify(nc_DET, space$shallow, space$s.weights)), # Collapse shallow Detritus into 2D and convert to long format
+      as.numeric(stratify(nc_DET, space$deep, space$d.weights))),              # and deep as one column
     Chlorophyll = c(as.numeric(stratify(nc_Chl, space$shallow, space$s.weights)), # Collapse shallow chlorophyll into 2D and convert to long format
                     as.numeric(stratify(nc_Chl, space$deep, space$d.weights))))   # and deep as one column
     return(all)
