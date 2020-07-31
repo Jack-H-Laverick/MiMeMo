@@ -20,27 +20,26 @@
 #' @return A data frame containing vertical eddy diffusivity and vertical velocity at the boundary depth
 #' between shallow and deep compartments, for a single day as a spatial plane.
 #' @family NEMO-MEDUSA variable extractors
-#' @export
-interp_vertical <- function(Path, File, Points, Boundary = 60) {
-
-  V_interface <- rcdo::nc_remap(paste0(Path, File), vars = c("vovecrtz", "votkeavt"), vert_depths = Boundary) %>% # Interpolate at 60 m
-    dplyr::filter(Latitude != 0) %>%                                                 # Remove incorrectlly labelled points (outside domain anyway)
-    dplyr::rename(Velocity = vovecrtz, `Eddy Diffusivity` = votkeavt) %>%            # Rename variables
-    dplyr::inner_join(Points, .)                                                     # Limit to points of interest
-
-  ## Check CDO has formed the grid correctly
-  # ggplot() + geom_sf(data = V_interface, aes(colour = Velocity))
-
-  Velocity <- dplyr::mutate(V_interface, Flow = ifelse(Velocity >= 0, "Upwelling", "Downwelling")) %>% # Label upwelling and downwelling
-    #  group_by(Flow) %>%                                                     # Group for averaging (splitting up and down welling)
-    dplyr::summarise(Value = mean(Velocity))                                         # Calculate mean vertical veolcities for each region
-
-  day <- dplyr::group_by(V_interface) %>%                                            # Repeat grouping for eddy diffusivitity
-    dplyr::summarise(Value = mean(`Eddy Diffusivity`)) %>%                           # Average by region
-    dplyr::mutate(Flow = "Eddy Diffusivity") %>%                                     # Attach a label (so we can group by variable when plotting timeseries)
-    dplyr::bind_rows(., Velocity)                                                    # Combine summaries for the time step
-  return(day)
-}
+# interp_vertical <- function(Path, File, Points, Boundary = 60) {
+#
+#   V_interface <- rcdo::nc_remap(paste0(Path, File), vars = c("vovecrtz", "votkeavt"), vert_depths = Boundary) %>% # Interpolate at 60 m
+#     dplyr::filter(Latitude != 0) %>%                                                 # Remove incorrectlly labelled points (outside domain anyway)
+#     dplyr::rename(Velocity = vovecrtz, `Eddy Diffusivity` = votkeavt) %>%            # Rename variables
+#     dplyr::inner_join(Points, .)                                                     # Limit to points of interest
+#
+#   ## Check CDO has formed the grid correctly
+#   # ggplot() + geom_sf(data = V_interface, aes(colour = Velocity))
+#
+#   Velocity <- dplyr::mutate(V_interface, Flow = ifelse(Velocity >= 0, "Upwelling", "Downwelling")) %>% # Label upwelling and downwelling
+#     #  group_by(Flow) %>%                                                     # Group for averaging (splitting up and down welling)
+#     dplyr::summarise(Value = mean(Velocity))                                         # Calculate mean vertical veolcities for each region
+#
+#   day <- dplyr::group_by(V_interface) %>%                                            # Repeat grouping for eddy diffusivitity
+#     dplyr::summarise(Value = mean(`Eddy Diffusivity`)) %>%                           # Average by region
+#     dplyr::mutate(Flow = "Eddy Diffusivity") %>%                                     # Attach a label (so we can group by variable when plotting timeseries)
+#     dplyr::bind_rows(., Velocity)                                                    # Combine summaries for the time step
+#   return(day)
+# }
 
 #' Extract vertical water movements at the boundary between shallow and deep compartments
 #'

@@ -960,6 +960,7 @@ summarise_ts <- function(saved) {
     dplyr::summarise(Salinity_avg = stats::weighted.mean(Salinity, weights, na.rm = TRUE), # Get monthly mean salinity
               Temperature_avg = stats::weighted.mean(Temperature, weights, na.rm = TRUE),
               DIN_avg = stats::weighted.mean(DIN, weights, na.rm = TRUE),
+              Detritus_avg = stats::weighted.mean(Detritus, weights, na.rm = TRUE),
               Chlorophyll_avg = stats::weighted.mean(Chlorophyll, weights, na.rm = TRUE),
               Ice_pres = mean(Ice_pres, na.rm = TRUE),                         # Proprtion of pixels covered by ice
               Vertical_diffusivity_avg = stats::weighted.mean(Vertical_diffusivity, weights, na.rm = TRUE),

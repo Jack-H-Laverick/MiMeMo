@@ -45,7 +45,6 @@ Other NEMO-MEDUSA variable extractors:
 \code{\link{get_vertical}()},
 \code{\link{get_zonal}()},
 \code{\link{interp_month}()},
-\code{\link{interp_vertical}()},
 \code{\link{whole_month}()}
 }
 \concept{NEMO-MEDUSA variable extractors}

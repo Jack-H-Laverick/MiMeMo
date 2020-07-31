@@ -2,7 +2,7 @@
 % Please edit documentation in R/Boundary functions.R
 \name{interp_month}
 \alias{interp_month}
-\title{Extract vertical water movements at the boundary between shallow and deep compartments}
+\title{Interpolate vertical water movements to the boundary depth between shallow and deep compartments}
 \usage{
 interp_month(data, grid_points)
 }
@@ -10,20 +10,30 @@ interp_month(data, grid_points)
 \item{data}{A list of paths to netcdf files which share the same month.}
 
 \item{grid_points}{An SF object containing the grid points which fall within the domain polygons.}
+
+\item{Path}{The path to a netcdf file containing target data, inherited from `interp_month`.}
+
+\item{File}{The name of a netcdf file containing target data, inherited from `interp_month`.}
+
+\item{Points}{An SF object containing the grid points which fall within the domain polygons, inherited from `interp_month`.}
+
+\item{Boundary}{The boundary depth between shallow and deep compartments, defaults to 60 m for MiMeMo.}
 }
 \value{
+A data frame containing vertical eddy diffusivity and vertical velocity at the boundary depth
+between shallow and deep compartments, for a single day as a spatial plane.
+
 The function returns a dataframe of points averaged within a month and interpolated to the boundary depth.
 }
 \description{
-This function reads in a packet of daily netcdf files from the same month, and returns a single monthly dataframe
-of vertical water movements.
+This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
+values to a plane at the boundary depth between shallow and deep compartments.
 }
 \details{
-The function reads in a packet of monthly netcdf files and passes them to `interp_vertical`.
-
-`interp_vertical` interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.
-
-The daily dataframes are then passed back to `interp_month`, which averages again by month and variable, dropping the spatial information.
+The function uses `rcdo::nc_remap` to interpolate vertical eddy diffusivity and vertical water velocities at
+the boundary depth between the shallow and deep model compartments. Points which fall outside the geographic
+extent of model compartments are dropped. The retained points are passed back to `interp_month` for further averaging
+as a dataframe.
 }
 \seealso{
 Other NEMO-MEDUSA variable extractors: 
@@ -38,8 +48,18 @@ Other NEMO-MEDUSA variable extractors:
 \code{\link{get_spatial}()},
 \code{\link{get_vertical}()},
 \code{\link{get_zonal}()},
-\code{\link{interp_vertical}()},
 \code{\link{type_in_month}()},
 \code{\link{whole_month}()}
 }
 \concept{NEMO-MEDUSA variable extractors}
+\concept{NEMO-MEDUSA variable extractors
+Extract vertical water movements at the boundary between shallow and deep compartments
+
+This function reads in a packet of daily netcdf files from the same month, and returns a single monthly dataframe
+of vertical water movements.
+
+The function reads in a packet of monthly netcdf files and passes them to `interp_vertical`.
+
+`interp_vertical` interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.
+
+The daily dataframes are then passed back to `interp_month`, which averages again by month and variable, dropping the spatial information.}
