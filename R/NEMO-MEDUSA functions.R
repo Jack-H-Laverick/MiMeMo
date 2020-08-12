@@ -515,7 +515,6 @@ get_zonal <- function(path, file, space) {
 #' Get Detritus
 #'
 #' This function reads in the title variable from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
-#' Detritus can be found in an older NEMO-MEDUSA data excerpt.
 #'
 #' The variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
 #' `count3D`. The values are then passed to `stratify` to calculate two average matrices, one a weighted vertical average
@@ -553,6 +552,45 @@ get_detritus <- function(file, start, count, grid, shallow, s.weights, deep, d.w
     dplyr::mutate(Depth = as.numeric(Depth))
 
   return(all)
+}
+
+#' Get Rivers
+#'
+#' This function reads river NEMO-MEDUSA river runoff files and reshapes for StrathE2E.
+#'
+#' The river runoff file for a single year is imported. Points are checked to see if they fall in the model domain.
+#' The points which do are summed by months.
+#'
+#' NOTE! The river run off files provided to MiMeMo have estimates in open ocean. Runoff is channeled to cells in
+#' the vicinity of river mouths so that single grid cells don't get the full amount. Of course river run off really
+#' comes from the coast, so you may need to modify your domain polygon.
+#'
+#' @param File The name (with path) of a netcdf file containing river runoff data.
+#' @param Year The year the file contains data for.
+#' @param domain The polygon used to capture point estimates relevant to the model domain.
+#' @return A dataframe containing the total river runoff into the model domain by month with a year column.
+#' @family NEMO-MEDUSA variable extractors
+#' @export
+get_rivers <- function(File, Year, domain) {
+
+  data <- raster::raster(File, varname = "nav_lat") %>%
+    raster::as.data.frame(xy = TRUE) %>%                                                              # Get a dataframe of xy positions and latitudes
+    dplyr::left_join(raster::as.data.frame(raster::raster(File, varname = "nav_lon"), xy = TRUE)) %>% # Bind to the same for longitudes
+    dplyr::left_join(raster::as.data.frame(raster::brick(File, varname = "sorunoff"), xy = TRUE)) %>% # Bind to the river run off values for all months
+    sf::st_as_sf(coords = c("nav_lon", "nav_lat"), crs = 4326) %>%                                    # Convert to sf
+    dplyr::select(-c(x,y)) %>%                                                                        # Drop cell positions used for binding
+    tidyr::drop_na() %>%                                                                              # Drop empty pixels
+    sf::st_transform(sf::st_crs(domain)) %>%                                                          # Transform points to the same crs as domain polygon
+    sf::st_join(domain) %>%                                                                           # Check which points are in the domain
+    sf::st_drop_geometry() %>%                                                                        # Drop sf formatting
+    tidyr::drop_na() %>%                                                                              # Drop points outside the domain
+    colSums()                                                                                         # Total all river runoff in a month
+
+  names(data) <- c(1:12)                                                                              # Label each column by month
+
+  result <- data.frame(Year = Year, Month = 1:12, Runoff = data)                                      # Create a dataframe of runoff by month and add year column
+
+  return(result)
 }
 
 #' Condense Daily netcdf Files into a Month by Type

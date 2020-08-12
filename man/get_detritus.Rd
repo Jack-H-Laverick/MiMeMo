@@ -29,7 +29,6 @@ in the shallow and deep zone. The dataframe contains the data for a single day.
 }
 \description{
 This function reads in the title variable from NEMO-MEDUSA model outputs and reshapes for StrathE2E.
-Detritus can be found in an older NEMO-MEDUSA data excerpt.
 }
 \details{
 The variable of interest in the netcdf file is imported, only reading within an x/y window specified with `start3D` and
@@ -44,6 +43,7 @@ Other NEMO-MEDUSA variable extractors:
 \code{\link{get_bio}()},
 \code{\link{get_ice}()},
 \code{\link{get_merid}()},
+\code{\link{get_rivers}()},
 \code{\link{get_sea}()},
 \code{\link{get_spatial}()},
 \code{\link{get_vertical}()},

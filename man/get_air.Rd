@@ -37,6 +37,7 @@ Other NEMO-MEDUSA variable extractors:
 \code{\link{get_detritus}()},
 \code{\link{get_ice}()},
 \code{\link{get_merid}()},
+\code{\link{get_rivers}()},
 \code{\link{get_sea}()},
 \code{\link{get_spatial}()},
 \code{\link{get_vertical}()},

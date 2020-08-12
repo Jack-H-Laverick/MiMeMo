@@ -57,6 +57,7 @@ reference:
   - get_merid
   - get_zonal
   - get_vertical
+  - get_rivers
   - interp_month
   - stratify
   - type_in_month
