@@ -20,6 +20,7 @@ sea floor at those coordinates is shallower than the maximum depth we set for th
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
 \code{\link{Window}()},
+\code{\link{calculate_depth_share}()},
 \code{\link{get_weights.W}()},
 \code{\link{get_weights.old}()},
 \code{\link{get_weights}()},

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate bed shear stress at a location — mync_get_pixel • MiMeMo.tools</title>
+<title>Get Rivers — get_rivers • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,8 @@
 
 
 
-<meta property="og:title" content="Calculate bed shear stress at a location — mync_get_pixel" />
-<meta property="og:description" content="This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
-and then calculates the bed shear stress through time." />
+<meta property="og:title" content="Get Rivers — get_rivers" />
+<meta property="og:description" content="This function reads river NEMO-MEDUSA river runoff files and reshapes for StrathE2E." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 
 
@@ -141,43 +140,61 @@ and then calculates the bed shear stress through time." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate bed shear stress at a location</h1>
+    <h1>Get Rivers</h1>
     
-    <div class="hidden name"><code>mync_get_pixel.Rd</code></div>
+    <div class="hidden name"><code>get_rivers.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
-and then calculates the bed shear stress through time.</p>
+    <p>This function reads river NEMO-MEDUSA river runoff files and reshapes for StrathE2E.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mync_get_pixel</span><span class='op'>(</span><span class='va'>File</span>, <span class='va'>var</span>, <span class='va'>pixel_x</span>, <span class='va'>pixel_y</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_rivers</span><span class='op'>(</span><span class='va'>File</span>, <span class='va'>Year</span>, <span class='va'>domain</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>pixel</th>
-      <td><p>a numeric value indicating the row number of a dataframe of target coordinates.</p></td>
+      <th>File</th>
+      <td><p>The name (with path) of a netcdf file containing river runoff data.</p></td>
     </tr>
     <tr>
-      <th>tide_packets</th>
-      <td><p>a list of dataframes containing instructions for processing all SINMOD files which share a year.</p></td>
+      <th>Year</th>
+      <td><p>The year the file contains data for.</p></td>
+    </tr>
+    <tr>
+      <th>domain</th>
+      <td><p>The polygon used to capture point estimates relevant to the model domain.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe containing a time series of bed shear stress metrics for a location.</p>
+    <p>A dataframe containing the total river runoff into the model domain by month with a year column.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The river runoff file for a single year is imported. Points are checked to see if they fall in the model domain.
+The points which do are summed by months.</p>
+<p>NOTE! The river run off files provided to MiMeMo have estimates in open ocean. Runoff is channeled to cells in
+the vicinity of river mouths so that single grid cells don't get the full amount. Of course river run off really
+comes from the coast, so you may need to modify your domain polygon.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other water movements: 
-<code><a href='get_bed_shear_stress.html'>get_bed_shear_stress</a>()</code>,
-<code><a href='get_tides_ts.html'>get_tides_ts</a>()</code>,
-<code><a href='get_waves_ts.html'>get_waves_ts</a>()</code>,
-<code><a href='reshape_SINMOD.html'>reshape_SINMOD</a>()</code>,
-<code><a href='sample_tides_year.html'>sample_tides_year</a>()</code>,
-<code><a href='sample_waves.html'>sample_waves</a>()</code></p></div>
+    <div class='dont-index'><p>Other NEMO-MEDUSA variable extractors: 
+<code><a href='detritus_month.html'>detritus_month</a>()</code>,
+<code><a href='get_air_dt.html'>get_air_dt</a>()</code>,
+<code><a href='get_air.html'>get_air</a>()</code>,
+<code><a href='get_bio.html'>get_bio</a>()</code>,
+<code><a href='get_detritus.html'>get_detritus</a>()</code>,
+<code><a href='get_ice.html'>get_ice</a>()</code>,
+<code><a href='get_merid.html'>get_merid</a>()</code>,
+<code><a href='get_sea.html'>get_sea</a>()</code>,
+<code><a href='get_spatial.html'>get_spatial</a>()</code>,
+<code><a href='get_vertical.html'>get_vertical</a>()</code>,
+<code><a href='get_zonal.html'>get_zonal</a>()</code>,
+<code><a href='interp_month.html'>interp_month</a>()</code>,
+<code><a href='type_in_month.html'>type_in_month</a>()</code>,
+<code><a href='whole_month.html'>whole_month</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

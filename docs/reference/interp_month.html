@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract vertical water movements at the boundary between shallow and deep compartments — interp_month • MiMeMo.tools</title>
+<title>Interpolate vertical water movements to the boundary depth between shallow and deep compartments — interp_month • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,9 @@
 
 
 
-<meta property="og:title" content="Extract vertical water movements at the boundary between shallow and deep compartments — interp_month" />
-<meta property="og:description" content="This function reads in a packet of daily netcdf files from the same month, and returns a single monthly dataframe
-of vertical water movements." />
+<meta property="og:title" content="Interpolate vertical water movements to the boundary depth between shallow and deep compartments — interp_month" />
+<meta property="og:description" content="This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
+values to a plane at the boundary depth between shallow and deep compartments." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 
 
@@ -81,7 +81,7 @@ of vertical water movements." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MiMeMo.tools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -141,17 +141,17 @@ of vertical water movements." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract vertical water movements at the boundary between shallow and deep compartments</h1>
+    <h1>Interpolate vertical water movements to the boundary depth between shallow and deep compartments</h1>
     
     <div class="hidden name"><code>interp_month.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads in a packet of daily netcdf files from the same month, and returns a single monthly dataframe
-of vertical water movements.</p>
+    <p>This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
+values to a plane at the boundary depth between shallow and deep compartments.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>interp_month</span>(<span class='no'>data</span>, <span class='no'>grid_points</span>)</pre>
+    <pre class="usage"><span class='fu'>interp_month</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>grid_points</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,16 +164,35 @@ of vertical water movements.</p>
       <th>grid_points</th>
       <td><p>An SF object containing the grid points which fall within the domain polygons.</p></td>
     </tr>
+    <tr>
+      <th>Path</th>
+      <td><p>The path to a netcdf file containing target data, inherited from `interp_month`.</p></td>
+    </tr>
+    <tr>
+      <th>File</th>
+      <td><p>The name of a netcdf file containing target data, inherited from `interp_month`.</p></td>
+    </tr>
+    <tr>
+      <th>Points</th>
+      <td><p>An SF object containing the grid points which fall within the domain polygons, inherited from `interp_month`.</p></td>
+    </tr>
+    <tr>
+      <th>Boundary</th>
+      <td><p>The boundary depth between shallow and deep compartments, defaults to 60 m for MiMeMo.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a dataframe of points averaged within a month and interpolated to the boundary depth.</p>
+    <p>A data frame containing vertical eddy diffusivity and vertical velocity at the boundary depth
+between shallow and deep compartments, for a single day as a spatial plane.</p>
+<p>The function returns a dataframe of points averaged within a month and interpolated to the boundary depth.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function reads in a packet of monthly netcdf files and passes them to `interp_vertical`.</p>
-<p>`interp_vertical` interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.</p>
-<p>The daily dataframes are then passed back to `interp_month`, which averages again by month and variable, dropping the spatial information.</p>
+    <p>The function uses `rcdo::nc_remap` to interpolate vertical eddy diffusivity and vertical water velocities at
+the boundary depth between the shallow and deep model compartments. Points which fall outside the geographic
+extent of model compartments are dropped. The retained points are passed back to `interp_month` for further averaging
+as a dataframe.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA variable extractors: 
@@ -184,11 +203,11 @@ of vertical water movements.</p>
 <code><a href='get_detritus.html'>get_detritus</a>()</code>,
 <code><a href='get_ice.html'>get_ice</a>()</code>,
 <code><a href='get_merid.html'>get_merid</a>()</code>,
+<code><a href='get_rivers.html'>get_rivers</a>()</code>,
 <code><a href='get_sea.html'>get_sea</a>()</code>,
 <code><a href='get_spatial.html'>get_spatial</a>()</code>,
 <code><a href='get_vertical.html'>get_vertical</a>()</code>,
 <code><a href='get_zonal.html'>get_zonal</a>()</code>,
-<code><a href='interp_vertical.html'>interp_vertical</a>()</code>,
 <code><a href='type_in_month.html'>type_in_month</a>()</code>,
 <code><a href='whole_month.html'>whole_month</a>()</code></p></div>
 
@@ -211,7 +230,7 @@ of vertical water movements.</p>
 
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

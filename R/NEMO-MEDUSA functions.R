@@ -187,6 +187,57 @@ get_weights.old <- function(top, bottom) {
   return(weights)
 }
 
+#' Calculate Water Layer Thicknesses Within a Vector
+#'
+#' This function calculates the thickness of the water layer around each point in a vector. These thicknesses
+#' are needed to calculate weighted averages across a depth window.
+#'
+#' The function calculates the midpoints between values in a vector and an optional set of boundary depths.
+#' The differences between these midpoints are calculated to return the thickness of a depth layer centered
+#' on each point in the original vector. In the absence of boundary depths, the maximum and minimum depths are used.
+#'
+#' If a depth falls outside the target window it gets a thickness of 0. If all depths fall outside the window
+#' the function returns an all 0 vector. If this is passed to `weighted.mean` the result will be NaN.
+#'
+#'
+#' @param depths A numeric vector of increasing depths.
+#' @param min_depth The shallowest depth in the depth window. (defaults to minimum depth in the vector)
+#' @param max_depth The deepest depth in the depth window. (defaults to minimum depth in the vector)
+#' @return A vector of water layer thicknesses to match the length of the original vector.
+#' @family NEMO-MEDUSA spatial tools
+#' @examples
+#' # Get a vector of depths
+#' depths <- seq(0, 100, by = 10)
+#'
+#' # Water layer thickness within the vector
+#' calculate_depth_share(depths)
+#'
+#' # Water layer thickness using limits of a depth window
+#' calculate_depth_share(depths, min_depth = 25, max_depth = 75)
+#'
+#' # Special case when the depth vector falls outside the target depth window
+#' calculate_depth_share(depths, min_depth = 400, max_depth = 600)
+#' @export
+
+calculate_depth_share <- function(depths, min_depth = min(depths), max_depth = max(depths)) {
+
+  contained <- depths <= max_depth & depths >= min_depth       # Which depths are within our window?
+
+  if (all(!contained)) {
+
+    depths <- rep(0, length(depths))                           # If none of the vector entries are within the depth window, return all 0s
+
+  } else {
+
+    weights <- diff(c(min_depth, RcppRoll::roll_mean(depths[contained], n = 2), max_depth)) # Calculate the midpoints and the difference between them (width either side of the original point)
+
+    depths[contained] <- weights                               # Assign the weights to positions in the vector in our window
+    depths[!contained] <- 0                                    # Positions outside the vector get 0 weight
+  }
+  return(depths)
+
+}
+
 #' Get Latitudes, Longitudes, & Depths
 #'
 #' This function gets the latitudes, longitudes, and depths which define the spatial location of points in an array of NEMO-MEDUSA outputs.

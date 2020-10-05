@@ -39,6 +39,7 @@ reference:
   - get_weights
   - get_weights.W
   - get_weights.old
+  - calculate_depth_share
   - get_spatial
   - Window
   - reproj

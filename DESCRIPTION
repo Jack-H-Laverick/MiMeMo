@@ -1,7 +1,7 @@
 Package: MiMeMo.tools
 Type: Package
 Title: Tools for extracting data for StrathE2E, during MiMeMo
-Version: 1.0.0
+Version: 0.1.1
 Authors@R: 
     person(given = "Jack H",
            family = "Laverick",
@@ -24,8 +24,9 @@ Imports:
   tibble,
   data.table,
   sf,
+  RcppRoll,
   Rcpp,
-  RcppArmadillo
+  RcppArmadillo,
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,

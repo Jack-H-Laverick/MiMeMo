@@ -82,7 +82,7 @@ performs a weighted average across depth layers, and limits to variables `u_east
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MiMeMo.tools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -153,7 +153,7 @@ large grid covering the Arctic with extra variables we don't need. This function
 performs a weighted average across depth layers, and limits to variables `u_east` and `v_north`.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>reshape_SINMOD</span>(<span class='no'>path</span>, <span class='no'>file</span>, <span class='no'>out_dir</span>, <span class='no'>window</span>)</pre>
+    <pre class="usage"><span class='fu'>reshape_SINMOD</span><span class='op'>(</span><span class='va'>path</span>, <span class='va'>file</span>, <span class='va'>out_dir</span>, <span class='va'>window</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,7 +172,7 @@ performs a weighted average across depth layers, and limits to variables `u_east
     </tr>
     <tr>
       <th>window</th>
-      <td><p>a named list containing `xmin`, `xmax`, `ymin`, `ymax`, the window to crop to.</p></td>
+      <td><p>a named list containing `xmin`, `xmax`, `ymin`, `ymax`, the indices of the window to crop to.</p></td>
     </tr>
     </table>
 
@@ -213,7 +213,7 @@ to be read into R pixel by pixel, unlike saving a clipped dataframe as a .rds ob
 
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -37,6 +37,7 @@ of interest during extraction.
 }
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
+\code{\link{calculate_depth_share}()},
 \code{\link{empty}()},
 \code{\link{get_weights.W}()},
 \code{\link{get_weights.old}()},

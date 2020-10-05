@@ -22,6 +22,9 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/boundaries.html</loc>
   </url>
   <url>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/calculate_depth_share.html</loc>
+  </url>
+  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/check_grid.html</loc>
   </url>
   <url>
@@ -67,6 +70,9 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_merid.html</loc>
   </url>
   <url>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_rivers.html</loc>
+  </url>
+  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_sea.html</loc>
   </url>
   <url>
@@ -95,9 +101,6 @@
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/interp_month.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/interp_vertical.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/jacks_lazy_animation.html</loc>

@@ -25,6 +25,7 @@ geometry column using `sfc_as_cols`, before the geometry column is dropped.
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
 \code{\link{Window}()},
+\code{\link{calculate_depth_share}()},
 \code{\link{empty}()},
 \code{\link{get_weights.W}()},
 \code{\link{get_weights.old}()},
