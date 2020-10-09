@@ -1,7 +1,7 @@
 Package: MiMeMo.tools
 Type: Package
 Title: Tools for extracting data for StrathE2E, during MiMeMo
-Version: 0.1.1
+Version: 0.2.0
 Authors@R: 
     person(given = "Jack H",
            family = "Laverick",
@@ -16,6 +16,11 @@ LazyData: true
 URL: https://jack-h-laverick.github.io/MiMeMo.tools/, https:github.com/Jack-H-Laverick/MiMeMo.tools
 BugReports: https:github.com/Jack-H-Laverick/MiMeMo.tools/issues
 LinkingTo: Rcpp, RcppArmadillo
+Depends:
+  tidyverse,
+  nemomedusR,
+  sf,
+  tictoc
 Imports:
   dplyr,
   tidyr,
@@ -26,7 +31,7 @@ Imports:
   sf,
   RcppRoll,
   Rcpp,
-  RcppArmadillo,
+  RcppArmadillo
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,

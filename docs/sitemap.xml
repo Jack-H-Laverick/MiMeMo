@@ -10,97 +10,16 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/MiMeMo.tools-package.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Sample.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Sample_OOB.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Window.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/boundaries.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/calculate_depth_share.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/check_grid.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/decadal.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/detritus_month.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/direction.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/empty.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/extract.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/extract_OOB.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_air.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_air_dt.html</loc>
-  </url>
-  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_bed_shear_stress.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_bio.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_cropped_fishing.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_detritus.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_ice.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_merid.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_rivers.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_sea.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_spatial.html</loc>
-  </url>
-  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_tides_ts.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_vertical.html</loc>
-  </url>
-  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_waves_ts.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_weights.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_weights.W.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_weights.old.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_zonal.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/interp_month.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/jacks_lazy_animation.html</loc>
@@ -118,15 +37,6 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/mync_get_pixel.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/point_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/point_plot_voronoi.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/reproj.html</loc>
-  </url>
-  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/reshape_SINMOD.html</loc>
   </url>
   <url>
@@ -134,45 +44,6 @@
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/sample_waves.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/sfc_as_cols.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/stick_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/stratify.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/strip_ice.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/summarise_sp.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/summarise_ts.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/summarise_ts_detritus.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/to_segments.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/ts_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/type_in_month.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/vectors_2_direction.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/voronoi_grid.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/whole_month.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//articles/Code_map.html</loc>

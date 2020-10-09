@@ -10,18 +10,6 @@ template:
  path: "pkgdown"
 
 reference:
-- title: Boundaries
-  desc: Extract driving data at the perimeter of model compartments.
-  contents:
-  - to_segments
-  - boundaries
-  - check_grid
-  - direction
-  - Sample
-  - Sample_OOB
-  - extract
-  - extract_OOB
-
 - title: Global Fishing Watch
   desc: Extract fishing effort data.
   contents:
@@ -30,54 +18,6 @@ reference:
   - jacks_lazy_animation
   - jacks_polar_static
   - jacks_polar_animate
-
-- title: NEMO-MEDUSA
-- subtitle: Spatial tools
-  desc: Handle spatial weighting for averages, depth layers, and map projections.
-  contents:
-  - empty
-  - get_weights
-  - get_weights.W
-  - get_weights.old
-  - calculate_depth_share
-  - get_spatial
-  - Window
-  - reproj
-  - sfc_as_cols
-  - voronoi_grid
-  - vectors_2_direction
-- subtitle: Variable extractors
-  desc: Extract ecological driving data.
-  contents:
-  - get_air
-  - get_air_dt
-  - get_bio
-  - get_detritus
-  - get_ice
-  - get_sea
-  - get_merid
-  - get_zonal
-  - get_vertical
-  - get_rivers
-  - interp_month
-  - stratify
-  - type_in_month
-  - whole_month
-  - detritus_month
-- subtitle: Averages
-  desc: Average driving data into time series or decadal maps.
-  contents:
-  - decadal
-  - strip_ice
-  - summarise_sp
-  - summarise_ts
-  - summarise_ts_detritus
-- subtitle: Plotting
-  desc: Make plots.
-  contents:
-  - point_plot
-  - ts_plot
-  - stick_plot
 
 - title: Sediment
 - subtitle: Water movements

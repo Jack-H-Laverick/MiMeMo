@@ -1,3 +1,9 @@
+# MiMeMo.tools 0.2.0 
+<span style="color:grey;">09/10/2020</span>
+
+* Migrated NEMO-MEDUSA functions into their own dedicated package *nemomedusR*.
+* Specified package dependencies so that the tidyverse and other useful packages are automatically loaded when calling MiMeMo.tools with `library()`
+
 # MiMeMo.tools 0.1.0 
 <span style="color:grey;">15/04/2020</span>
 
