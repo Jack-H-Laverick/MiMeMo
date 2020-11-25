@@ -12,7 +12,7 @@
 #' @export
 get_SPM <- function(File, Year, Month, crop) {
 
-  raw <- ncdf4::nc_open(File)                                                 # Open a file
+  raw <- ncdf4::nc_open(File)                                               # Open a file
   row <- raw$dim$row$vals                                                   # Extract the data needed to calculate
   center_lat <- ncdf4::ncvar_get(raw, "center_lat")                         # Lat-lon coordinates of pixels
   center_lon <- ncdf4::ncvar_get(raw, "center_lon")
@@ -20,7 +20,7 @@ get_SPM <- function(File, Year, Month, crop) {
   col <- ncdf4::ncvar_get(raw, "col")                                       # Each row has a different number of columns
 
   data <- data.frame(Bin = raw$dim$bin$vals,                                # Pull pixel
-                     SPM = ncvar_get(raw, "SPM-OC5_mean"),                  # SPM
+                     SPM = ncdf4::ncvar_get(raw, "SPM-OC5_mean"),           # SPM
                      Year = Year,                                           # And attach date
                      Month = Month) %>%
     dplyr::mutate(index = (row[Bin] - row[1]+1),                            # Calculate Lat-lon positions
