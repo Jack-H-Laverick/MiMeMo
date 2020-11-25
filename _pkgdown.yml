@@ -19,11 +19,21 @@ reference:
   - jacks_polar_static
   - jacks_polar_animate
 
+- title: Misc
+  desc: Other data extractors for now.
+  contents:
+  - get_SPM
+
 - title: Sediment
 - subtitle: Water movements
   desc: Align tidal and wave data from different sources.
   contents:
   - reshape_SINMOD
+- subtitle: Sediment properties
+  desc: Calculate derived properties from sediment fractions.
+  contents:
+  - mud_to_permeability
+  - D50_to_porosity
 
 navbar:
   type: inverse

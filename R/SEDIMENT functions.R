@@ -172,9 +172,6 @@ sample_tides_year <- function(packet, pixel) {
   return(Rescaled)
 }
 
-
-
-
 #' Calculate bed shear stress at a location
 #'
 #' This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
@@ -231,3 +228,57 @@ get_bed_shear_stress <- function(pixel, tide_packets, depth = 40) {
 
 }
 
+#' Calculate sediment permeability
+#'
+#' This function takes a percent of mud/silt at a location and returns a measure of permeability. The default
+#' parameterisation comes from Matt Pace's thesis for fine sediments.
+#'
+#' @param percent_mud The amount of all sediment at a location smaller than sand (mud/silt and finer) in percent.
+#' @param scalar A parameter in the relationship
+#' @param constant A parameter in the relationship.
+#' @return A numeric vector containing estimates of sediment permeability in m^2 (can be length 1).
+#' @family Sediment properties
+#' @examples
+#' data <- data.frame(Silt = seq(0.5, 100, length.out = 100)) %>%
+#' mutate(Permeability = mud_to_permeability(Silt))
+#'
+#' ggplot(data) +
+#' geom_line(aes(x = Silt, y = Permeability)) +
+#' scale_y_continuous(trans = "log", breaks = c(0.000000000000001, 0.0000000000001, 0.00000000001))
+#' @export
+mud_to_permeability <- function(percent_mud, scalar = -2.171, constant = -10.232) {
+
+  permeability <- 10^((scalar*log10(percent_mud)) + constant)
+  return(permeability)
+}
+
+#' Calculate sediment porosity
+#'
+#' This function takes median grain size at a location and returns a measure of porosity. The default
+#' parameterisation comes from Matt Pace's thesis for fine sediments.
+#'
+#' @param D50 The median grain size at a location.
+#' @param P1 A parameter in the relationship.
+#' @param P2 A parameter in the relationship.
+#' @param P3 A parameter in the relationship.
+#' @param P4 A parameter in the relationship.
+#' @return A numeric vector containing estimates of sediment porosity in % (can be length 1).
+#' @family Sediment properties
+#' @examples
+#' data <- data.frame(D50 = seq(0, 1, length.out = 1000)) %>%
+#' mutate(Porosity = D50_to_porosity(D50))
+#'
+#' ggplot(data) +
+#' geom_line(aes(x = D50, y = Porosity)) +
+#' scale_x_continuous(trans = "log", breaks = c(0.001,0.01,0.1,1))
+#' @export
+D50_to_porosity <- function(D50, p1 = -0.435, p2 = 0.302, p3 = -1.035, p4 = -0.314) {
+
+  complex <- 1+exp((-(log10(D50)-p3))/p4)
+
+  porosity <- p1 + (p2*(1/(complex)))
+
+  answer <- 10^porosity
+
+  return(answer)
+}
