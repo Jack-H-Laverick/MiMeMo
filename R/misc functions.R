@@ -1,17 +1,17 @@
 
 #' Fill missing values in a vector
 #'
-#' This function takes a vector containing missing values "", and overwrites empty positions with
+#' This function takes a vector containing missing values ("" or NA), and overwrites empty positions with
 #' the previous non-missing entry. This assumes the first value is not a missing value.
 #'
 #' The motivating example for this was to automatically fill in cells in BODC nutrient data where metadata
 #' is not copied past the first row of a block of data representing a single CTD cast.
 #'
-#' @param data a vector containing "" as missing values.
-#' @return A filled in vector where "" is replaced with the latest non-missing value.
+#' @param data a vector containing "" or NA as missing values.
+#' @return A filled in vector where "" or NA is replaced with the latest non-missing value.
 #' @examples
 #' # Create dummy data with missing entries
-#' test <- c(1,2,"","","",3, "")
+#' test <- c(1, 2, "", "", NA, 3, "")
 #'
 #' # Replace blanks
 #' filled <- fill_in(test)
@@ -20,7 +20,7 @@ fill_in <- function(data) {
 
   for (i in 2:length(data)) {               # From the second value onwards
 
-    if(data[1] == "") data[1] <- data[i-1]  # If blank, overwrite with the previous value, otherwise do nothing
+    if(data[i] == "" | is.na(data[i])) data[i] <- data[i-1]  # If blank, overwrite with the previous value, otherwise do nothing
   }
 return(data)}
 

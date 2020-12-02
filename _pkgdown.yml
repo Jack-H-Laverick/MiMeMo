@@ -23,6 +23,7 @@ reference:
   desc: Other data extractors for now.
   contents:
   - get_SPM
+  - fill_in
 
 - title: Sediment
 - subtitle: Water movements

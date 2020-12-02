@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • MiMeMo.tools</title>
+<title>Fill missing values in a vector — fill_in • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Fill missing values in a vector — fill_in" />
+<meta property="og:description" content="This function takes a vector containing missing values (&quot;&quot; or NA), and overwrites empty positions with
+the previous non-missing entry. This assumes the first value is not a missing value." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.png" />
 
 
@@ -66,7 +68,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -137,144 +139,45 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Fill missing values in a vector</h1>
+    
+    <div class="hidden name"><code>fill_in.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>This function takes a vector containing missing values ("" or NA), and overwrites empty positions with
+the previous non-missing entry. This assumes the first value is not a missing value.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>fill_in</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-global-fishing-watch" class="hasAnchor"><a href="#section-global-fishing-watch" class="anchor"></a>Global Fishing Watch</h2>
-          <p class="section-desc"><p>Extract fishing effort data.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="get_cropped_fishing.html">get_cropped_fishing()</a></code> </p>
-        </td>
-        <td><p>Import Fishing Effort Within Specified Areas</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="jacks_lazy_avg.html">jacks_lazy_avg()</a></code> </p>
-        </td>
-        <td><p>Map GFW data for a geartype, above a minimum level of fishing activity</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="jacks_lazy_animation.html">jacks_lazy_animation()</a></code> </p>
-        </td>
-        <td><p>Animate a map of GFW data for a geartype, above a minimum level of fishing activity</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="jacks_polar_static.html">jacks_polar_static()</a></code> </p>
-        </td>
-        <td><p>Map GFW data for a geartype, above a minimum level of fishing activity (polar projection)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="jacks_polar_animate.html">jacks_polar_animate()</a></code> </p>
-        </td>
-        <td><p>Animate a map of GFW data for a geartype, above a minimum level of fishing activity (polar projection)</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-misc" class="hasAnchor"><a href="#section-misc" class="anchor"></a>Misc</h2>
-          <p class="section-desc"><p>Other data extractors for now.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="get_SPM.html">get_SPM()</a></code> </p>
-        </td>
-        <td><p>Extract Suspended Particulate Matter data from Globcolour</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fill_in.html">fill_in()</a></code> </p>
-        </td>
-        <td><p>Fill missing values in a vector</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-sediment" class="hasAnchor"><a href="#section-sediment" class="anchor"></a>Sediment</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      <tr>
-        <th colspan="2">
-          <h3 id="section-water-movements" class="hasAnchor"><a href="#section-water-movements" class="anchor"></a>Water movements</h3>
-          <p class="section-desc"><p>Align tidal and wave data from different sources.</p></p>
-        </th>
-      </tr>
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="reshape_SINMOD.html">reshape_SINMOD()</a></code> </p>
-        </td>
-        <td><p>Subset a SINMOD file to depth-averaged water velocities in an area.</p></td>
-      </tr>
-    </tbody><tbody>
-      
-      <tr>
-        <th colspan="2">
-          <h3 id="section-sediment-properties" class="hasAnchor"><a href="#section-sediment-properties" class="anchor"></a>Sediment properties</h3>
-          <p class="section-desc"><p>Calculate derived properties from sediment fractions.</p></p>
-        </th>
-      </tr>
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="mud_to_permeability.html">mud_to_permeability()</a></code> </p>
-        </td>
-        <td><p>Calculate sediment permeability</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="D50_to_porosity.html">D50_to_porosity()</a></code> </p>
-        </td>
-        <td><p>Calculate sediment porosity</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>a vector containing "" or NA as missing values.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A filled in vector where "" or NA is replaced with the latest non-missing value.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The motivating example for this was to automatically fill in cells in BODC nutrient data where metadata
+is not copied past the first row of a block of data representing a single CTD cast.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Create dummy data with missing entries</span>
+<span class='va'>test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='st'>""</span>, <span class='st'>""</span>, <span class='cn'>NA</span>, <span class='fl'>3</span>, <span class='st'>""</span><span class='op'>)</span>
+
+<span class='co'># Replace blanks</span>
+<span class='va'>filled</span> <span class='op'>&lt;-</span> <span class='fu'>fill_in</span><span class='op'>(</span><span class='va'>test</span><span class='op'>)</span>
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

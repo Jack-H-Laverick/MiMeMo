@@ -160,6 +160,56 @@ NA
 <br><br>
 
 
+## Global NEWS
+
+<div class = "description"> "Global Nutrient Export from Watersheds". Modeled N and P input to oceans from rivers. </div>
+
+#### <i class="fa fa-download" aria-hidden="true" style ="color:#003399;"></i>  Source
+
+[Downloaded from DANS](https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:64145 "Click to visit the page")
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Global. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 1900. 
+* *To* 2000.
+* *In* 5 year steps.
+* *Duration* 100 years.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 3 csv files.
+* 6mb total memory requirement.
+* The files contain river mouth coordinates, Nitrogen loads, river discharge volume.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* "Nload", Nitrogen reaching the sea from a river (kg per year).
+* "Discharge", water volume released at the river mouth (km^3 per year). 
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+* "lat", vector of latitudes (rectilinear grid).
+* "lon", vector of longitudes (rectilinear grid).
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+*Additional variables are available, but have not been downloaded from the server.*
+
+"Nretention", Pload", "Pretention".
+
+<br><br>
+
+
 ## Globcolour
 
 <div class = "description"> Suspended particulate matter from binned monthly satellite colour data. </div>
