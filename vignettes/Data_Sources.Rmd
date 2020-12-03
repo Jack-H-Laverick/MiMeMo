@@ -23,6 +23,54 @@ Below is a record of the data products synthesised during MiMeMo. I've kept trac
 
 # Ecological Drivers
 
+## Arctic GRO
+
+<div class = "description"> "Arctic Greant Rivers Observatory". Water quality field recordings from the 6 largest Arctic rivers. </div>
+
+#### <i class="fa fa-download" aria-hidden="true" style ="color:#003399;"></i>  Source
+
+[Downloaded from arcticgreatrivers.org](https://arcticgreatrivers.org "Click to visit the page")
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Arctic. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 2003. 
+* *To* 2020.
+* *In* Irregular.
+* *Duration* Updated annually.
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 1 xslx file.
+* 185kb total memory requirement.
+* The file contains a tab for each river.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* "TDN", Concentration of total dissolved nitrogen (mg per l).
+* "NH4", Concentration of Ammonia (*mu*g per l).
+* "Discharge", water volume released at the river mouth (m^3 per second). 
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+* "River", character vector of river ID.
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+"Cond", "Alk", "H20-2H", "H20-180", "DOC", "DOC-13C", "DOC-14C", "DOC-fm", "NO3", "TDP", "PO4", "SiO2", "Na", "K", "Mg", "Ca", "As", "Ba", "Cl", "SO4", "Li", "Rb", "Sr", "U", "F", "UTHg", "UMeHg", "TSS", "POC", "POC-13C", "POC-14C", "POC-fm", "PON", "PON-15N", "Sample depth 1", "TSS (1)", "POC (1)", "POC-13C (1)", "PON (1)", 
+"PON-15N (1)", "Sample depth 2","TSS (2)", "POC (2)", "POC-13C (2)", "PON (2)", "PON-15N (2)".
+
+<br><br>
+
+
 ## EMEP
 
 <div class = "description"> Modelled atmospheric deposition of reduced and oxidised Nitrogen from EMEP MSC-W. </div>
@@ -375,6 +423,11 @@ Arctic.
 <div class = "description"> Fishing effort from anonymised VMS signals and a model of vessel movement patterns. </div>
 
 
+#### <i class="fa fa-download" aria-hidden="true" style ="color:#003399;"></i>  Source
+
+[Downloaded from Global Fishing Watch.](https://globalfishingwatch.org/datasets-and-code/ "Click to visit the page")
+
+
 #### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
 
 Global. 
@@ -413,9 +466,15 @@ Global.
 
 <br>
 
+
 ## ICES
 
 <div class = "description"> Fisheries landings by species and country. </div>
+
+
+#### <i class="fa fa-download" aria-hidden="true" style ="color:#003399;"></i>  Source
+
+Landings from ICES were downloaded from Ian's cleaned portal hosted at Strathclyde.
 
 
 #### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
@@ -458,6 +517,101 @@ Major fishing area 27.
 #### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
 
 "ccode2", "ccode3", acronym", "tsn", "common".
+
+<br>
+
+
+## IMR
+
+<div class = "description"> Norwegian landings and effort by species and gear. </div>
+
+
+#### <i class="fa fa-download" aria-hidden="true" style ="color:#003399;"></i>  Source
+
+Provided at request by Tom Clegg at IMR Bergen.
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Arctic and North Atlantic, IMR fishing regions. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 2000/01/01. 
+* *To* 2019/12/31.
+* *In* days.
+* *Duration* 19 years, updated annually.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 1 lst file plus meta data files.
+* 156mb total memory requirement.
+* The file contains a list of landings and effort by species, IMR regions, and gear. Supporting files include species and gear codes, and a shape file for the IMR regions.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* "blah", blah.
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+* "blah", blah.
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+"blah", "blah".
+
+<br>
+
+
+## STECF
+
+<div class = "description"> Fisheries landings and effort by species and gear. </div>
+
+#### <i class="fa fa-download" aria-hidden="true" style ="color:#003399;"></i>  Source
+
+[Spatial effort was downloaded from the europa portal.](https://stecf.jrc.ec.europa.eu/dd/fdi/spatial-eff-map "Click to visit the page")
+
+[As were spaitally explicit landings.](https://stecf.jrc.ec.europa.eu/dd/fdi/spatial-land-map "Click to visit the page")
+
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Global for EU vessels. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 2015/01/01. 
+* *To* 2018/12/31.
+* *In* years.
+* *Duration* 4 years.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 5 shapefiles.
+* 8.4gb total memory requirement.
+* The files are 1 for all effort, and one file per year of landings.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* "blah", blah.
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+* "blah", blah.
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+"blah", "blah".
 
 <br>
 
