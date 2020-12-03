@@ -1,3 +1,8 @@
+# MiMeMo.tools 0.2.1 
+<span style="color:grey;">03/12/2020</span>
+
+* Added functions to assist with unit conversions.
+
 # MiMeMo.tools 0.2.0 
 <span style="color:grey;">09/10/2020</span>
 

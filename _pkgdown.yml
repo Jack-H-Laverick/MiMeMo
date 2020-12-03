@@ -25,6 +25,20 @@ reference:
   - get_SPM
   - fill_in
 
+- title: Unit conversions
+  desc: Helper functions to avoid introducing bugs when switching between scales
+  contents:
+  - micro_to_full
+  - full_to_micro
+  - micro_to_milli
+  - milli_to_micro
+  - milli_to_full
+  - full_to_milli
+  - l_to_m3
+  - m3_to_l
+  - sec_to_day
+  - day_to_sec
+
 - title: Sediment
 - subtitle: Water movements
   desc: Align tidal and wave data from different sources.
