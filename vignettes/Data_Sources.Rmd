@@ -319,9 +319,56 @@ To get to coordinates in latitude and longitude:
 
 ## NEMO-MEDUSA
 
+#### <i class="fa fa-download" aria-hidden="true" style ="color:#003399;"></i>  Source
+
+Provided by Andy Yool at NOC and stored on the idrive at Strathclyde. Data is slowly being moved to southampton/fish which will speed up data transfer times.
+
+
 ### Driving data
 
-<div class = "description"> Driving data **FOR** NEMO-MEDUSA includes surface irradiance and air temperature at the sea surface. </div>
+<div class = "description"> Driving data **FOR** NEMO-MEDUSA includes surface irradiance, air temperature at the sea surface, and river discharge. </div>
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+Global. 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 1980. 
+* *To* 2099.
+* *In* monthly/daily/6 hourly/ (river discharge/light/air temperature).
+* *Duration* 120 years.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 360 netcdf files.
+* 23.7gb total memory requirement.
+* Each file contains the output for one variable for one year.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* "SWF", total downward short wave flux, or surface irradiance (W per m^2 per day).
+* "T150", air temperature at 1.5 m elevation (K).
+* "sorunoff", water runoff from land to sea (Kg per m^2 per second). 
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+* "nav_Lat", matrix of latitudes for freshwater input (curvilinear grid).
+* "nav_Lon", matrix of longitudes for freshwater input (curvilinear grid).
+* "latitude", vector of latitudes as a file dimension for light and temperature (rectilinear grid).
+* "longitude", vector of longitudes as a file dimension for light and temperature (rectilinear grid).
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+NA.
+
+<br><br>
+
 
 ### Outputs
 
