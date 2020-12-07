@@ -55,7 +55,7 @@ Arctic.
 
 * "TDN", Concentration of total dissolved nitrogen (mg per l).
 * "NH4", Concentration of Ammonia (*mu*g per l).
-* "Discharge", water volume released at the river mouth (m^3 per second). 
+* "Discharge", water volume released at the river mouth (m^3^ per second). 
 
 
 #### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
@@ -240,7 +240,7 @@ Global.
 #### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
 
 * "Nload", Nitrogen reaching the sea from a river (kg per year).
-* "Discharge", water volume released at the river mouth (km^3 per year). 
+* "Discharge", water volume released at the river mouth (km^3^ per year). 
 
 
 #### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
@@ -326,7 +326,7 @@ Provided by Andy Yool at NOC and stored on the idrive at Strathclyde. Data is sl
 
 ### Driving data
 
-<div class = "description"> Driving data **FOR** NEMO-MEDUSA includes surface irradiance, air temperature at the sea surface, and river discharge. </div>
+<div class = "description"> Driving data **FOR** NEMO-MEDUSA also useful for StrathE2EPolar. </div>
 
 #### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
 
@@ -337,7 +337,7 @@ Global.
 
 * *From* 1980. 
 * *To* 2099.
-* *In* monthly/daily/6 hourly/ (river discharge/light/air temperature).
+* *In* monthly / daily / 6 hourly (freshwater / light / air temperature).
 * *Duration* 120 years.
 
 
@@ -350,9 +350,9 @@ Global.
 
 #### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
 
-* "SWF", total downward short wave flux, or surface irradiance (W per m^2 per day).
+* "SWF", total downward short wave flux, or surface irradiance (W per m^2^ per day).
 * "T150", air temperature at 1.5 m elevation (K).
-* "sorunoff", water runoff from land to sea (Kg per m^2 per second). 
+* "sorunoff", water runoff from land to sea (Kg per m^2^ per second). 
 
 
 #### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
@@ -372,10 +372,81 @@ NA.
 
 ### Outputs
 
-<div class = "description"> NEMO-MEDUSA model **outputs** extracted for StrathE2EPolar include:
-Water temperature,
-DIN,
-Blah, </div>
+<div class = "description"> NEMO-MEDUSA model **OUTPUTS** extracted for StrathE2EPolar. </div>
+
+#### <i class="fa fa-globe" aria-hidden="true" style ="color:#003399;"></i>  Spatial extent
+
+North Atlantic and Arctic (already roughly clipped to MiMeMo area of interest). 
+
+
+#### <i class="fa fa-stopwatch" aria-hidden="true" style ="color:#003399;"></i>  Temporal extent
+
+* *From* 1980. 
+* *To* 2099.
+* *In* every 5 days.
+* *Duration* 120 years.
+
+
+#### <i class="fa fa-folder" aria-hidden="true" style ="color:#003399;"></i>  File structure
+
+* 51840 netcdf files.
+* 543gb total memory requirement.
+* Files are organised into folders by year. There are 5 types of file per year, each contains a different set of variables for one time step.
+
+
+#### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
+
+* **grid_T files:**
+  - "soicecov", ice fraction (0-1).
+  - "vosaline", salinity (psu).
+  - "votemper", water temperature (C). 
+* **grid_U files:**
+  - "vozocrtx", zonal current speed (m per second).
+* **grid_V files:**
+  - "vomecrty", meridional current speed (m per second).
+* **grid_W files:**
+  - "votkeavt", vertical eddy diffusivity (m^2^ per second).
+* **icemod files:**
+  - "ice_pres", ice presence (logical).
+  - "isnowthi", snow thickness (m).
+  - "iicethic", ice thickness (m).
+* **ptrc_T files:**
+  - "CHN", Chl-a concentration in non-diatom phytoplankton (mg per m^3^).
+  - "CHD", Chl-a concentration in diatom phytoplankton (mg per m^3^).
+  - "DIN", dissolved inorganic nitrogen (mmol N per m^3^).
+  - "DET", detritus (mmol N per m^3^).
+
+
+#### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
+
+* "nav_Lat", matrix of latitudes for freshwater input (curvilinear grid).
+* "nav_Lon", matrix of longitudes for freshwater input (curvilinear grid).
+
+❗ Note, these matrices are different for velocity files (cell corners not centres). The grid otherwise appears the same. 
+
+* "deptht", vector of depths as a dimension.
+
+❗ Note, grid_W files contain different depths for layers.
+
+
+#### <i class="fa fa-plus" aria-hidden="true" style ="color:#003399;"></i>  Other variables
+
+* **grid_T files:** 
+  - "sossheig", sea surface height (m).
+* **grid_W files:**
+  - "vovecrtz", ocean vertical velocity (m per second).
+* **icemod files:**
+  - "iicevelu", ice zonal velocity (m per second). 
+  - "iicevelv", ice meridional velocity (m per second). 
+* **ptrc_T files:**
+  - "PHN", non-diatom phytoplankton (mmol N per m^3^).
+  - "PHD", diatom phytoplankton (mmol N per m^3^).
+  - "ZMI", micro-zooplankton (mmol N per m^3^).
+  - "ZME", meso-zooplankton (mmol N per m^3^).
+  - "SIL", silicate (mmol Si per m^3^).
+
+<br><br>
+
 
 ## NGU
 
@@ -516,7 +587,7 @@ Global.
 
 ## ICES
 
-<div class = "description"> Fisheries landings by species and country. </div>
+<div class = "description"> International report on fisheries landings by species and country. </div>
 
 
 #### <i class="fa fa-download" aria-hidden="true" style ="color:#003399;"></i>  Source
@@ -570,7 +641,7 @@ Major fishing area 27.
 
 ## IMR
 
-<div class = "description"> Norwegian landings and effort by species and gear. </div>
+<div class = "description"> Reports of landings and effort by species and gear of Norwegian vessels. </div>
 
 
 #### <i class="fa fa-download" aria-hidden="true" style ="color:#003399;"></i>  Source
@@ -617,7 +688,7 @@ Arctic and North Atlantic, IMR fishing regions.
 
 ## STECF
 
-<div class = "description"> Fisheries landings and effort by species and gear. </div>
+<div class = "description"> Reports of landings and effort by species and gear for EU vessels. </div>
 
 #### <i class="fa fa-download" aria-hidden="true" style ="color:#003399;"></i>  Source
 
