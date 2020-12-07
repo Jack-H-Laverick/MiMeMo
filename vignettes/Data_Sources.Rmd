@@ -350,9 +350,10 @@ Global.
 
 #### <i class="fa fa-eye" aria-hidden="true" style ="color:#003399;"></i>  Target variables
 
-* "SWF", total downward short wave flux, or surface irradiance (W per m^2^ per day).
-* "T150", air temperature at 1.5 m elevation (K).
 * "sorunoff", water runoff from land to sea (Kg per m^2^ per second). 
+* "T150", air temperature at 1.5 m elevation (K).
+* "SWF", total downward short wave flux, or surface irradiance (W per m^2^ per day).
+    A Watt per m^2^ is equivalent to a joule per m^2^ per second.
 
 
 #### <i class="fa fa-layer-group" aria-hidden="true" style ="color:#003399;"></i>  Spatial variables
