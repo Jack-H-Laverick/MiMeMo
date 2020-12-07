@@ -11,30 +11,39 @@
 #' @param data A numeric vector.
 #' @return A numeric vector following unit conversion.
 #' @name Convert-units
-#' @export
 NULL
 
 #' @rdname Convert-units
+#' @export
 micro_to_full <- function(data) data / 1e6
 #' @rdname Convert-units
+#' @export
 full_to_micro <- function(data) data * 1e6
 
 #' @rdname Convert-units
+#' @export
 micro_to_milli <- function(data) data / 1e3
 #' @rdname Convert-units
+#' @export
 milli_to_micro <- function(data) data * 1e3
 
 #' @rdname Convert-units
+#' @export
 milli_to_full <- function(data) data / 1e3
 #' @rdname Convert-units
+#' @export
 full_to_milli <- function(data) data * 1e3
 
 #' @rdname Convert-units
+#' @export
 l_to_m3 <- function(data) data / 1e3
 #' @rdname Convert-units
+#' @export
 m3_to_l <- function(data) data * 1e3
 
 #' @rdname Convert-units
+#' @export
 sec_to_day <- function(data) data / 86400
 #' @rdname Convert-units
+#' @export
 day_to_sec <- function(data) data * 86400
