@@ -412,8 +412,8 @@ North Atlantic and Arctic (already roughly clipped to MiMeMo area of interest).
   - "isnowthi", snow thickness (m).
   - "iicethic", ice thickness (m).
 * **ptrc_T files:**
-  - "CHN", Chl-a concentration in non-diatom phytoplankton (mg per m^3^).
-  - "CHD", Chl-a concentration in diatom phytoplankton (mg per m^3^).
+  - "PHN", non-diatom phytoplankton (mmol N per m^3^).
+  - "PHD", diatom phytoplankton (mmol N per m^3^).
   - "DIN", dissolved inorganic nitrogen (mmol N per m^3^).
   - "DET", detritus (mmol N per m^3^).
 
@@ -440,8 +440,8 @@ North Atlantic and Arctic (already roughly clipped to MiMeMo area of interest).
   - "iicevelu", ice zonal velocity (m per second). 
   - "iicevelv", ice meridional velocity (m per second). 
 * **ptrc_T files:**
-  - "PHN", non-diatom phytoplankton (mmol N per m^3^).
-  - "PHD", diatom phytoplankton (mmol N per m^3^).
+  - "CHN", Chl-a concentration in non-diatom phytoplankton (mg per m^3^).
+  - "CHD", Chl-a concentration in diatom phytoplankton (mg per m^3^).
   - "ZMI", micro-zooplankton (mmol N per m^3^).
   - "ZME", meso-zooplankton (mmol N per m^3^).
   - "SIL", silicate (mmol Si per m^3^).
