@@ -169,7 +169,9 @@ different directions of conversion.</p>
 
 <span class='fu'>sec_to_day</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
 
-<span class='fu'>day_to_sec</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
+<span class='fu'>day_to_sec</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
+
+<span class='fu'>shortwave_to_einstein</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,6 +190,12 @@ different directions of conversion.</p>
     <p>Though some of these functions do the same thing numerically, having multiple names which match the desired
 conversion should reduce friction when developing code. This should also help avoid typos when it comes to
 0s, and also stop you needing to constantly look up conversion factors!</p>
+<p>The `shortwave_to_einsteins` function is not exact and is based on a couple of assumptions to get from watts
+to einsteins per m^2 per day. It expects an input of total Watts per day per m^2.</p><ul>
+<li><p>The proportion of PAR from shortwave downward radiation is 0.43.</p></li>
+<li><p>The energy content of a mole of photons is 217.503 kJ, taken from midband radiation (550nm).</p></li>
+</ul>
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

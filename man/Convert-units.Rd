@@ -12,6 +12,7 @@
 \alias{m3_to_l}
 \alias{sec_to_day}
 \alias{day_to_sec}
+\alias{shortwave_to_einstein}
 \title{Helper functions for common unit conversions}
 \usage{
 micro_to_full(data)
@@ -33,6 +34,8 @@ m3_to_l(data)
 sec_to_day(data)
 
 day_to_sec(data)
+
+shortwave_to_einstein(data)
 }
 \arguments{
 \item{data}{A numeric vector.}
@@ -48,4 +51,10 @@ different directions of conversion.
 Though some of these functions do the same thing numerically, having multiple names which match the desired
 conversion should reduce friction when developing code. This should also help avoid typos when it comes to
 0s, and also stop you needing to constantly look up conversion factors!
+
+The `shortwave_to_einsteins` function is not exact and is based on a couple of assumptions to get from watts
+to einsteins per m^2 per day. It expects an input of total Watts per day per m^2.
+\itemize{
+ \item{The proportion of PAR from shortwave downward radiation is 0.43.}
+ \item{The energy content of a mole of photons is 217.503 kJ, taken from midband radiation (550nm).}}
 }
