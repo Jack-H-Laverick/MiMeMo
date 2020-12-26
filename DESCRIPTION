@@ -23,16 +23,17 @@ Depends:
 remotes:
   nemomedusR
 Imports:
-  dplyr,
-  tidyr,
-  purrr,
-  ggplot2,
-  tibble,
   data.table,
-  sf,
+  dplyr,
+  ggplot2,
+  palettetown,
+  purrr,
   RcppRoll,
   Rcpp,
   RcppArmadillo,
+  sf,
+  tibble,
+  tidyr,
   visNetwork
 RoxygenNote: 7.1.1
 Suggests: 
