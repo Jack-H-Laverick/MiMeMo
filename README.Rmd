@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 <img src='man/figures/banner.png' align="centre" width="100%" />
 
-# MiMeMo.tools <a href='https:/jack-h-laverick.github.io/MiMeMo.tools'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# MiMeMo.tools <a href='https://jack-h-laverick.github.io/MiMeMo.tools'><img src='man/figures/logo.svg' align="right" height="139" /></a>
 
 <!-- badges: start -->
 `r badger::badge_lifecycle("experimental")`

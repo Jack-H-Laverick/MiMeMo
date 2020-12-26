@@ -3,17 +3,17 @@
 
 <img src='man/figures/banner.png' align="centre" width="100%" />
 
-# MiMeMo.tools <a href='https:/jack-h-laverick.github.io/MiMeMo.tools'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# MiMeMo.tools <a href='https://jack-h-laverick.github.io/MiMeMo.tools'><img src='man/figures/logo.svg' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![R build
+status](https://github.com/Jack-H-Laverick/MiMeMo.tools/workflows/R-CMD-check/badge.svg)](https://github.com/Jack-H-Laverick/MiMeMo.tools/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/Jack-H-Laverick/MiMeMo.tools/branch/master/graph/badge.svg)](https://codecov.io/gh/Jack-H-Laverick/MiMeMo.tools?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/Jack-H-Laverick/MiMeMo.tools/badge)](https://www.codefactor.io/repository/github/Jack-H-Laverick/MiMeMo.tools)
 [![](https://img.shields.io/github/last-commit/Jack-H-Laverick/MiMeMo.tools.svg)](https://github.com/Jack-H-Laverick/MiMeMo.tools/commits/master)
-[![R build
-status](https://github.com/Jack-H-Laverick/MiMeMo.tools/workflows/R-CMD-check/badge.svg)](https://github.com/Jack-H-Laverick/MiMeMo.tools/actions)
 <!-- badges: end -->
 
 MiMeMo.tools is an R package for data extraction and the
