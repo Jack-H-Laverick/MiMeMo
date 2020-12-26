@@ -18,9 +18,10 @@ BugReports: https:github.com/Jack-H-Laverick/MiMeMo.tools/issues
 LinkingTo: Rcpp, RcppArmadillo
 Depends:
   tidyverse,
-  nemomedusR,
   sf,
   tictoc
+remotes:
+  nemomedusR
 Imports:
   dplyr,
   tidyr,
