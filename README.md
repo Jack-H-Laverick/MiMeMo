@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<img src='man/figures/banner.png' align="centre" width="100%" />
+<!-- <img src='man/figures/banner.png' align="centre" width="100%" /> -->
 
 # MiMeMo.tools <a href='https://jack-h-laverick.github.io/MiMeMo.tools'><img src='man/figures/logo.svg' align="right" height="139" /></a>
 
@@ -32,18 +32,17 @@ The internal facing / development version can be downloaded from
 remotes::install_github("Jack-H-Laverick/MiMeMo.tools")
 ```
 
-<br/>
+<!-- <br/> -->
 
-<style>
-div.red { background-color:#fec0c0; border-radius: 20px; padding: 10px;}
-</style>
+<!-- <style> -->
 
-<div class="red">
+<!-- div.red { background-color:#fec0c0; border-radius: 20px; padding: 10px;} -->
 
-❗ Installation will fail if Robert Wilson’s `rcdo` package is
-unavailable. This might be true for Windows users.
+<!-- </style> -->
 
-</div>
+<!-- <div class = "red"> -->
+
+<!-- ❗ Installation will fail if Robert Wilson's `rcdo` package is unavailable. This might be true for Windows users. </div> -->
 
 ## Project Documentation
 
@@ -55,8 +54,8 @@ to view the full documentation.
 
 <br/>
 
-As expected for an R package, the navbar contains links to an index of
-documented functions and a change log.
+The navbar contains links to an index of documented functions and a
+change log.
 
 To document the wider work happening as part of MiMeMo you can find a
 link to an overview of the different data sources being synthesised.

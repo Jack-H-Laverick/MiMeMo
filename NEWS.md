@@ -1,3 +1,8 @@
+# MiMeMo.tools 0.3.1 
+<span style="color:grey;">26/12/2020</span>
+
+* Initialised a test suite.
+
 # MiMeMo.tools 0.2.1 
 <span style="color:grey;">03/12/2020</span>
 
