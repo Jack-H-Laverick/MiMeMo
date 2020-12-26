@@ -32,7 +32,8 @@ Imports:
   sf,
   RcppRoll,
   Rcpp,
-  RcppArmadillo
+  RcppArmadillo,
+  visNetwork
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
