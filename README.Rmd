@@ -19,10 +19,10 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 `r badger::badge_lifecycle("experimental")`
+[![R build status](https://github.com/Jack-H-Laverick/MiMeMo.tools/workflows/R-CMD-check/badge.svg)](https://github.com/Jack-H-Laverick/MiMeMo.tools/actions)
 [![Codecov test coverage](https://codecov.io/gh/Jack-H-Laverick/MiMeMo.tools/branch/master/graph/badge.svg)](https://codecov.io/gh/Jack-H-Laverick/MiMeMo.tools?branch=master)
 `r badger::badge_codefactor("Jack-H-Laverick/MiMeMo.tools")`
 `r badger::badge_last_commit("Jack-H-Laverick/MiMeMo.tools")`
-[![R build status](https://github.com/Jack-H-Laverick/MiMeMo.tools/workflows/R-CMD-check/badge.svg)](https://github.com/Jack-H-Laverick/MiMeMo.tools/actions)
 <!-- badges: end -->
 
 MiMeMo.tools is an R package for data extraction and the parameterisation of the end to end ecosystem model StrathE2Epolar. MiMeMo will use StrathE2Epolar in the Barents Sea and East Greenland Shelf. The functions contained in this package streamline the process of sampling along the boundary, and within the volumes, of StrathE2E model compartments.
