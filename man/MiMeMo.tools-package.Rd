@@ -6,9 +6,7 @@
 \alias{MiMeMo.tools-package}
 \title{MiMeMo.tools: Tools for extracting data for StrathE2E, during MiMeMo}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
-
-This package is intended for use with the StarthE2Epolar model. These tools can clip datasets to the geographical area of interest. Data can then be summarised as averages to parameterise volumes and boundary conditions needed by StarthE2Epolar.
+Intended for use with the StarthE2Epolar model. These tools can clip datasets to the geographical area of interest. Data can then be summarised as averages to parameterise volumes and boundary conditions needed by StarthE2Epolar.
 }
 \seealso{
 Useful links:

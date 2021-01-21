@@ -9,32 +9,21 @@ Authors@R:
            email = "jacklaverick@ymail.com",
            comment = c(ORCID = "0000-0001-8829-2084"))
 Maintainer: Jack H Laverick <jacklaverick@ymail.com>
-Description: This package is intended for use with the StarthE2Epolar model. These tools can clip datasets to the geographical area of interest. Data can then be summarised as averages to parameterise volumes and boundary conditions needed by StarthE2Epolar.
+Description: Intended for use with the StarthE2Epolar model. These tools can clip datasets to the geographical area of interest. Data can then be summarised as averages to parameterise volumes and boundary conditions needed by StarthE2Epolar.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://jack-h-laverick.github.io/MiMeMo.tools/, https:github.com/Jack-H-Laverick/MiMeMo.tools
 BugReports: https:github.com/Jack-H-Laverick/MiMeMo.tools/issues
-LinkingTo: Rcpp, RcppArmadillo
 Depends:
   tidyverse,
   sf,
+  nemomedusR,
   tictoc
-remotes:
-  nemomedusR
+Remotes:
+  github::Jack-H-Laverick/nemomedusR
 Imports:
-  data.table,
-  dplyr,
-  ggplot2,
-  palettetown,
-  purrr,
-  RcppRoll,
-  Rcpp,
-  RcppArmadillo,
-  sf,
-  tibble,
-  tidyr,
-  visNetwork
+  data.table
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
