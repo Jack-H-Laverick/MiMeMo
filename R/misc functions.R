@@ -1,3 +1,20 @@
+#' Run an R Script in it's own Session Informatively
+#'
+#' This function is a wrapper for a few tweaks around sourcing an R script.
+#'
+#' The R script is run in it's own R session, to avoid crashing an R session handling the batch processing of scripts.
+#' Activity is indicated with a spinner, and completed scripts are announced to help localise errors to a script. The time
+#' taken for a script to complete is also tracked in a log file, which can be accessed with `tictoc::tic.log()`.
+#'
+#' @param filepath a character string indicating the R script you want to execute.
+#' @return The R script is run for it's side effects and the run time added to a log by `tictoc`.
+#' @export
+execute <- function(filepath) {
+  tictoc::tic(filepath)
+  callr::r(function(filepath) source(filepath), args = list(filepath), spinner = TRUE)
+  tictoc::toc(log = T, quiet = T)
+
+  usethis::ui_done("{usethis::ui_field(x)} completed. {praise::praise('${Exclamation}!')}")}
 
 #' Fill missing values in a vector
 #'
