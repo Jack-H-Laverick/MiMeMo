@@ -39,9 +39,7 @@ as a dataframe.
 Other NEMO-MEDUSA variable extractors: 
 \code{\link{get_air_dt}()},
 \code{\link{get_air}()},
-\code{\link{get_rivers}()},
-\code{\link{type_in_month_old}()},
-\code{\link{whole_month_old}()}
+\code{\link{get_rivers}()}
 }
 \concept{NEMO-MEDUSA variable extractors}
 \concept{NEMO-MEDUSA variable extractors

@@ -23,7 +23,26 @@ Depends:
 Remotes:
   github::Jack-H-Laverick/nemomedusR
 Imports:
-  data.table
+  abind,
+  bedshear, 
+  callr, 
+  data.table, 
+  gganimate, 
+  ggnewscale,
+  ncdf4,
+  nemomedusR, 
+  raster,  
+  sf,
+  tictoc,
+  usethis, 
+  viridis, 
+  zoo,
+  dplyr,
+  tidyr,
+  tibble,
+  purrr,
+  ggplot2,
+  stringr
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,

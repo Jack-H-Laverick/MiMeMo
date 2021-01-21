@@ -31,8 +31,6 @@ comes from the coast, so you may need to modify your domain polygon.
 Other NEMO-MEDUSA variable extractors: 
 \code{\link{get_air_dt}()},
 \code{\link{get_air}()},
-\code{\link{interp_month}()},
-\code{\link{type_in_month_old}()},
-\code{\link{whole_month_old}()}
+\code{\link{interp_month}()}
 }
 \concept{NEMO-MEDUSA variable extractors}

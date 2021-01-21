@@ -33,8 +33,6 @@ isn't called, as these variables have no depth dimension.
 Other NEMO-MEDUSA variable extractors: 
 \code{\link{get_air}()},
 \code{\link{get_rivers}()},
-\code{\link{interp_month}()},
-\code{\link{type_in_month_old}()},
-\code{\link{whole_month_old}()}
+\code{\link{interp_month}()}
 }
 \concept{NEMO-MEDUSA variable extractors}
