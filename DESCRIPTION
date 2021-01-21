@@ -21,7 +21,8 @@ Depends:
   nemomedusR,
   tictoc
 Remotes:
-  github::Jack-H-Laverick/nemomedusR
+  github::Jack-H-Laverick/nemomedusR,
+  github::r4ecology/bedshear
 Imports:
   abind,
   bedshear, 
