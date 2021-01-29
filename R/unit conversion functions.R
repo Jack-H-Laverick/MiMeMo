@@ -72,3 +72,29 @@ shortwave_to_einstein <- function(data) {
 
 }
 
+#' Convert a U-V velocity field to speed and direction in degrees
+#'
+#' This function takes a vector of u and v velocities and calculates the direction and speed of the combined movement.
+#'
+#'This function was lifted from the `Rsenal` package, where it was originally used to calculate wind speeds. All I've done
+#'is built a wrapper which accounts for different conventions when describing wind and flow directions.
+#'
+#' @param u A vector of Zonal currents (from West to East).
+#' @param v A vector of Meridional currents (from South to North).
+#' @return a dataframe of two columns is returned. Speed contains the composite speed of both velocities on the same scale.
+#' Direction is the resolved direction of the flow in degrees, 0 heads north, 90 East, 180 South, 270 West.
+#' @family NEMO-MEDUSA spatial tools
+#' @export
+vectors_2_direction <- function (u, v) {
+  u <- -u                                        # This function was built to use wind direction
+  v <- -v                                        # Winds  are "opposite", people care about where wind comes from, not where it goes
+
+  # Lovingly lifted from the "Rsenal" package
+
+  degrees <- function(radians) 180 * radians/pi
+  mathdegs <- degrees(atan2(v, u))
+  wdcalc <- ifelse(mathdegs > 0, mathdegs, mathdegs + 360)
+  uvDirection <- ifelse(wdcalc < 270, 270 - wdcalc, 270 - wdcalc + 360)
+  uvSpeed <- sqrt(u^2 + v^2)
+  return(cbind(uvDirection, uvSpeed))
+}
