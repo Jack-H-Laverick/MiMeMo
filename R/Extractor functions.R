@@ -108,7 +108,7 @@ get_air <- function(File, Type, Year) {
                                       times = length(unique(Latitude))), times = length(unique(Time_step))),
                   Latitude = rep(rep(Space$Lats,
                                      each = length(unique(Longitude))), times = length(unique(Time_step))),
-                  Time_step = rep(1:length(unique(Time_step)),
+                  Time_step = rep(seq_along(unique(Time_step)),
                                   each = length(unique(Latitude)) * length(unique(Longitude)))) %>%
     dplyr::right_join(domains_mask) %>%                                      # Crop to domain
     dplyr::left_join(months) %>%                                             # Assign a month to each time step

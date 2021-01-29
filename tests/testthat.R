@@ -1,4 +1,2 @@
-library(testthat)
-library(MiMeMo.tools)
 
-test_check("MiMeMo.tools")
+testthat::test_check("MiMeMo.tools")
