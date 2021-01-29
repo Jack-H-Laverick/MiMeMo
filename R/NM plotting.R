@@ -1,5 +1,4 @@
 
-
 #' Plot Temporal Summaries
 #'
 #' This function builds a time series, split by model compartment.
@@ -28,14 +27,13 @@ ts_plot <- function(var) {
 #'
 #' @param data A dataframe containing the columns "Zonal" and "Meridional" for currents.
 #' @param var A "quoted" column name denoting how to colour the map.
-#' @param zoom A call to `coord_sf` specifying the project plotting window.
 #' @return The function creates a facetted map of a summarised variable. Each facet shows a month.
 #' The plot is saved into the NEMO-MEDUSA/grids folder.
 #' @family NEMO-MEDUSA plots
 #' @export
-point_plot <- function(data, var, zoom) {
+point_plot <- function(data, var) {
 
-  decade <- data$Decade[1]; depth <- data$Depth[1]                             # Find out what the data is
+  decade <- data$Decade[1]; depth <- data$slab_layer[1]                             # Find out what the data is
 
   if(depth == "D" & var %in% c("Ice", "Ice_conc", "Ice_Thickness", "Snow_Thickness")) {
     print("Skipped deep ice plot") } else {
@@ -43,62 +41,15 @@ point_plot <- function(data, var, zoom) {
       print(paste("plotting", var, "for", decade, depth))                          # Show things are working
 
       map <- ggplot2::ggplot() +                                                            # Create the base
-        #zoom +
         ggplot2::theme_minimal() +
         ggplot2::labs(title = paste("Decade:", decade),
              subtitle = paste("Water layer:", depth), x = NULL, y = NULL) +
         ggplot2::geom_raster(data = data, aes(x=x, y=y, fill = get(var))) +
-        viridis::scale_colour_viridis(option = "viridis", name = var, na.value = "red") +
+        viridis::scale_fill_viridis(option = "viridis", name = var, na.value = "red") +
         ggplot2::facet_wrap(vars(Month)) +
-        #ggplot2::geom_sf(data = world) +
-        # bathymetry
-        #ggnewscale::new_scale_colour() +
-        #ggplot2::geom_sf(data = lines, aes(colour = level), stroke = 0, size = 0.2, show.legend = "line") +
-        #ggplot2::scale_colour_manual(name = 'Depth (m)', values = c("-1000" = "white", "-200" = "grey40", "-30" = "black")) +
-        #zoom +
         NULL
       ggplot2::ggsave(paste0("./Figures/NEMO-MEDUSA/grids/map ", var, " ", depth, " ", decade, ".png"),
              plot = map, scale = 1, width = 32, height = 20, units = "cm", dpi = 500)
-    }
-}
-
-#' Map Spatial Summaries
-#'
-#' This function builds a map of the passed variable, facetted by month.
-#'
-#' @param data A dataframe containing the columns "Zonal" and "Meridional" for currents.
-#' @param var A "quoted" column name denoting how to colour the map.
-#' @param zoom A call to `coord_sf` specifying the project plotting window.
-#' @return The function creates a facetted map of a summarised variable. Each facet shows a month.
-#' The plot is saved into the NEMO-MEDUSA/grids folder.
-#' @family NEMO-MEDUSA plots
-#' @export
-point_plot_voronoi <- function(data, var, zoom) {
-
-  decade <- data$Decade[1]; depth <- data$Depth[1]                             # Find out what the data is
-
-  if(depth == "D" & var %in% c("Ice", "Ice_conc", "Ice_Thickness", "Snow_Thickness")) {
-    print("Skipped deep ice plot") } else {
-
-      print(paste("plotting", var, "for", decade, depth))                          # Show things are working
-
-      map <- ggplot2::ggplot() +                                                            # Create the base
-        zoom +
-        ggplot2::theme_minimal() +
-        ggplot2::labs(title = paste("Decade:", decade),
-                      subtitle = paste("Water layer:", depth), x = NULL, y = NULL) +
-        ggvoronoi::geom_voronoi(data = data, aes(x=x, y=y, fill = get(var))) +
-        viridis::scale_colour_viridis(option = "viridis", name = var, na.value = "red") +
-        ggplot2::facet_wrap(vars(Month)) +
-        ggplot2::geom_sf(data = world) +
-        # bathymetry
-        ggnewscale::new_scale_colour() +
-        ggplot2::geom_sf(data = lines, aes(colour = level), stroke = 0, size = 0.2, show.legend = "line") +
-        ggplot2::scale_colour_manual(name = 'Depth (m)', values = c("-1000" = "white", "-200" = "grey40", "-30" = "black")) +
-        zoom +
-        NULL
-      ggplot2::ggsave(paste0("./Figures/NEMO-MEDUSA/grids/map ", var, " ", depth, " ", decade, "2.png"),
-                      plot = map, scale = 1, width = 32, height = 20, units = "cm", dpi = 500)
     }
 }
 

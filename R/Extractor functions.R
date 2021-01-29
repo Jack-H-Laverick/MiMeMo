@@ -1,3 +1,38 @@
+#' Extract Suspended Particulate Matter data from Globcolour
+#'
+#' This function takes a netcdf from Globcolour and returns the mean Suspended Particulate MAtter (SPM) from
+#' within a lat/lon window.
+#'
+#' @param File a path to a GLobcolour netcdf file.
+#' @param Year The year the file contains data for.
+#' @param Month The month the file contains data for.
+#' @param cropr The bounding box of an SF object to crop to, as returned by `st_bbox()`.
+#' @return A dataframe containing point estimates within an area of SPM with time columns appended.
+#' @export
+get_SPM <- function(File, Year, Month, crop) {
+
+  raw <- ncdf4::nc_open(File)                                               # Open a file
+  row <- raw$dim$row$vals                                                   # Extract the data needed to calculate
+  center_lat <- ncdf4::ncvar_get(raw, "center_lat")                         # Lat-lon coordinates of pixels
+  center_lon <- ncdf4::ncvar_get(raw, "center_lon")
+  lon_step <- ncdf4::ncvar_get(raw, "lon_step")
+  col <- ncdf4::ncvar_get(raw, "col")                                       # Each row has a different number of columns
+
+  data <- data.frame(Bin = raw$dim$bin$vals,                                # Pull pixel
+                     SPM = ncdf4::ncvar_get(raw, "SPM-OC5_mean"),           # SPM
+                     Year = Year,                                           # And attach date
+                     Month = Month) %>%
+    dplyr::mutate(index = (row[Bin] - row[1]+1),                            # Calculate Lat-lon positions
+                  latitude = center_lat[index],
+                  longitude = (center_lon[index] + col[Bin] * lon_step[index])) %>%
+    dplyr::filter(dplyr::between(latitude, crop["ymin"], crop["ymax"]),     # Initial rough crop using the bounding box of a polygon
+                  dplyr::between(longitude, crop["xmin"], crop["xmax"])) %>%
+    dplyr::select(-index)                                                   # Ditch uneccessary column
+
+  ncdf4::nc_close(raw)                                                      # Close file connection
+
+  return(data) }
+
 #' Get Rivers
 #'
 #' This function reads river NEMO-MEDUSA river runoff files and reshapes for StrathE2E.
@@ -138,118 +173,4 @@ get_air_dt <- function(File, Type, Year) {
   if(Type == "T150") Data <- DT[,by= .(Month, Year, Type, Shore),            # We care about shore for temperature, retain interesting columns
                                 .(Measured = weighted.mean(Measured, Cell_area))]  # Average by time ste, weighted by cell area
   return(Data)
-}
-
-#' Convert a U-V velocity field to speed and direction in degrees
-#'
-#' This function takes a vector of u and v velocities and calculates the direction and speed of the combined movement.
-#'
-#'This function was lifted from the `Rsenal` package, where it was originally used to calculate wind speeds. All I've done
-#'is built a wrapper which accounts for different conventions when describing wind and flow directions.
-#'
-#' @param u A vector of Zonal currents (from West to East).
-#' @param v A vector of Meridional currents (from South to North).
-#' @return a dataframe of two columns is returned. Speed contains the composite speed of both velocities on the same scale.
-#' Direction is the resolved direction of the flow in degrees, 0 heads north, 90 East, 180 South, 270 West.
-#' @family NEMO-MEDUSA spatial tools
-#' @export
-vectors_2_direction <- function (u, v) {
-  u <- -u                                        # This function was built to use wind direction
-  v <- -v                                        # Winds  are "opposite", people care about where wind comes from, not where it goes
-
-  # Lovingly lifted from the "Rsenal" package
-
-  degrees <- function(radians) 180 * radians/pi
-  mathdegs <- degrees(atan2(v, u))
-  wdcalc <- ifelse(mathdegs > 0, mathdegs, mathdegs + 360)
-  uvDirection <- ifelse(wdcalc < 270, 270 - wdcalc, 270 - wdcalc + 360)
-  uvSpeed <- sqrt(u^2 + v^2)
-  return(cbind(uvDirection, uvSpeed))
-}
-
-## used for Light and air temperature data which goes into NM, this data uses a different grid and has time stored differently
-
-#' Get Indices to Use When Clipping netcdf Files at Import
-#'
-#' This function works out how much of a netcdf file to read, to capture the data between a given Lat-Lon window.
-#'
-#' The function reads in a vector for both latitudes and longitudes, and tests whether each entry is within the specified
-#' window. The max and min position in these vectors where the condition == TRUE are taken to define the ends of the window
-#' to import. The vectors of latitudes and longitudes between these limits are kept, so they can be added to the variables
-#' of interest during extraction.
-#'
-#' @param file The full name of a netcdf file containing a longitude and latitude dimension.
-#' @param w Degrees West to read from.
-#' @param e Degrees East to read to.
-#' @param s Degrees South to read from.
-#' @param n Degrees North to read to.
-#' @return A list of three elements:
-#' \itemize{
-#'  \item{\emph{Lats -}}{ A vector of latitudes from `s` to `n`.}
-#'  \item{\emph{Lons -}}{ A vector of longitudes from `w` to `e`.}
-#'  \item{\emph{Limits -}}{ A dataframe containing the index to start reading from (Lon_start, Lat_start)
-#'  and the length of the vector to read (Lon_count, Lat_count.}
-#'  }
-#' @family NEMO-MEDUSA spatial tools
-#' @export
-Window <- function(file, w, e, s, n) {
-
-  #file <- examples[1,]$File ; w = 0 ; e = 180 ; s = 0 ; n = 90
-
-  raw <- ncdf4::nc_open(file)
-  lon <- raw$dim$longitude$vals %>% between(w, e)
-  W <- min(which(lon == TRUE))
-  E <- max(which(lon == TRUE))
-
-  lat <- raw$dim$latitude$vals %>% between(s, n)
-  S <- min(which(lat == TRUE))
-  N <- max(which(lat == TRUE))
-
-  lons <- raw$dim$longitude$vals[W:E]
-  lats <- raw$dim$latitude$vals[S:N]
-
-  Limits <- data.frame("Lon_start" = W, "Lon_count" = E - W + 1, "Lat_start" = S, "Lat_count" = N - S + 1)
-
-  Limits <- list(Lats = lats, Lons = lons, Limits = Limits)
-  return(Limits)
-}
-
-#' Pull Coordinates from a Simple Feature Geometry Column
-#'
-#' This function takes an SF object, and adds two columns containing the coordinates in the geometry column.
-#'
-#' @param data An SF (Simple Feature) object.
-#' @return The same object, now with two columns containing the coordinates in the geometry column.
-#' @family NEMO-MEDUSA spatial tools
-#' @export
-sfc_as_cols <- function(x, names = c("x","y")) {
-  stopifnot(inherits(x,"sf") && inherits(sf::st_geometry(x),"sfc_POINT"))
-  ret <- sf::st_coordinates(x)
-  ret <- as.data.frame(ret)
-  stopifnot(length(names) == ncol(ret))
-  x <- x[ , !names(x) %in% names]
-  ret <- setNames(ret,names)
-  dplyr::bind_cols(x,ret)
-}
-
-#' Reproject from Latitude and Longitude to Project CRS
-#'
-#' This function takes a dataframe containing a latitude and longitude column, and replaces them with an X and Y column of coordinates
-#' in a new CRS.
-#'
-#'The function converts a dataframe into an SF object and reprojects into a new CRS. Two coordinate columns are extracted from the
-#'geometry column using `sfc_as_cols`, before the geometry column is dropped.
-#'
-#' @param data A dataframe containing Longitude and Latitude.
-#' @param crs The new Coordinate Reference System  to project to.
-#' @return A dataframe, now with an x and y column specifying the coordinates for points in the projects Coordiante Reference System.
-#' @family NEMO-MEDUSA spatial tools
-#' @export
-reproj <- function(data, crs) {
-
-  data %>%
-    sf::st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>% # Specify original projection (crs)
-    sf::st_transform(crs = crs) %>%                                   # Transform to crs specified in region file
-    sfc_as_cols() %>%                                                 # Extract geometry column for geom_segment to work
-    sf::st_set_geometry(NULL)                                         # Chuck geometry column
 }
