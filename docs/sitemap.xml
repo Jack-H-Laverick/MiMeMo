@@ -16,10 +16,13 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/MiMeMo.tools-package.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Sample.html</loc>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/NM_boundary_summary.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Sample_OOB.html</loc>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/NM_decadal_summary.html</loc>
+  </url>
+  <url>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/NM_volume_summary.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Window.html</loc>
@@ -28,22 +31,13 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/boundaries.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/check_grid.html</loc>
+    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/characterise_flows.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/decadal.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/direction.html</loc>
-  </url>
-  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/execute.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/extract.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/extract_OOB.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/fill_in.html</loc>
@@ -73,9 +67,6 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_waves_ts.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/interp_month.html</loc>
-  </url>
-  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/jacks_lazy_animation.html</loc>
   </url>
   <url>
@@ -97,9 +88,6 @@
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/point_plot.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/point_plot_voronoi.html</loc>
-  </url>
-  <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/reproj.html</loc>
   </url>
   <url>
@@ -119,12 +107,6 @@
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/strip_ice.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/summarise_sp.html</loc>
-  </url>
-  <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/summarise_ts.html</loc>
   </url>
   <url>
     <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/to_segments.html</loc>

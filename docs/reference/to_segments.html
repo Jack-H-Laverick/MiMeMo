@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Break an SF linestring into segments at corners — to_segments • MiMeMo.tools</title>
+<title>Interpolate vertical water movements to the boundary depth between shallow and deep compartments — to_segments • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,9 @@
 
 
 
-<meta property="og:title" content="Break an SF linestring into segments at corners — to_segments" />
-<meta property="og:description" content="This function is wrapped within the boundaries function and is used to convert the perimeter of
-model zones into seperate segments between each corner. These segments can then be used independently to sample data." />
+<meta property="og:title" content="Interpolate vertical water movements to the boundary depth between shallow and deep compartments — to_segments" />
+<meta property="og:description" content="This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
+values to a plane at the boundary depth between shallow and deep compartments." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.svg" />
 
 
@@ -141,14 +141,14 @@ model zones into seperate segments between each corner. These segments can then 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Break an SF linestring into segments at corners</h1>
+    <h1>Interpolate vertical water movements to the boundary depth between shallow and deep compartments</h1>
     
     <div class="hidden name"><code>to_segments.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function is wrapped within the boundaries function and is used to convert the perimeter of
-model zones into seperate segments between each corner. These segments can then be used independently to sample data.</p>
+    <p>This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
+values to a plane at the boundary depth between shallow and deep compartments.</p>
     </div>
 
     <pre class="usage"><span class='fu'>to_segments</span><span class='op'>(</span><span class='va'>line</span>, <span class='va'>crs</span><span class='op'>)</span></pre>
@@ -165,21 +165,49 @@ model zones into seperate segments between each corner. These segments can then 
       <td><p>The coordinate reference system for the project. This is inherited from `boundaries` and should be specified in
 the project region file.</p></td>
     </tr>
+    <tr>
+      <th>Path</th>
+      <td><p>The path to a netcdf file containing target data, inherited from `interp_month`.</p></td>
+    </tr>
+    <tr>
+      <th>File</th>
+      <td><p>The name of a netcdf file containing target data, inherited from `interp_month`.</p></td>
+    </tr>
+    <tr>
+      <th>Points</th>
+      <td><p>An SF object containing the grid points which fall within the domain polygons, inherited from `interp_month`.</p></td>
+    </tr>
+    <tr>
+      <th>Boundary</th>
+      <td><p>The boundary depth between shallow and deep compartments, defaults to 60 m for MiMeMo.</p></td>
+    </tr>
+    <tr>
+      <th>data</th>
+      <td><p>A list of paths to netcdf files which share the same month.</p></td>
+    </tr>
+    <tr>
+      <th>grid_points</th>
+      <td><p>An SF object containing the grid points which fall within the domain polygons.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a list of individual SF lines connecting each corner of the perimeters of model compartments.</p>
+    <p>A data frame containing vertical eddy diffusivity and vertical velocity at the boundary depth
+between shallow and deep compartments, for a single day as a spatial plane.</p>
+<p>The function returns a dataframe of points averaged within a month and interpolated to the boundary depth.</p>
+<p>The function returns a list of individual SF lines connecting each corner of the perimeters of model compartments.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The function uses `rcdo::nc_remap` to interpolate vertical eddy diffusivity and vertical water velocities at
+the boundary depth between the shallow and deep model compartments. Points which fall outside the geographic
+extent of model compartments are dropped. The retained points are passed back to `interp_month` for further averaging
+as a dataframe.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other Boundary sampling functions: 
-<code><a href='Sample_OOB.html'>Sample_OOB</a>()</code>,
-<code><a href='Sample.html'>Sample</a>()</code>,
 <code><a href='boundaries.html'>boundaries</a>()</code>,
-<code><a href='check_grid.html'>check_grid</a>()</code>,
-<code><a href='direction.html'>direction</a>()</code>,
-<code><a href='extract_OOB.html'>extract_OOB</a>()</code>,
-<code><a href='extract.html'>extract</a>()</code></p></div>
+<code><a href='characterise_flows.html'>characterise_flows</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

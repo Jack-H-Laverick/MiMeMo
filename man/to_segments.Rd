@@ -2,7 +2,7 @@
 % Please edit documentation in R/Boundary functions.R
 \name{to_segments}
 \alias{to_segments}
-\title{Break an SF linestring into segments at corners}
+\title{Interpolate vertical water movements to the boundary depth between shallow and deep compartments}
 \usage{
 to_segments(line, crs)
 }
@@ -11,22 +11,56 @@ to_segments(line, crs)
 
 \item{crs}{The coordinate reference system for the project. This is inherited from `boundaries` and should be specified in
 the project region file.}
+
+\item{Path}{The path to a netcdf file containing target data, inherited from `interp_month`.}
+
+\item{File}{The name of a netcdf file containing target data, inherited from `interp_month`.}
+
+\item{Points}{An SF object containing the grid points which fall within the domain polygons, inherited from `interp_month`.}
+
+\item{Boundary}{The boundary depth between shallow and deep compartments, defaults to 60 m for MiMeMo.}
+
+\item{data}{A list of paths to netcdf files which share the same month.}
+
+\item{grid_points}{An SF object containing the grid points which fall within the domain polygons.}
 }
 \value{
+A data frame containing vertical eddy diffusivity and vertical velocity at the boundary depth
+between shallow and deep compartments, for a single day as a spatial plane.
+
+The function returns a dataframe of points averaged within a month and interpolated to the boundary depth.
+
 The function returns a list of individual SF lines connecting each corner of the perimeters of model compartments.
 }
 \description{
-This function is wrapped within the boundaries function and is used to convert the perimeter of
-model zones into seperate segments between each corner. These segments can then be used independently to sample data.
+This function reads in a 3 dimensional array of water movements, and uses the `rcdo` package to interpolate
+values to a plane at the boundary depth between shallow and deep compartments.
+}
+\details{
+The function uses `rcdo::nc_remap` to interpolate vertical eddy diffusivity and vertical water velocities at
+the boundary depth between the shallow and deep model compartments. Points which fall outside the geographic
+extent of model compartments are dropped. The retained points are passed back to `interp_month` for further averaging
+as a dataframe.
 }
 \seealso{
 Other Boundary sampling functions: 
-\code{\link{Sample_OOB}()},
-\code{\link{Sample}()},
 \code{\link{boundaries}()},
-\code{\link{check_grid}()},
-\code{\link{direction}()},
-\code{\link{extract_OOB}()},
-\code{\link{extract}()}
+\code{\link{characterise_flows}()}
 }
 \concept{Boundary sampling functions}
+\concept{NEMO-MEDUSA variable extractors
+Break an SF linestring into segments at corners
+
+This function is wrapped within the boundaries function and is used to convert the perimeter of
+model zones into seperate segments between each corner. These segments can then be used independently to sample data.}
+\concept{NEMO-MEDUSA variable extractors
+Extract vertical water movements at the boundary between shallow and deep compartments
+
+This function reads in a packet of daily netcdf files from the same month, and returns a single monthly dataframe
+of vertical water movements.
+
+The function reads in a packet of monthly netcdf files and passes them to `interp_vertical`.
+
+`interp_vertical` interpolates to the depth boundary between the shallow and deep compartments. These daily dataframes represent a spatial plane.
+
+The daily dataframes are then passed back to `interp_month`, which averages again by month and variable, dropping the spatial information.}

@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get Surface Irradiance &amp; Air Temperature — get_air • MiMeMo.tools</title>
+<title>Summarise NEMO-MEDUSA Output into Time Series Within Model Compartments
+This function averages NEMO-MEDUSA monthly summaries into time series for each model compartment. — NM_volume_summary • MiMeMo.tools</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +47,10 @@
 
 
 
-<meta property="og:title" content="Get Surface Irradiance &amp; Air Temperature — get_air" />
-<meta property="og:description" content="This function reads either title variable from a NEMO-MEDUSA model DRIVERS file, and returns a monthly time series." />
+<meta property="og:title" content="Summarise NEMO-MEDUSA Output into Time Series Within Model Compartments
+This function averages NEMO-MEDUSA monthly summaries into time series for each model compartment. — NM_volume_summary" />
+<meta property="og:description" content="The function groups by model compartment (Depth and Shore zone) and time step (Month and Year).
+The mean for every target variable is calculated within these groups." />
 <meta property="og:image" content="https://jack-h-laverick.github.io/MiMeMo.tools/logo.svg" />
 
 
@@ -140,51 +143,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get Surface Irradiance &amp; Air Temperature</h1>
+    <h1>Summarise NEMO-MEDUSA Output into Time Series Within Model Compartments
+This function averages NEMO-MEDUSA monthly summaries into time series for each model compartment.</h1>
     
-    <div class="hidden name"><code>get_air.Rd</code></div>
+    <div class="hidden name"><code>NM_volume_summary.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function reads either title variable from a NEMO-MEDUSA model <strong>DRIVERS</strong> file, and returns a monthly time series.</p>
+    <p>The function groups by model compartment (Depth and Shore zone) and time step (Month and Year).
+The mean for every target variable is calculated within these groups.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_air</span><span class='op'>(</span><span class='va'>File</span>, <span class='va'>Type</span>, <span class='va'>Year</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>NM_volume_summary</span><span class='op'>(</span><span class='va'>saved</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>File</th>
-      <td><p>The location of the netcdf file containing NEMO-MEDUSA driving data.</p></td>
-    </tr>
-    <tr>
-      <th>Type</th>
-      <td><p>The variable contained in the netcdf file either "T150" (air temperature) or "SWF" (surface irradiance).</p></td>
-    </tr>
-    <tr>
-      <th>Year</th>
-      <td><p>The year the necdf file contains data for.</p></td>
+      <th>saved</th>
+      <td><p>A dataframe containing a summarised month from NEMO-MEDUSA model outputs.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe containing a monthly time series within a year of either average air temperature or surface
-irradiance. Air temperature is also split by shore zone.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The appropriate variable in the netcdf file is imported according to the `Type` parameter, only reading within an
-x/y window specified in `Space`. The function then drops points outside the model domain before constructing the monthly
-time series.</p>
-<p>Unlike other NEMO-MEDUSA related get_* functions, this function constructs the monthly time series directly. A wrapper function
-to handle time isn't required, as each netcdf file for driving data contains 360 day steps for a single year. `stratify` also
-isn't called, as these variables have no depth dimension.</p>
+    <p>A dataframe containing a mean monthly time series of all target variables in NEMO-MEDUSA outputs.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other NEMO-MEDUSA variable extractors: 
-<code><a href='get_air_dt.html'>get_air_dt</a>()</code>,
-<code><a href='get_rivers.html'>get_rivers</a>()</code></p></div>
+    <div class='dont-index'><p>Other NEMO-MEDUSA averages: 
+<code><a href='NM_boundary_summary.html'>NM_boundary_summary</a>()</code>,
+<code><a href='NM_decadal_summary.html'>NM_decadal_summary</a>()</code>,
+<code><a href='decadal.html'>decadal</a>()</code>,
+<code><a href='strip_ice.html'>strip_ice</a>()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

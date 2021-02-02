@@ -27,12 +27,7 @@ calculating weighted averages.
 }
 \seealso{
 Other Boundary sampling functions: 
-\code{\link{Sample_OOB}()},
-\code{\link{Sample}()},
-\code{\link{check_grid}()},
-\code{\link{direction}()},
-\code{\link{extract_OOB}()},
-\code{\link{extract}()},
+\code{\link{characterise_flows}()},
 \code{\link{to_segments}()}
 }
 \concept{Boundary sampling functions}
