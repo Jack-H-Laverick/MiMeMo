@@ -255,13 +255,14 @@ mud_to_permeability <- function(percent_mud, scalar = -2.171, constant = -10.232
 #' Calculate sediment porosity
 #'
 #' This function takes median grain size at a location and returns a measure of porosity. The default
-#' parameterisation comes from Matt Pace's thesis for fine sediments.
+#' parameterisation comes from Matt Pace's thesis for fine sediments. The numerical order of parameters
+#' has been changed from Matt's to be consistent with StrathE2E.
 #'
 #' @param D50 The median grain size at a location.
-#' @param P1 A parameter in the relationship.
-#' @param P2 A parameter in the relationship.
-#' @param P3 A parameter in the relationship.
-#' @param P4 A parameter in the relationship.
+#' @param p1 A parameter in the relationship.
+#' @param p2 A parameter in the relationship.
+#' @param p3 A parameter in the relationship.
+#' @param p4 A parameter in the relationship.
 #' @return A numeric vector containing estimates of sediment porosity in % (can be length 1).
 #' @family Sediment properties
 #' @examples
@@ -272,11 +273,11 @@ mud_to_permeability <- function(percent_mud, scalar = -2.171, constant = -10.232
 #' geom_line(aes(x = D50, y = Porosity)) +
 #' scale_x_continuous(trans = "log", breaks = c(0.001,0.01,0.1,1))
 #' @export
-D50_to_porosity <- function(D50, p1 = -0.435, p2 = 0.302, p3 = -1.035, p4 = -0.314) {
+D50_to_porosity <- function(D50, p1 = -1.035, p2 = -0.314, p3 = -0.435, p4 = 0.302) {
 
-  complex <- 1+exp((-(log10(D50)-p3))/p4)
+  complex <- 1+exp((-(log10(D50)-p1))/p2)
 
-  porosity <- p1 + (p2*(1/(complex)))
+  porosity <- p3 + (p4*(1/(complex)))
 
   answer <- 10^porosity
 
