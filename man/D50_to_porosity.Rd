@@ -4,25 +4,26 @@
 \alias{D50_to_porosity}
 \title{Calculate sediment porosity}
 \usage{
-D50_to_porosity(D50, p1 = -0.435, p2 = 0.302, p3 = -1.035, p4 = -0.314)
+D50_to_porosity(D50, p1 = -1.035, p2 = -0.314, p3 = -0.435, p4 = 0.302)
 }
 \arguments{
 \item{D50}{The median grain size at a location.}
 
-\item{P1}{A parameter in the relationship.}
+\item{p1}{A parameter in the relationship.}
 
-\item{P2}{A parameter in the relationship.}
+\item{p2}{A parameter in the relationship.}
 
-\item{P3}{A parameter in the relationship.}
+\item{p3}{A parameter in the relationship.}
 
-\item{P4}{A parameter in the relationship.}
+\item{p4}{A parameter in the relationship.}
 }
 \value{
 A numeric vector containing estimates of sediment porosity in % (can be length 1).
 }
 \description{
 This function takes median grain size at a location and returns a measure of porosity. The default
-parameterisation comes from Matt Pace's thesis for fine sediments.
+parameterisation comes from Matt Pace's thesis for fine sediments. The numerical order of parameters
+has been changed from Matt's to be consistent with StrathE2E.
 }
 \examples{
 data <- data.frame(D50 = seq(0, 1, length.out = 1000)) \%>\%
