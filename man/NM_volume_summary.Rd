@@ -5,10 +5,12 @@
 \title{Summarise NEMO-MEDUSA Output into Time Series Within Model Compartments
 This function averages NEMO-MEDUSA monthly summaries into time series for each model compartment.}
 \usage{
-NM_volume_summary(saved)
+NM_volume_summary(saved, ice_threshold = 0)
 }
 \arguments{
 \item{saved}{A dataframe containing a summarised month from NEMO-MEDUSA model outputs.}
+
+\item{ice_threshold}{A value between 0 and 1 defining ice free pixels.}
 }
 \value{
 A dataframe containing a mean monthly time series of all target variables in NEMO-MEDUSA outputs.
@@ -16,6 +18,12 @@ A dataframe containing a mean monthly time series of all target variables in NEM
 \description{
 The function groups by model compartment (Depth and Shore zone) and time step (Month and Year).
 The mean for every target variable is calculated within these groups.
+}
+\details{
+The ice-threshold parameter controls how high the concentration of ice must be at a pixel to count as ice-affected.
+The default is set to 0, so any pixels with ice are counted, but if you decide that ice-concentrations below 0.05
+are meaningless for your purposes, you can set the threshold to have these pixels classed as ice free instead. This will
+also drop the pixels from calculations of Ice_concentration, Ice_Thickness, and Snow_Thickness.
 }
 \seealso{
 Other NEMO-MEDUSA averages: 

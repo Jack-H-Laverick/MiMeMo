@@ -79,17 +79,24 @@ if(dt == TRUE){                                                               # 
 #' The function groups by model compartment (Depth and Shore zone) and time step (Month and Year).
 #' The mean for every target variable is calculated within these groups.
 #'
+#' The ice-threshold parameter controls how high the concentration of ice must be at a pixel to count as ice-affected.
+#' The default is set to 0, so any pixels with ice are counted, but if you decide that ice-concentrations below 0.05
+#' are meaningless for your purposes, you can set the threshold to have these pixels classed as ice free instead. This will
+#' also drop the pixels from calculations of Ice_concentration, Ice_Thickness, and Snow_Thickness.
+#'
 #' @param saved A dataframe containing a summarised month from NEMO-MEDUSA model outputs.
+#' @param ice_threshold A value between 0 and 1 defining ice free pixels.
 #' @return A dataframe containing a mean monthly time series of all target variables in NEMO-MEDUSA outputs.
 #' @family NEMO-MEDUSA averages
 #' @export
-NM_volume_summary <- function(saved) {
+NM_volume_summary <- function(saved, ice_threshold = 0) {
 
   Groups <- readRDS(file = saved) %>%                                          # Read in wide format data file
 #    dplyr::filter(!weights < 0) %>%                                            # Drop points on land
 #    dplyr::mutate(weights = dplyr::na_if(weights, 0)) %>%                      # Replace 0 weights with NA so vector lengths match for weighted mean
     tidyr::drop_na(Year, Shore) %>%                                            # Drop points outside of the polygons
-    dplyr::group_by(Shore, Year, Month, slab_layer)
+    dplyr::group_by(Shore, Year, Month, slab_layer) %>%
+    dplyr::mutate(Ice_pres = ifelse(Ice_conc < ice_threshold, 0, Ice_pres))    # Specify how much ice actually matters when labelling something as ice-affected
 
   Ice <- dplyr::filter(Groups, Ice_pres > 0) %>%                               # Remove ice free pixels before averaging
     dplyr::summarise(Ice_Thickness_avg = mean(Ice_Thickness, na.rm = TRUE),    # Get monthly mean sea ice thickness
