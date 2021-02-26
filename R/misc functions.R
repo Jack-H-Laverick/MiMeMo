@@ -261,10 +261,6 @@ update_physics_period <- function(start, end, path){
     dplyr::select(Shore, slab_layer, Volume)
 
   My_Waves <- readRDS("./Objects/Significant wave height.rds") %>%            #*2000 - 2010
-    dplyr::filter(Shore =="Inshore") %>%                                      # Limit to inshore
-    dplyr::group_by(Month) %>%                                                # By month
-    dplyr::summarise(SWH = mean(SWH, na.rm = T)) %>%                          # Average
-    dplyr::ungroup() %>%
     dplyr::arrange(Month)                                                     # Arrange to match template
   usethis::ui_warn("Significant wave height estimates come from a fixed time period.")
 
@@ -282,7 +278,7 @@ update_physics_period <- function(start, end, path){
                                habD2_pdist = dplyr::filter(My_Stress, Shore == "Offshore", Habitat == "Sand")$Disturbance,
                                habD3_pdist = dplyr::filter(My_Stress, Shore == "Offshore", Habitat == "Gravel")$Disturbance,
                                ## Monthly mean significant wave height inshore
-                               Inshore_waveheight = My_Waves$SWH)
+                               Inshore_waveheight = My_Waves$Waves)
 
   #### Update light ####
 
