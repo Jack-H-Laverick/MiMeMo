@@ -262,10 +262,11 @@ boundaries <- function(domain, crs) {
 
 #' @param lines An sfc object of lines representing transects along the perimeter of a model domain polygon.
 #' @param domain An sfc polygon object of the model domain, used to make the transects.
+#' @param precision How far apart should sampling points be (1/x degrees, larger numbers bring the points closer).
 #' @return The function returns the lines object with added columns.
 #' @family Boundary sampling functions
 #' @export
-characterise_flows <- function(lines, domain) {
+characterise_flows <- function(lines, domain, precision = 1000) {
 
   lines$current <- st_transform(lines, crs = 4326) %>%
     st_coordinates() %>%
@@ -280,9 +281,9 @@ characterise_flows <- function(lines, domain) {
     st_transform(crs= 4326) %>%                              # Transform to lat-lon to ensure test points are perpendicular to the line
     st_coordinates()
 
-  minus <- data.frame(ifelse(lines$current == "Meridional", list(c(0, -0.001, 0)), list(c(-0.001, 0, 0)))) %>%
+  minus <- data.frame(ifelse(lines$current == "Meridional", list(c(0, -(1/precision), 0)), list(c(-(1/precision), 0, 0)))) %>%
     t()       # Adjust for point below the segment
-  plus <- data.frame(ifelse(lines$current == "Meridional", list(c(0, 0.001, 0)), list(c(0.001, 0, 0)))) %>%     # Adjust for point above the segment
+  plus <- data.frame(ifelse(lines$current == "Meridional", list(c(0, (1/precision), 0)), list(c((1/precision), 0, 0)))) %>%     # Adjust for point above the segment
     t()        #flow_shift = ifelse(current == "Meridional", list(c(100, 0)), list(c(0, 100))))  # Adjust for current indicator
 
   mid_minus <- midpoints + minus %>%

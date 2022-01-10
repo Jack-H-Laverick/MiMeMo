@@ -154,7 +154,7 @@ This function averages NEMO-MEDUSA monthly summaries into time series for each m
 The mean for every target variable is calculated within these groups.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NM_volume_summary</span><span class='op'>(</span><span class='va'>saved</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>NM_volume_summary</span><span class='op'>(</span><span class='va'>saved</span>, ice_threshold <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,11 +163,21 @@ The mean for every target variable is calculated within these groups.</p>
       <th>saved</th>
       <td><p>A dataframe containing a summarised month from NEMO-MEDUSA model outputs.</p></td>
     </tr>
+    <tr>
+      <th>ice_threshold</th>
+      <td><p>A value between 0 and 1 defining ice free pixels.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A dataframe containing a mean monthly time series of all target variables in NEMO-MEDUSA outputs.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The ice-threshold parameter controls how high the concentration of ice must be at a pixel to count as ice-affected.
+The default is set to 0, so any pixels with ice are counted, but if you decide that ice-concentrations below 0.05
+are meaningless for your purposes, you can set the threshold to have these pixels classed as ice free instead. This will
+also drop the pixels from calculations of Ice_concentration, Ice_Thickness, and Snow_Thickness.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other NEMO-MEDUSA averages: 

@@ -153,7 +153,7 @@ a lat-lon grid. If they do, then we know that when sampling meridional and zonal
 per transect.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>characterise_flows</span><span class='op'>(</span><span class='va'>lines</span>, <span class='va'>domain</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>characterise_flows</span><span class='op'>(</span><span class='va'>lines</span>, <span class='va'>domain</span>, precision <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,6 +165,10 @@ per transect.</p>
     <tr>
       <th>domain</th>
       <td><p>An sfc polygon object of the model domain, used to make the transects.</p></td>
+    </tr>
+    <tr>
+      <th>precision</th>
+      <td><p>How far apart should sampling points be (1/x degrees, larger numbers bring the points closer).</p></td>
     </tr>
     <tr>
       <th>segment</th>

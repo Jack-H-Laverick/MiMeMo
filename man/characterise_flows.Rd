@@ -4,12 +4,14 @@
 \alias{characterise_flows}
 \title{Check if a segment runs parallel to latitude or longitude}
 \usage{
-characterise_flows(lines, domain)
+characterise_flows(lines, domain, precision = 1000)
 }
 \arguments{
 \item{lines}{An sfc object of lines representing transects along the perimeter of a model domain polygon.}
 
 \item{domain}{An sfc polygon object of the model domain, used to make the transects.}
+
+\item{precision}{How far apart should sampling points be (1/x degrees, larger numbers bring the points closer).}
 
 \item{segment}{An SF line object representing a transect along the perimeter of a model domain polygon.}
 }
