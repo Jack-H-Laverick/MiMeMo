@@ -17,7 +17,8 @@ ts_plot <- function(var) {
     ggplot2::theme(legend.position = "top") +
     ggplot2::labs(caption = paste("NM", var, "time series by compartment"), y = var) +
     NULL
-  ggplot2::ggsave(paste0("./Figures/NEMO-MEDUSA/TS_", var, ".png"), plot = ts, width = 16, height = 10, units = "cm", dpi = 500)
+  ggplot2::ggsave(paste0("./Figures/NEMO-MEDUSA/TS_", var, ".png"), plot = ts, width = 16, height = 10,
+                  units = "cm", dpi = 500, bg = "white")
 
 }
 
@@ -49,7 +50,7 @@ point_plot <- function(data, var) {
         ggplot2::facet_wrap(vars(Month)) +
         NULL
       ggplot2::ggsave(paste0("./Figures/NEMO-MEDUSA/grids/map ", var, " ", depth, " ", decade, ".png"),
-             plot = map, scale = 1, width = 32, height = 20, units = "cm", dpi = 500)
+             plot = map, scale = 1, width = 32, height = 20, units = "cm", dpi = 500, bg = "white")
     }
 }
 
@@ -94,5 +95,5 @@ stick_plot <- function(data, zoom, pre) {
     NULL
 
   ggplot2::ggsave(paste("./Figures/NEMO-MEDUSA/currents/currents ", unique(data$Depth), unique(data$Decade), ".png"), plot = sticks,
-                  scale = pre$scale, width = pre$width, height = pre$height, units = pre$units, dpi = pre$dpi)
+                  scale = pre$scale, width = pre$width, height = pre$height, units = pre$units, dpi = pre$dpi, bg = "white")
 }
