@@ -277,9 +277,10 @@ characterise_flows <- function(lines, domain, precision = 1000) {
     mutate(current = ifelse(Lon_dif > Lat_dif, "Meridional", "Zonal")) %>%
     .$current
 
-  midpoints <- sf::st_line_sample(lines, n = 1) %>%          # Grab the midpoint of a line segment
+  midpoints <- sf::st_centroid(lines) %>%                    # Grab the midpoint of a line segment
     st_transform(crs= 4326) %>%                              # Transform to lat-lon to ensure test points are perpendicular to the line
-    st_coordinates()
+    st_coordinates() %>%
+    cbind(1:nrow(.))
 
   minus <- data.frame(ifelse(lines$current == "Meridional", list(c(0, -(1/precision), 0)), list(c(-(1/precision), 0, 0)))) %>%
     t()       # Adjust for point below the segment
@@ -318,6 +319,7 @@ characterise_flows <- function(lines, domain, precision = 1000) {
     arrange(V3) %>%                                              # Make sure order matches the input
     dplyr::select(Flip, Neighbour)                               # Keep only interesting columns
 
+  ## could insert a test? if lines has has different number of lines error, probably need to increase precision.
   lines2 <- cbind(lines, tests)
   return(lines2)
 }
