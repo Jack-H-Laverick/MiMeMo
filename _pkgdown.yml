@@ -20,11 +20,12 @@ reference:
   - jacks_polar_animate
 
 - title: Misc
-  desc: Other data extractors for now.
+  desc: Other assorted utilities.
   contents:
   - execute
   - fill_in
   - get_SPM
+  - box_zoom
 
 - title: Unit conversions
   desc: Helper functions to avoid introducing bugs when switching between scales
