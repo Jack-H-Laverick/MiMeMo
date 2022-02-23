@@ -5,12 +5,14 @@
 \title{Summarise NEMO-MEDUSA Output into Time Series Within Model Compartments
 This function averages NEMO-MEDUSA monthly summaries into time series for each model compartment.}
 \usage{
-NM_volume_summary(saved, ice_threshold = 0)
+NM_volume_summary(saved, ice_threshold = 0, ice = TRUE)
 }
 \arguments{
 \item{saved}{A dataframe containing a summarised month from NEMO-MEDUSA model outputs.}
 
 \item{ice_threshold}{A value between 0 and 1 defining ice free pixels.}
+
+\item{ice}{A TRUE FALSE switch for whether the ice_mod files were included when extracting from NEMO-MEDUSA.}
 }
 \value{
 A dataframe containing a mean monthly time series of all target variables in NEMO-MEDUSA outputs.

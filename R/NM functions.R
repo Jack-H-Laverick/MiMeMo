@@ -86,10 +86,13 @@ if(dt == TRUE){                                                               # 
 #'
 #' @param saved A dataframe containing a summarised month from NEMO-MEDUSA model outputs.
 #' @param ice_threshold A value between 0 and 1 defining ice free pixels.
+#' @param ice A TRUE FALSE switch for whether the ice_mod files were included when extracting from NEMO-MEDUSA.
 #' @return A dataframe containing a mean monthly time series of all target variables in NEMO-MEDUSA outputs.
 #' @family NEMO-MEDUSA averages
 #' @export
-NM_volume_summary <- function(saved, ice_threshold = 0) {
+NM_volume_summary <- function(saved, ice_threshold = 0, ice = TRUE) {
+
+  if (ice == TRUE) {
 
   Groups <- readRDS(file = saved) %>%                                          # Read in wide format data file
 #    dplyr::filter(!weights < 0) %>%                                            # Drop points on land
@@ -114,6 +117,25 @@ NM_volume_summary <- function(saved, ice_threshold = 0) {
               Zonal_avg = stats::weighted.mean(Zonal, weights, na.rm = TRUE)) %>%
       dplyr::left_join(Ice) %>%                                                # Add in ice and snow thicknesses
       dplyr::ungroup()
+  }
+
+  if (ice == FALSE) {
+
+    Groups <- readRDS(file = saved) %>%                                          # Read in wide format data file
+      tidyr::drop_na(Year, Shore) %>%                                            # Drop points outside of the polygons
+      dplyr::group_by(Shore, Year, Month, slab_layer)
+
+    Averaged <- Groups %>%
+      dplyr::summarise(Salinity_avg = stats::weighted.mean(Salinity, weights, na.rm = TRUE), # Get monthly mean salinity
+                       Temperature_avg = stats::weighted.mean(Temperature, weights, na.rm = TRUE),
+                       DIN_avg = stats::weighted.mean(DIN, weights, na.rm = TRUE),
+                       Detritus_avg = stats::weighted.mean(Detritus, weights, na.rm = TRUE),
+                       Phytoplankton_avg = stats::weighted.mean(Phytoplankton, weights, na.rm = TRUE),
+                       Meridional_avg = stats::weighted.mean(Meridional, weights, na.rm = TRUE),
+                       Zonal_avg = stats::weighted.mean(Zonal, weights, na.rm = TRUE)) %>%
+      dplyr::ungroup()
+  }
+
 
   return(Averaged) }
 
