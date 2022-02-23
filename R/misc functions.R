@@ -88,6 +88,21 @@ Window <- function(file, w, e, s, n) {
   return(Limits)
 }
 
+#' Zoom a ggplot to the bounding box of an sf object
+#'
+#' This function can be used with ggplot and uses an sf object to adjust the plotting window according to a bounding box.
+#' If you want more breathing space use st_buffer when providing `sf`.
+#'
+#' @param sf an sf object that you want to crop the plot window to
+#' @return Add to a ggplot with the standard `+` syntax to adjust the plotting window.
+#' @export
+box_zoom <- function(sf) {
+
+  zoom <- sf::st_bbox(sf)
+  ggplot2::coord_sf(xlim = zoom[c(1,3)], ylim = zoom[c(2,4)])
+
+}
+
 #' Pull Coordinates from a Simple Feature Geometry Column
 #'
 #' This function takes an SF object, and adds two columns containing the coordinates in the geometry column.
