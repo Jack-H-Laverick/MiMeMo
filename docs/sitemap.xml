@@ -1,126 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//index.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Convert-units.html</loc>
+    <loc>/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/D50_to_porosity.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/FAO_boats.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/MiMeMo.tools-package.html</loc>
+    <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/NM_boundary_summary.html</loc>
+    <loc>/reference/Convert-units.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/NM_decadal_summary.html</loc>
+    <loc>/reference/D50_to_porosity.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/NM_volume_summary.html</loc>
+    <loc>/reference/FAO_boats.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Update-drivers.html</loc>
+    <loc>/reference/MiMeMo.tools-package.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/Window.html</loc>
+    <loc>/reference/NM_boundary_summary.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/boundaries.html</loc>
+    <loc>/reference/NM_decadal_summary.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/characterise_flows.html</loc>
+    <loc>/reference/NM_volume_summary.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/decadal.html</loc>
+    <loc>/reference/Update-drivers.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/execute.html</loc>
+    <loc>/reference/Window.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/fill_in.html</loc>
+    <loc>/reference/boundaries.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_SPM.html</loc>
+    <loc>/reference/box_zoom.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_air.html</loc>
+    <loc>/reference/characterise_flows.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_air_dt.html</loc>
+    <loc>/reference/decadal.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_bed_shear_stress.html</loc>
+    <loc>/reference/execute.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_cropped_fishing.html</loc>
+    <loc>/reference/fill_in.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_rivers.html</loc>
+    <loc>/reference/get_SPM.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_tides_ts.html</loc>
+    <loc>/reference/get_air.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/get_waves_ts.html</loc>
+    <loc>/reference/get_air_dt.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/jacks_lazy_animation.html</loc>
+    <loc>/reference/get_bed_shear_stress.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/jacks_lazy_avg.html</loc>
+    <loc>/reference/get_cropped_fishing.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/jacks_polar_animate.html</loc>
+    <loc>/reference/get_rivers.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/jacks_polar_static.html</loc>
+    <loc>/reference/get_tides_ts.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/mud_to_permeability.html</loc>
+    <loc>/reference/get_waves_ts.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/mync_get_pixel.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/point_plot.html</loc>
+    <loc>/reference/jacks_lazy_animation.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/reproj.html</loc>
+    <loc>/reference/jacks_lazy_avg.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/reshape_SINMOD.html</loc>
+    <loc>/reference/jacks_polar_animate.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/sample_tides_year.html</loc>
+    <loc>/reference/jacks_polar_static.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/sample_waves.html</loc>
+    <loc>/reference/mud_to_permeability.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/sfc_as_cols.html</loc>
+    <loc>/reference/mync_get_pixel.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/stick_plot.html</loc>
+    <loc>/reference/point_plot.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/strip_ice.html</loc>
+    <loc>/reference/reproj.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/to_segments.html</loc>
+    <loc>/reference/reshape_SINMOD.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/ts_plot.html</loc>
+    <loc>/reference/sample_tides_year.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//reference/vectors_2_direction.html</loc>
+    <loc>/reference/sample_waves.html</loc>
   </url>
   <url>
-    <loc>https://jack-h-laverick.github.io/MiMeMo.tools//articles/Data_Sources.html</loc>
+    <loc>/reference/sfc_as_cols.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stick_plot.html</loc>
+  </url>
+  <url>
+    <loc>/reference/strip_ice.html</loc>
+  </url>
+  <url>
+    <loc>/reference/to_segments.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ts_plot.html</loc>
+  </url>
+  <url>
+    <loc>/reference/vectors_2_direction.html</loc>
   </url>
 </urlset>

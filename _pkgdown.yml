@@ -1,13 +1,36 @@
-home:
-  title: Parameterise StrathE2Epolar in R
-  links:
-  - text: Ask a question about the package
-    href: jacklaverick@ymail.com
-destination: docs
-url: https://jack-h-laverick.github.io/MiMeMo.tools/
-
+url: ~
 template:
- path: "pkgdown"
+  bootstrap: 5
+  bootswatch: flatly
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, tutorials, news, BS, GL]
+    right: [search, github]
+  components:
+    reference:
+      text: Functions
+      href: reference/index.html
+    BS:
+     text: "nemomedusR"
+     href: https://jack-h-laverick.github.io/nemomedusR/
+    GL:
+     text: "slabR"
+     href: https://jack-h-laverick.github.io/slabR/
+    github:
+     icon: fa-github fa-lg
+     href: https:github.com/Jack-H-Laverick/MiMeMo.tools
+
+footer:
+  structure:
+    left: [developed_by, break, built_with]
+    right: [Funders, CAO, MASTs, University]
+  components:
+    Funders: "<img src='man/figures/NERCBMBF-logo.png' height='100' style='padding-right:15px;' />"
+    CAO: "<img src='man/figures/CAO-logo.png' height='100' style='padding-right:15px;' />"
+    University: "<img src='man/figures/MASTS.png' height='100' style='padding-right:15px;' />"
+    MASTs: "<img src='man/figures/strath_main.jpg' height='100' style='padding-right:15px;' />"
+    break: "<br>"
 
 reference:
 - title: Global Fishing Watch
@@ -18,7 +41,6 @@ reference:
   - jacks_lazy_animation
   - jacks_polar_static
   - jacks_polar_animate
-
 - title: Misc
   desc: Other assorted utilities.
   contents:
@@ -26,7 +48,6 @@ reference:
   - fill_in
   - get_SPM
   - box_zoom
-
 - title: Unit conversions
   desc: Helper functions to avoid introducing bugs when switching between scales
   contents:
@@ -40,7 +61,6 @@ reference:
   - m3_to_l
   - sec_to_day
   - day_to_sec
-
 - title: Sediment
 - subtitle: Water movements
   desc: Align tidal and wave data from different sources.
@@ -52,25 +72,4 @@ reference:
   - mud_to_permeability
   - D50_to_porosity
 
-navbar:
-  type: inverse
-  left:
-   - icon: fa-home
-     href: index.html
-   - text: "Barents Sea"
-     href: https://jack-h-laverick.github.io/MiMeMo.BarentsSea/
-   - text: "Greenland"
-     href: https://jack-h-laverick.github.io/MiMeMo.EastGreenlandShelf/
 
-  right:
-   - icon: fa-cart-arrow-down
-     text: "Data Sources"
-     href: articles/Data_Sources.html
-   - icon: fa-file-code-o
-     text: "Functions"
-     href: reference/index.html
-   - icon: fa-newspaper-o
-     text: "Change log"
-     href: news/index.html
-   - icon: fa-github fa-lg
-     href: https:github.com/Jack-H-Laverick/MiMeMo.tools

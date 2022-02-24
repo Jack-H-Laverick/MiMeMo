@@ -25,11 +25,11 @@ knitr::opts_chunk$set(
 `r badger::badge_last_commit("Jack-H-Laverick/MiMeMo.tools")`
 <!-- badges: end -->
 
-MiMeMo.tools is an R package for data extraction and the parameterisation of the end to end ecosystem model StrathE2Epolar. MiMeMo will use StrathE2Epolar in the Barents Sea and East Greenland Shelf. The functions contained in this package streamline the process of sampling along the boundary, and within the volumes, of StrathE2E model compartments.
+MiMeMo.tools is an R package for data extraction and the parameterisation of the end to end ecosystem model StrathE2Epolar. MiMeMo will use StrathE2Epolar in the Barents Sea and East Greenland Shelf, but these functions have continued to be useful for other implementations of strathE2E2 under Mission Atlantic. The functions contained in this package streamline the process of sampling along the boundary, and within the volumes, of StrathE2E model compartments. It is supported by the nemomedusR and slabR packages.
 
 ## Installation
 
-The internal facing / development version can be downloaded from [GitHub](https://github.com/) with:
+The package can be downloaded from [GitHub](https://github.com/) with:
 
 ``` r
 remotes::install_github("Jack-H-Laverick/MiMeMo.tools")
@@ -45,14 +45,4 @@ remotes::install_github("Jack-H-Laverick/MiMeMo.tools")
 
 ## Project Documentation
 
-**Proper documentation is a gift to future you.**
-
 Head to [GitHub.io](https://jack-h-laverick.github.io/MiMeMo.tools/index.html) to view the full documentation.
-
-<br/>
-
-The navbar contains links to an index of documented functions and a change log. 
-
-To document the wider work happening as part of MiMeMo you can find a link to an overview of the different data sources being synthesised. These are the "real" objects required in combination with the project scripts to recreate the work so far.
-
-An overview of the R scripts is also accessible from the navbar. This covers the objectives of each script, their runtimes, and how scripts depend on each other. An articles tab may be set up in future to give a blow by blow account of each script. 
