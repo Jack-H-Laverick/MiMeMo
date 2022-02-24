@@ -43,4 +43,4 @@ remotes::install_github("Jack-H-Laverick/MiMeMo.tools")
 
 Head to
 [GitHub.io](https://jack-h-laverick.github.io/MiMeMo.tools/index.html)
-to view the full documentation.
+to view the full documentation. 
