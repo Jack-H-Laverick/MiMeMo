@@ -21,7 +21,7 @@ The function returns a dataframe detailing whether laitudues are the same and lo
 The function returns a dataframe detailing which two model compartments are either side of the transect,
 and the direction of the exchange.
 
-The function returns the lines object with added columns.
+The function returns the lines object with added columns. If transects are ambiguosly labelled, a list is returned of the transects and the failed sampling locations.
 }
 \description{
 This function checks whether the transects created to sample the boundaries of model compartments lie on

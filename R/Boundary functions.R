@@ -263,7 +263,7 @@ boundaries <- function(domain, crs) {
 #' @param lines An sfc object of lines representing transects along the perimeter of a model domain polygon.
 #' @param domain An sfc polygon object of the model domain, used to make the transects.
 #' @param precision How far apart should sampling points be (1/x degrees, larger numbers bring the points closer).
-#' @return The function returns the lines object with added columns.
+#' @return The function returns the lines object with added columns. If transects are ambiguosly labelled, a list is returned of the transects and the failed sampling locations.
 #' @family Boundary sampling functions
 #' @export
 characterise_flows <- function(lines, domain, precision = 1000) {
