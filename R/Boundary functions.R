@@ -311,17 +311,28 @@ characterise_flows <- function(lines, domain, precision = 1000) {
     dplyr::mutate(Contained = dplyr::if_else(focal == Shore, "in", "out")) %>%     # Label the points
     dplyr::mutate(Flip = dplyr::if_else(side == "plus" & Contained == "out" |  # Determine whether positive currents flow in or out of the domain and so if they need to be flipped
                                           side == "minus" & Contained == "in", TRUE, FALSE)) %>%
-    group_by(V3) %>%
-    mutate(Neighbour = Shore[Shore != focal]) %>%                # Grab name of the shore category in the group which is not the focal one
-    ungroup() %>%
-    dplyr::filter(Contained == "in") %>%                         # Take the metadata associated with the point in the focal polygon
-    sf::st_set_geometry(NULL) %>%                                # Drop uneccessary geometry
-    arrange(V3) %>%                                              # Make sure order matches the input
-    dplyr::select(Flip, Neighbour)                               # Keep only interesting columns
+    group_by(V3)
 
-  ## could insert a test? if lines has has different number of lines error, probably need to increase precision.
-  lines2 <- cbind(lines, tests)
-  return(lines2)
+  check <- mutate(tests, test = length(unique(Shore))) %>%       # Check sampling points straddle the boundary
+    filter(test != 2)
+
+
+  if(nrow(check) == 0){
+
+    tests <- mutate(tests, Neighbour = Shore[Shore != focal]) %>%                # Grab name of the shore category in the group which is not the focal one
+      ungroup() %>%
+      dplyr::filter(Contained == "in") %>%                         # Take the metadata associated with the point in the focal polygon
+      sf::st_set_geometry(NULL) %>%                                # Drop uneccessary geometry
+      arrange(V3) %>%                                              # Make sure order matches the input
+      dplyr::select(Flip, Neighbour)                               # Keep only interesting columns
+    ## could insert a test? if lines has has different number of lines error, probably need to increase precision.
+    lines2 <- cbind(lines, tests)
+    return(lines2)
+  }else{
+
+    print("Ambiguous transect labels, often from a lack of precision. Inspect returned transects.")
+    return(list(check, lines))                                      # Otherwise return the offending transects
+ }
 }
 
 #### Sampling Flows transects ####
