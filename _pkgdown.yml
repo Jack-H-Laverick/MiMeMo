@@ -1,7 +1,7 @@
 home:
   title: Parameterise StrathE2Epolar in R
   links:
-  - text: Ask a question about the package at
+  - text: Ask a question about the package
     href: jacklaverick@ymail.com
 destination: docs
 url: https://jack-h-laverick.github.io/MiMeMo.tools/
