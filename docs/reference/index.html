@@ -50,9 +50,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="global-fishing-watch">Global Fishing Watch<a class="anchor" aria-label="anchor" href="#global-fishing-watch"></a></h2>
+      <h2 id="nemo-medusa">NEMO-MEDUSA<a class="anchor" aria-label="anchor" href="#nemo-medusa"></a></h2>
       
-      <p class="section-desc"></p><p>Extract fishing effort data.</p>
+      <p class="section-desc"></p><p>Summarising extracted model output.</p>
 
       
     </div><div id="" class="section level2">
@@ -62,29 +62,61 @@
 
       <dl><dt>
           
-          <code><a href="get_cropped_fishing.html">get_cropped_fishing()</a></code> 
+          <code><a href="NM_boundary_summary.html">NM_boundary_summary()</a></code> 
         </dt>
-        <dd>Import Fishing Effort Within Specified Areas</dd>
+        <dd>Summarise NEMO-MEDUSA Output into Time Series Along Transects</dd>
       </dl><dl><dt>
           
-          <code><a href="jacks_lazy_avg.html">jacks_lazy_avg()</a></code> 
+          <code><a href="NM_decadal_summary.html">NM_decadal_summary()</a></code> 
         </dt>
-        <dd>Map GFW data for a geartype, above a minimum level of fishing activity</dd>
+        <dd>Summarise NEMO-MEDUSA Output into Decadal Grids
+This function averages cleaned NEMO-MEDUSA monthly summaries into decadal grids.</dd>
       </dl><dl><dt>
           
-          <code><a href="jacks_lazy_animation.html">jacks_lazy_animation()</a></code> 
+          <code><a href="NM_volume_summary.html">NM_volume_summary()</a></code> 
         </dt>
-        <dd>Animate a map of GFW data for a geartype, above a minimum level of fishing activity</dd>
+        <dd>Summarise NEMO-MEDUSA Output into Time Series Within Model Compartments
+This function averages NEMO-MEDUSA monthly summaries into time series for each model compartment.</dd>
       </dl><dl><dt>
           
-          <code><a href="jacks_polar_static.html">jacks_polar_static()</a></code> 
+          <code><a href="boundaries.html">boundaries()</a></code> 
         </dt>
-        <dd>Map GFW data for a geartype, above a minimum level of fishing activity (polar projection)</dd>
+        <dd>Create a series of transects along the boundaries of model compartments</dd>
       </dl><dl><dt>
           
-          <code><a href="jacks_polar_animate.html">jacks_polar_animate()</a></code> 
+          <code><a href="to_segments.html">to_segments()</a></code> 
         </dt>
-        <dd>Animate a map of GFW data for a geartype, above a minimum level of fishing activity (polar projection)</dd>
+        <dd>Interpolate vertical water movements to the boundary depth between shallow and deep compartments</dd>
+      </dl><dl><dt>
+          
+          <code><a href="characterise_flows.html">characterise_flows()</a></code> 
+        </dt>
+        <dd>Check if a segment runs parallel to latitude or longitude</dd>
+      </dl><dl><dt>
+          
+          <code><a href="decadal.html">decadal()</a></code> 
+        </dt>
+        <dd>Prepare for Averaging by Decade</dd>
+      </dl><dl><dt>
+          
+          <code><a href="strip_ice.html">strip_ice()</a></code> 
+        </dt>
+        <dd>Strip Snow and Ice Variables at Depth</dd>
+      </dl><dl><dt>
+          
+          <code><a href="point_plot.html">point_plot()</a></code> 
+        </dt>
+        <dd>Map Spatial Summaries</dd>
+      </dl><dl><dt>
+          
+          <code><a href="ts_plot.html">ts_plot()</a></code> 
+        </dt>
+        <dd>Plot Temporal Summaries</dd>
+      </dl><dl><dt>
+          
+          <code><a href="stick_plot.html">stick_plot()</a></code> 
+        </dt>
+        <dd>Create Stick Plots to Show Currents</dd>
       </dl></div><div class="section level2">
       <h2 id="misc">Misc<a class="anchor" aria-label="anchor" href="#misc"></a></h2>
       
@@ -108,14 +140,49 @@
         <dd>Fill missing values in a vector</dd>
       </dl><dl><dt>
           
-          <code><a href="get_SPM.html">get_SPM()</a></code> 
+          <code><a href="sfc_as_cols.html">sfc_as_cols()</a></code> 
         </dt>
-        <dd>Extract Suspended Particulate Matter data from Globcolour</dd>
+        <dd>Pull Coordinates from a Simple Feature Geometry Column</dd>
       </dl><dl><dt>
           
           <code><a href="box_zoom.html">box_zoom()</a></code> 
         </dt>
         <dd>Zoom a ggplot to the bounding box of an sf object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="Window.html">Window()</a></code> 
+        </dt>
+        <dd>Get Indices to Use When Clipping netcdf Files at Import</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_SPM.html">get_SPM()</a></code> 
+        </dt>
+        <dd>Extract Suspended Particulate Matter data from Globcolour</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_air.html">get_air()</a></code> 
+        </dt>
+        <dd>Get Surface Irradiance &amp; Air Temperature</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_air_dt.html">get_air_dt()</a></code> 
+        </dt>
+        <dd>Get Surface Irradiance &amp; Air Temperature</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_cropped_fishing.html">get_cropped_fishing()</a></code> 
+        </dt>
+        <dd>Import Fishing Effort Within Specified Areas</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_rivers.html">get_rivers()</a></code> 
+        </dt>
+        <dd>Get Rivers</dd>
+      </dl><dl><dt>
+          
+          <code><a href="Update-drivers.html">update_boundary_period()</a></code> <code><a href="Update-drivers.html">update_physics_period()</a></code> 
+        </dt>
+        <dd>Re-parameterise a Driver File for a Time Period in the MiMeMo Domain</dd>
       </dl></div><div class="section level2">
       <h2 id="unit-conversions">Unit conversions<a class="anchor" aria-label="anchor" href="#unit-conversions"></a></h2>
       
@@ -154,6 +221,36 @@
           <code><a href="reshape_SINMOD.html">reshape_SINMOD()</a></code> 
         </dt>
         <dd>Subset a SINMOD file to depth-averaged water velocities in an area.</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_tides_ts.html">get_tides_ts()</a></code> 
+        </dt>
+        <dd>Calculate bed shear stress at a location</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_waves_ts.html">get_waves_ts()</a></code> 
+        </dt>
+        <dd>Calculate bed shear stress at a location</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_bed_shear_stress.html">get_bed_shear_stress()</a></code> 
+        </dt>
+        <dd>Calculate bed shear stress at a location</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sample_tides_year.html">sample_tides_year()</a></code> 
+        </dt>
+        <dd>Calculate bed shear stress at a location</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sample_waves.html">sample_waves()</a></code> 
+        </dt>
+        <dd>Calculate bed shear stress at a location</dd>
+      </dl><dl><dt>
+          
+          <code><a href="vectors_2_direction.html">vectors_2_direction()</a></code> 
+        </dt>
+        <dd>Convert a U-V velocity field to speed and direction in degrees</dd>
       </dl></div><div class="section level2">
       
       <h3 id="sediment-properties">Sediment properties<a class="anchor" aria-label="anchor" href="#sediment-properties"></a></h3>

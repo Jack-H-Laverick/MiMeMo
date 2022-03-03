@@ -33,21 +33,35 @@ footer:
     break: "<br>"
 
 reference:
-- title: Global Fishing Watch
-  desc: Extract fishing effort data.
+- title: NEMO-MEDUSA
+  desc: Summarising extracted model output.
   contents:
-  - get_cropped_fishing
-  - jacks_lazy_avg
-  - jacks_lazy_animation
-  - jacks_polar_static
-  - jacks_polar_animate
+  - NM_boundary_summary
+  - NM_decadal_summary
+  - NM_volume_summary
+  - boundaries
+  - to_segments
+  - characterise_flows
+  - decadal
+  - strip_ice
+  - point_plot
+  - ts_plot
+  - stick_plot
 - title: Misc
   desc: Other assorted utilities.
   contents:
   - execute
   - fill_in
-  - get_SPM
+  - sfc_as_cols
   - box_zoom
+  - Window
+  - get_SPM
+  - get_air
+  - get_air_dt
+  - get_cropped_fishing
+  - get_rivers
+  - update_boundary_period
+  - update_physics_period
 - title: Unit conversions
   desc: Helper functions to avoid introducing bugs when switching between scales
   contents:
@@ -66,6 +80,12 @@ reference:
   desc: Align tidal and wave data from different sources.
   contents:
   - reshape_SINMOD
+  - get_tides_ts
+  - get_waves_ts
+  - get_bed_shear_stress
+  - sample_tides_year
+  - sample_waves
+  - vectors_2_direction
 - subtitle: Sediment properties
   desc: Calculate derived properties from sediment fractions.
   contents:
