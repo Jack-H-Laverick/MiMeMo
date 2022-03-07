@@ -170,8 +170,18 @@ update_boundary_period <- function(start, end, path){
   My_DIN_fix <- readRDS("./Objects/Ammonia to DIN.rds")
   usethis::ui_warn("The correction from DIN to NH[4]and NO[3] comes from a fixed time period.")
 
-  My_river_N <- readRDS("./Objects/River nitrate and ammonia.rds") %>%
-    dplyr::mutate(Ammonia = (Ammonia*(1/14.006720))*1e3,                                       # Convert mg/l to mmol/m^3
+  My_river_N <- readRDS("./Objects/River nitrate and ammonia.rds")
+
+  if (nrow(My_river_N) != 12) {                                                                # If not already summarised
+    My_river_N <- filter(My_river_N, between(Year, start, end)) %>%                            # Limit to reference period
+      group_by(Month) %>%                                                                      # Average across years
+      summarise(Ammonia = mean(Ammonia, na.rm = T),
+                Nitrate = mean(Nitrate, na.rm = T)) %>%
+      ungroup() %>%
+      arrange(Month)                                                                           # Order months ascending
+  }
+
+  My_river_N <- dplyr::mutate(My_river_N, Ammonia = (Ammonia*(1/14.006720))*1e3,               # Convert mg/l to mmol/m^3
                   Nitrate = (Nitrate*(1/14.006720))*1e3)
   usethis::ui_warn("River nutrient concentrations come from a fixed time period.")
 
