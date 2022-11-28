@@ -62,6 +62,7 @@ reshape_SINMOD <- function(path, file, out_dir, window) {
 #' @return A dataframe containing a time series of bed shear stress metrics for a location.
 #' @family water movements
 #' @export
+#' @keyword internal
 mync_get_pixel <- function(File, var, pixel_x, pixel_y) {
 
   ncvar_get(nc_open(File), var, c(pixel_x, pixel_y, 1, 1),  # Extract the variable of interest

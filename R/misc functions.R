@@ -157,6 +157,8 @@ sfc_as_cols <- function(x, names = c("x","y")) {
 #' @param crs The new Coordinate Reference System  to project to.
 #' @return A dataframe, now with an x and y column specifying the coordinates for points in the projects Coordiante Reference System.
 #' @family NEMO-MEDUSA spatial tools
+#' @export
+#' @keyword internal
 reproj <- function(data, crs) {
 
   data %>%

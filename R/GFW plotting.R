@@ -15,6 +15,7 @@
 #' @return The function saves a map of fishing activity for a particular gear type above a minimum level of activity.
 #' @family Global Fishing Watch functions
 #' @export
+#' @keyword internal
 jacks_lazy_avg <- function (gear, limit) {
   plot <- ggplot() +
     geom_point(data = filter(Seasonal, geartype == gear & fishing >= limit),
@@ -49,6 +50,7 @@ jacks_lazy_avg <- function (gear, limit) {
 #' @return The function saves a map of fishing activity for a particular gear type above a minimum level of activity.
 #' @family Global Fishing Watch functions
 #' @export
+#' @keyword internal
 jacks_lazy_animation <- function (gear, limit) {
   plot <- ggplot() +
     geom_polygon(data = world, aes(x=long, y = lat, group = group), fill = "black", colour = NA) +
@@ -86,6 +88,7 @@ jacks_lazy_animation <- function (gear, limit) {
 #' @return The function saves a map of fishing activity for a particular gear type above a minimum level of activity.
 #' @family Global Fishing Watch functions
 #' @export
+#' @keyword internal
 jacks_polar_static <- function (gear, limit)   {
   plot <- ggplot() +
     # bathymetry
@@ -127,6 +130,7 @@ jacks_polar_static <- function (gear, limit)   {
 #' @return The function saves a map of fishing activity for a particular gear type above a minimum level of activity.
 #' @family Global Fishing Watch functions
 #' @export
+#' @keyword internal
 jacks_polar_animate <- function (gear, limit)  {
   plot <- ggplot() +
     # bathymetry
