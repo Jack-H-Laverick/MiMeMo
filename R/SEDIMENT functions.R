@@ -63,13 +63,13 @@ reshape_SINMOD <- function(path, file, out_dir, window) {
 #' @family water movements
 #' @export
 #' @keyword internal
-mync_get_pixel <- function(File, var, pixel_x, pixel_y) {
-
-  ncvar_get(nc_open(File), var, c(pixel_x, pixel_y, 1, 1),  # Extract the variable of interest
-            c(1, 1, -1, -1)) %>%                            # cropped to a target pixel, with all time steps and ensemble members
-    colSums(na.rm = TRUE)                                   # Average across ensemble quickly
-  # Setting na.rm = TRUE replaces iced NAs with 0s
-}         # Import a variable clipped to Window
+# mync_get_pixel <- function(File, var, pixel_x, pixel_y) {
+#
+#   ncvar_get(nc_open(File), var, c(pixel_x, pixel_y, 1, 1),  # Extract the variable of interest
+#             c(1, 1, -1, -1)) %>%                            # cropped to a target pixel, with all time steps and ensemble members
+#     colSums(na.rm = TRUE)                                   # Average across ensemble quickly
+#   # Setting na.rm = TRUE replaces iced NAs with 0s
+# }         # Import a variable clipped to Window
 
 #' Calculate bed shear stress at a location
 #'

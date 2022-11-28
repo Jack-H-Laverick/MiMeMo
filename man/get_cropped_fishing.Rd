@@ -18,12 +18,4 @@ labelled by the FAO region they fall in.
 \description{
 Import Fishing Effort Within Specified Areas
 }
-\seealso{
-Other Global Fishing Watch functions: 
-\code{\link{FAO_boats}()},
-\code{\link{jacks_lazy_animation}()},
-\code{\link{jacks_lazy_avg}()},
-\code{\link{jacks_polar_animate}()},
-\code{\link{jacks_polar_static}()}
-}
 \concept{Global Fishing Watch functions}

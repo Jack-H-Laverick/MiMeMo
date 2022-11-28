@@ -34,18 +34,18 @@ get_cropped_fishing <- function (file, area) {
 #' @family Global Fishing Watch functions
 #' @export
 #' @keyword internal
-FAO_boats <- function (Data, Clip)             {
-
-  colnames(Data)[2] <- "Latitude"                                             # Change column names for GIS functions
-  colnames(Data)[1] <- "Longitude"
-  name <- deparse(substitute(Clip))                                           # Pull object name to attach as a column on the output
-
-  coordinates(Data) <- ~ Longitude + Latitude                                 # Converts to a shapefile
-
-  proj4string(Data) <- proj4string(Clip)                                      # Set the projection of the points to match the polygons
-
-  # Filter the data to rows where polygons lie over the fishing data points
-  inside.Arctic <- Data[!is.na(over(Data, as(Clip, "SpatialPolygons"))),] %>%
-    fortify(inside.Arctic) %>%                                # Coerce for ggplot
-    mutate(Region = name)
-  return(inside.Arctic) }     # Function to clip boat pings to specific FAO regions
+# FAO_boats <- function (Data, Clip)             {
+#
+#   colnames(Data)[2] <- "Latitude"                                             # Change column names for GIS functions
+#   colnames(Data)[1] <- "Longitude"
+#   name <- deparse(substitute(Clip))                                           # Pull object name to attach as a column on the output
+#
+#   coordinates(Data) <- ~ Longitude + Latitude                                 # Converts to a shapefile
+#
+#   proj4string(Data) <- proj4string(Clip)                                      # Set the projection of the points to match the polygons
+#
+#   # Filter the data to rows where polygons lie over the fishing data points
+#   inside.Arctic <- Data[!is.na(over(Data, as(Clip, "SpatialPolygons"))),] %>%
+#     fortify(inside.Arctic) %>%                                # Coerce for ggplot
+#     mutate(Region = name)
+#   return(inside.Arctic) }     # Function to clip boat pings to specific FAO regions

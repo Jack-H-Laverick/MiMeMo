@@ -17,8 +17,8 @@ This function takes an SF object, and adds two columns containing the coordinate
 }
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
+\code{\link{Update-drivers}},
 \code{\link{Window}()},
-\code{\link{reproj}()},
 \code{\link{vectors_2_direction}()}
 }
 \concept{NEMO-MEDUSA spatial tools}

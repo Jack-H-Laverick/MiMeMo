@@ -13,6 +13,8 @@ get_waves_ts(File, vars, Year, pixel_x, pixel_y)
 }
 \value{
 A dataframe containing a time series of bed shear stress metrics for a location.
+
+A dataframe containing a time series of bed shear stress metrics for a location.
 }
 \description{
 This function takes tidal data from SINMOD and wave data from ECMWF, aligns the two time series at a single location,
@@ -22,7 +24,13 @@ and then calculates the bed shear stress through time.
 Other water movements: 
 \code{\link{get_bed_shear_stress}()},
 \code{\link{get_tides_ts}()},
-\code{\link{mync_get_pixel}()},
+\code{\link{reshape_SINMOD}()},
+\code{\link{sample_tides_year}()},
+\code{\link{sample_waves}()}
+
+Other water movements: 
+\code{\link{get_bed_shear_stress}()},
+\code{\link{get_tides_ts}()},
 \code{\link{reshape_SINMOD}()},
 \code{\link{sample_tides_year}()},
 \code{\link{sample_waves}()}

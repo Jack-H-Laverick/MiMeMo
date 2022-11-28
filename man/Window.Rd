@@ -41,7 +41,7 @@ of interest during extraction.
 }
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
-\code{\link{reproj}()},
+\code{\link{Update-drivers}},
 \code{\link{sfc_as_cols}()},
 \code{\link{vectors_2_direction}()}
 }

@@ -23,7 +23,6 @@ Other water movements:
 \code{\link{get_bed_shear_stress}()},
 \code{\link{get_tides_ts}()},
 \code{\link{get_waves_ts}()},
-\code{\link{mync_get_pixel}()},
 \code{\link{reshape_SINMOD}()},
 \code{\link{sample_tides_year}()}
 }

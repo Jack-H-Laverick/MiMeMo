@@ -24,8 +24,8 @@ is built a wrapper which accounts for different conventions when describing wind
 }
 \seealso{
 Other NEMO-MEDUSA spatial tools: 
+\code{\link{Update-drivers}},
 \code{\link{Window}()},
-\code{\link{reproj}()},
 \code{\link{sfc_as_cols}()}
 }
 \concept{NEMO-MEDUSA spatial tools}

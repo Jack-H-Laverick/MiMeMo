@@ -4,7 +4,7 @@
 \alias{Update-drivers}
 \alias{update_boundary_period}
 \alias{update_physics_period}
-\title{Re-parameterise a Driver File for a Time Period in the MiMeMo Domain}
+\title{Reproject from Latitude and Longitude to Project CRS}
 \usage{
 update_boundary_period(start, end, path)
 
@@ -15,17 +15,29 @@ update_physics_period(start, end, path)
 
 \item{path}{A character string containing the path to a model variant, i.e. "./Models/Region/start-last".}
 
+\item{data}{A dataframe containing Longitude and Latitude.}
+
+\item{crs}{The new Coordinate Reference System  to project to.}
+
 \item{last}{The last year in the target time period.}
 }
 \value{
+A dataframe, now with an x and y column specifying the coordinates for points in the projects Coordiante Reference System.
+
 Run this function for it's side effects. The appropriate driving file will be updated.
 }
 \description{
-These function take a StrathE2E model and update the parameters in the driving data files to a specific time window.
+This function takes a dataframe containing a latitude and longitude column, and replaces them with an X and Y column of coordinates
+in a new CRS.
 }
 \details{
-The functions are informative. Warnings are produced to highlight which parameters don't have data for the target time
-window. In this case the old parameters are left in place. The function will refuse to update parameters based on data
-which covers less than half of the target time interval. For parameters which are updated, the function returns the
-years used.
+The function converts a dataframe into an SF object and reprojects into a new CRS. Two coordinate columns are extracted from the
+geometry column using `sfc_as_cols`, before the geometry column is dropped.
 }
+\seealso{
+Other NEMO-MEDUSA spatial tools: 
+\code{\link{Window}()},
+\code{\link{sfc_as_cols}()},
+\code{\link{vectors_2_direction}()}
+}
+\concept{NEMO-MEDUSA spatial tools}

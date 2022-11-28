@@ -159,14 +159,14 @@ sfc_as_cols <- function(x, names = c("x","y")) {
 #' @family NEMO-MEDUSA spatial tools
 #' @export
 #' @keyword internal
-reproj <- function(data, crs) {
-
-  data %>%
-    sf::st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>% # Specify original projection (crs)
-    sf::st_transform(crs = crs) %>%                                   # Transform to crs specified in region file
-    sfc_as_cols() %>%                                                 # Extract geometry column for geom_segment to work
-    sf::st_set_geometry(NULL)                                         # Chuck geometry column
-}
+# reproj <- function(data, crs) {
+#
+#   data %>%
+#     sf::st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326) %>% # Specify original projection (crs)
+#     sf::st_transform(crs = crs) %>%                                   # Transform to crs specified in region file
+#     sfc_as_cols() %>%                                                 # Extract geometry column for geom_segment to work
+#     sf::st_set_geometry(NULL)                                         # Chuck geometry column
+# }
 
 #' Re-parameterise a Driver File for a Time Period in the MiMeMo Domain
 #'
@@ -182,7 +182,7 @@ reproj <- function(data, crs) {
 #' @param path A character string containing the path to a model variant, i.e. "./Models/Region/start-last".
 #' @return Run this function for it's side effects. The appropriate driving file will be updated.
 #' @name Update-drivers
-NULL
+#NULL
 
 #' @rdname Update-drivers
 #' @export
