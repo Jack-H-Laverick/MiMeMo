@@ -57,6 +57,8 @@ return(data)}
 #' @param e Degrees East to read to.
 #' @param s Degrees South to read from.
 #' @param n Degrees North to read to.
+#' @param shift True/False does the file use 0-360 longitudes? If yes, negative longitudes are corrected.
+#' @param sf An sf polygon can be supplied instead of `w`,`e`,`s`, and `n`. The function takes these values from the bounding box.
 #' @return A list of three elements:
 #' \itemize{
 #'  \item{\emph{Lats -}}{ A vector of latitudes from `s` to `n`.}
@@ -66,9 +68,31 @@ return(data)}
 #'  }
 #' @family NEMO-MEDUSA spatial tools
 #' @export
-Window <- function(file, w, e, s, n) {
+Window <- function(file, w = NULL, e = NULL, s = NULL, n = NULL, shift = FALSE, sf = NULL){
 
   #file <- examples[1,]$File ; w = 0 ; e = 180 ; s = 0 ; n = 90
+
+if (!is.null(sf)) {
+
+  box <- st_transform(sf, 4326) %>%
+    st_bbox()
+
+  w <- box[1]; e <- box[3]; s <- box[2]; n <- box[4]
+
+}
+
+if (isTRUE(shift)) {        # If the data source uses longitudes 0-360 correct values
+
+  if (w < 0) {w <- w+360}
+
+  if (e < 0) {e <- e+360}
+
+}
+
+  if (w > e) {                              # Catch when w is larger than e which breaks between()
+    if (isTRUE(shift)) { w <- 0 ; e <- 360 ; warning("W is larger than E. This may happen when crossing 0 longitude. Defaulting to all longitudes")} else{
+      if (isFALSE(shift)) w <- -180 ; e <- 180 ; warning("W is larger than E. This may happen when crossing 0 longitude. Defaulting to all longitudes")}
+  }
 
   raw <- ncdf4::nc_open(file)
   lon <- raw$dim$longitude$vals %>% between(w, e)

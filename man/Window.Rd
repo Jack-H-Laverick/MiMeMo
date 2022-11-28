@@ -4,7 +4,7 @@
 \alias{Window}
 \title{Get Indices to Use When Clipping netcdf Files at Import}
 \usage{
-Window(file, w, e, s, n)
+Window(file, w = NULL, e = NULL, s = NULL, n = NULL, shift = FALSE, sf = NULL)
 }
 \arguments{
 \item{file}{The full name of a netcdf file containing a longitude and latitude dimension.}
@@ -16,6 +16,10 @@ Window(file, w, e, s, n)
 \item{s}{Degrees South to read from.}
 
 \item{n}{Degrees North to read to.}
+
+\item{shift}{True/False does the file use 0-360 longitudes? If yes, negative longitudes are corrected.}
+
+\item{sf}{An sf polygon can be supplied instead of `w`,`e`,`s`, and `n`. The function takes these values from the bounding box.}
 }
 \value{
 A list of three elements:

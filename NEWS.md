@@ -1,3 +1,8 @@
+# MiMeMo.tools 0.5.0 
+<span style="color:grey;">24/02/2022</span>
+
+* `Window` gains a switch to handle files using 0-360 longitudes, and can crop using an sf polygon 
+
 # MiMeMo.tools 0.4.0 
 <span style="color:grey;">24/02/2022</span>
 
