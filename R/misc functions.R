@@ -196,6 +196,10 @@ update_boundary_period <- function(start, end, path){
   My_DIN_fix <- readRDS("./Objects/Ammonia to DIN.rds")
   usethis::ui_warn("The correction from DIN to NH[4]and NO[3] comes from a fixed time period.")
 
+  #### Update rivers ####
+
+if(file.exists("./Objects/River nitrate and ammonia.rds")) {
+
   My_river_N <- readRDS("./Objects/River nitrate and ammonia.rds")
 
   if (nrow(My_river_N) != 12) {                                                                # If not already summarised
@@ -219,7 +223,15 @@ update_boundary_period <- function(start, end, path){
                                 RIV_ammonia = My_river_N$Ammonia,
                                 RIV_detritus = 0)
 
+  } else {
+
+    usethis::ui_warn("'./Objects/River nitrate and ammonia.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output.")
+
+  }
+
   #### Update NEMO-MEDUSA data ####
+
+if(file.exists("./Objects/River nitrate and ammonia.rds")) {
 
   My_boundary_data <- readRDS("./Objects/Boundary measurements.rds") %>%                        # Import data
     dplyr::filter(between(Year, start, end))
@@ -254,6 +266,16 @@ update_boundary_period <- function(start, end, path){
   } else {
     usethis::ui_warn("Did not update from NEMO-MEDUSA; fewer than half the target years are represented.")}
 
+  } else {
+
+    usethis::ui_warn("'./Objects/Boundary measurements.rds' not detected. Original values returned.")
+
+  }
+
+  #### UPdate atmosphere ####
+
+if(file.exists("./Objects/Atmospheric N deposition.rds")) {
+
   My_atmosphere <- readRDS("./Objects/Atmospheric N deposition.rds") %>%
     filter(between(Year, start, end))                                   # Limit to reference period
 
@@ -278,6 +300,14 @@ update_boundary_period <- function(start, end, path){
                                   SI_other_nitrate_flux = 0,   # Can be used for scenarios
                                   SI_other_ammonia_flux = 0)} else {
                                     usethis::ui_warn("Did not update atmosphere; fewer than half the target years are represented.")}
+
+} else {
+
+  usethis::ui_warn("'./Objects/Atmospheric N deposition.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output).")
+
+}
+
+  #### Save new file ####
 
   new <- stringr::str_split(path, "Models/")[[1]][2] %>%                 # Pull the text we need from the file path to name the new file
     stringr::str_replace("[[:punct:]]", "_") %>%                        # Remove the '/'
