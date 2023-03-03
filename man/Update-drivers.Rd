@@ -4,16 +4,21 @@
 \alias{Update-drivers}
 \alias{update_boundary_period}
 \alias{update_physics_period}
+\alias{update_physics_period_MA}
 \title{Reproject from Latitude and Longitude to Project CRS}
 \usage{
-update_boundary_period(start, end, path)
+update_boundary_period(start, end, path, convert_units = TRUE)
 
 update_physics_period(start, end, path)
+
+update_physics_period_MA(start, end, path)
 }
 \arguments{
 \item{start}{The first year in the target time period.}
 
 \item{path}{A character string containing the path to a model variant, i.e. "./Models/Region/start-last".}
+
+\item{convert_units}{logical for backwards compatibility with MiMeMo scripts. Should be set to `FALSE` and unit conversion performed before saving .rds files.}
 
 \item{data}{A dataframe containing Longitude and Latitude.}
 
