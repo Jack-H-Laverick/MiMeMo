@@ -177,16 +177,19 @@ sfc_as_cols <- function(x, names = c("x","y")) {
 #' which covers less than half of the target time interval. For parameters which are updated, the function returns the
 #' years used.
 #'
+#' The MA varaiant of the physics function is for use from Mission Atlantic onwards. The original function remains for MiMeMo and is less general.
+#'
 #' @param start The first year in the target time period.
 #' @param last The last year in the target time period.
 #' @param path A character string containing the path to a model variant, i.e. "./Models/Region/start-last".
+#' @param convert_units logical for backwards compatibility with MiMeMo scripts. Should be set to `FALSE` and unit conversion performed before saving .rds files.
 #' @return Run this function for it's side effects. The appropriate driving file will be updated.
 #' @name Update-drivers
 #NULL
 
 #' @rdname Update-drivers
 #' @export
-update_boundary_period <- function(start, end, path){
+update_boundary_period <- function(start, end, path, convert_units = TRUE){
 
   copied <- list.files(paste0(path,"/Driving"), full.names = T) %>%                            # List the driving files in the model
     .[stringr::str_detect(., "chemistry")]                                                     # Select the chemistry file
@@ -209,11 +212,17 @@ if(file.exists("./Objects/River nitrate and ammonia.rds")) {
                 Nitrate = mean(Nitrate, na.rm = T)) %>%
       ungroup() %>%
       arrange(Month)                                                                           # Order months ascending
+  } else {
+
+    usethis::ui_warn("River nutrient concentrations come from a fixed time period.")
+
   }
 
-  My_river_N <- dplyr::mutate(My_river_N, Ammonia = (Ammonia*(1/14.006720))*1e3,               # Convert mg/l to mmol/m^3
+  if(isTRUE(convert_units)) {
+
+    My_river_N <- dplyr::mutate(My_river_N, Ammonia = (Ammonia*(1/14.006720))*1e3,               # Convert mg/l to mmol/m^3
                   Nitrate = (Nitrate*(1/14.006720))*1e3)
-  usethis::ui_warn("River nutrient concentrations come from a fixed time period.")
+  }
 
   #### With unchanging data sources ####
 
@@ -225,7 +234,7 @@ if(file.exists("./Objects/River nitrate and ammonia.rds")) {
 
   } else {
 
-    usethis::ui_warn("'./Objects/River nitrate and ammonia.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output.")
+    usethis::ui_warn("'./Objects/River nitrate and ammonia.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output).")
 
   }
 
@@ -537,3 +546,297 @@ update_physics_period <- function(start, end, path){
   unlink(copied)                                                        # Delete the old one
 
 }
+
+#' @rdname Update-drivers
+#' @export
+update_physics_period_MA <- function(start, end, path){
+
+  copied <- list.files(paste0(path,"/Driving"), full.names = T) %>%           # List the driving files in the model
+    .[stringr::str_detect(., "physics")]                                      # Select the physics file
+
+  Physics_new <-  read.csv(copied)                                            # Read in old physics drivers
+
+  #### Static parameters ####
+
+  My_scale <- readRDS("./Objects/Domains.rds") %>%                            # Calculate the volume of the three zones
+    sf::st_drop_geometry() %>%
+    dplyr::mutate(S = c(T, T),
+                  D = c(F, T)) %>%
+    tidyr::gather(key = "slab_layer", value = "Exists", S, D) %>%
+    dplyr::filter(Exists == T) %>%
+    dplyr::mutate(Elevation = c(Elevation[1], -60, Elevation[3] + 60)) %>%
+    dplyr::mutate(Volume = area * abs(Elevation)) %>%
+    dplyr::select(Shore, slab_layer, Volume)
+
+if(file.exists("./Objects/Significant wave height.rds")) {
+
+  My_Waves <- readRDS("./Objects/Significant wave height.rds") %>%
+    dplyr::arrange(Month)                                                     # Arrange to match template
+
+  Physics_new <- dplyr::mutate(Physics_new, Inshore_waveheight = My_Waves$Waves)    ## Monthly mean significant wave height inshore
+
+  usethis::ui_warn("Significant wave height estimates come from a fixed time period.")
+
+ } else {
+
+  usethis::ui_warn("'./Objects/Significant wave height.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output).")
+
+}
+
+
+if(file.exists("./Objects/Habitat disturbance.rds")) {
+
+  My_Stress <- readRDS("./Objects/Habitat disturbance.rds") %>%
+    dplyr::mutate(Month = factor(Month, levels = month.name)) %>%             # Set month as a factor for non-alphabetical ordering
+    dplyr::arrange(Month)                                                     # Arrange to match template
+  usethis::ui_warn("Habitat disturbance estimates come from a fixed time period.")
+
+  Physics_new <- dplyr::mutate(Physics_new,
+                               ## Daily proportion disturbed by natural bed shear stress
+                               habS1_pdist = dplyr::filter(My_Stress, Shore == "Inshore", Habitat == "Silt")$Disturbance,
+                               habS2_pdist = dplyr::filter(My_Stress, Shore == "Inshore", Habitat == "Sand")$Disturbance,
+                               habS3_pdist = dplyr::filter(My_Stress, Shore == "Inshore", Habitat == "Gravel")$Disturbance,
+                               habD1_pdist = dplyr::filter(My_Stress, Shore == "Offshore", Habitat == "Silt")$Disturbance,
+                               habD2_pdist = dplyr::filter(My_Stress, Shore == "Offshore", Habitat == "Sand")$Disturbance,
+                               habD3_pdist = dplyr::filter(My_Stress, Shore == "Offshore", Habitat == "Gravel")$Disturbance)
+
+} else {
+
+  usethis::ui_warn("'./Objects/Habitat disturbance.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output.")
+
+}
+##*****##    Keep adding catches for missing data files and generalise code for use from now on.
+
+  #### Update light ####
+
+if(file.exists("./Objects/Air temp and light.rds")) {
+
+  My_light <- readRDS("./Objects/Air temp and light.rds") %>%
+    dplyr::filter(between(Year, start, end), grepl("Light", Type))              # Limit to reference period and variable
+
+  if(length(unique(My_light$Year)) > (end-start+1)*0.5){
+
+    usethis::ui_info("Updating surface irradiance using data from {usethis::ui_value(min(My_light$Year))} to {usethis::ui_value(max(My_light$Year))}.")
+
+    My_light <-  My_light %>%
+      dplyr::group_by(Month) %>%                                                  # Average across months
+      dplyr::summarise(Measured = mean(Measured, na.rm = T)) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(Month)                                                       # Order to match template
+
+    Physics_new <- dplyr::mutate(Physics_new,
+                                 SLight = My_light$Measured)} else {
+                                   usethis::ui_warn("Did not update surface irradiance; fewer than half the target years are represented.")}
+
+} else {
+
+  usethis::ui_warn("'./Objects/Air temp and light.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output).")
+
+}
+  #### Update air temperature ####
+
+if(file.exists("./Objects/Air temp and light.rds")) {
+
+  My_AirTemp <- readRDS("./Objects/Air temp and light.rds") %>%
+    dplyr::filter(between(Year, start, end), grepl("Air", Type))                # Limit to reference period and variable
+
+  if(length(unique(My_AirTemp$Year)) > (end-start+1)*0.5){
+
+    usethis::ui_info("Updating surface air temperature using data from {usethis::ui_value(min(My_AirTemp$Year))} to {usethis::ui_value(max(My_AirTemp$Year))}.")
+
+    My_AirTemp <- My_AirTemp %>%
+      dplyr::group_by(Month, Shore) %>%                                           # Average across months
+      dplyr::summarise(Measured = mean(Measured, na.rm = T)) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(Month)                                                       # Order to match template
+
+    Physics_new <- dplyr::mutate(Physics_new,
+                                 SO_AirTemp = dplyr::filter(My_AirTemp, Shore == "Offshore")$Measured,
+                                 SI_AirTemp = dplyr::filter(My_AirTemp, Shore == "Inshore")$Measured)
+  } else {
+    usethis::ui_warn("Did not update surface air temperature; fewer than half the target years are represented.")}
+
+} else {
+
+  usethis::ui_warn("'./Objects/Air temp and light.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output).")
+
+}
+  #### Update horizontal water exchange ####
+
+if(file.exists("./Objects/H-Flows.rds")) {
+
+  My_H_Flows <- readRDS("./Objects/H-Flows.rds") %>%
+    dplyr::filter(between(Year, start, end))                                    # Limit to reference period
+
+  if(length(unique(My_H_Flows$Year)) > (end-start+1)*0.5){
+
+    usethis::ui_info("Updating horizontal flows using data from {usethis::ui_value(min(My_H_Flows$Year))} to {usethis::ui_value(max(My_H_Flows$Year))}.")
+
+    My_H_Flows <- My_H_Flows %>%
+      dplyr::group_by(dplyr::across(-c(Year, Flow))) %>%                          # Group over everything except year and variable of interest
+      dplyr::summarise(Flow = mean(Flow, na.rm = T)) %>%                          # Average flows by month over years
+      dplyr::ungroup() %>%
+      dplyr::left_join(My_scale) %>%                                              # Attach compartment volumes
+      dplyr::mutate(Flow = Flow/Volume) %>%                                       # Scale flows by compartment volume
+      dplyr::mutate(Flow = abs(Flow * 86400)) %>%                                 # Multiply for total daily from per second, and correct sign for "out" flows
+      dplyr::arrange(Month)                                                       # Order by month to match template
+
+    Physics_new <- dplyr::mutate(Physics_new,
+                                 ## Flows, should be proportions of volume per day
+                                 SO_OceanIN = dplyr::filter(My_H_Flows, slab_layer == "S", Shore == "Offshore", Neighbour == "Ocean", Direction == "In")$Flow,
+                                 D_OceanIN = dplyr::filter(My_H_Flows, slab_layer == "D", Shore == "Offshore", Neighbour == "Ocean", Direction == "In")$Flow,
+                                 SI_OceanIN = dplyr::filter(My_H_Flows, slab_layer == "S", Shore == "Inshore", Neighbour == "Ocean", Direction == "In")$Flow,
+                                 SI_OceanOUT = dplyr::filter(My_H_Flows, slab_layer == "S", Shore == "Inshore", Neighbour == "Ocean", Direction == "Out")$Flow,
+                                 SO_SI_flow = dplyr::filter(My_H_Flows, slab_layer == "S", Shore == "Offshore", Neighbour == "Inshore", Direction == "Out")$Flow)
+  } else {
+    usethis::ui_warn("Did not update horizontal flows; fewer than half the target years are represented.")}
+
+} else {
+
+  usethis::ui_warn("'./Objects/H-Flows.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output).")
+
+}
+
+  #### Updating vertical water exchanges ####
+
+if(file.exists("./Objects/vertical diffusivity.rds")) {
+
+  My_V_Flows <- readRDS("./Objects/vertical diffusivity.rds") %>%
+    dplyr::filter(between(Year, start, end))                                    # Limit to reference period
+
+  if(length(unique(My_V_Flows$Year)) > (end-start+1)*0.5){
+
+    usethis::ui_info("Updating vertical diffusivity using data from {usethis::ui_value(min(My_V_Flows$Year))} to {usethis::ui_value(max(My_V_Flows$Year))}.")
+
+    My_V_Flows <- My_V_Flows %>%
+      dplyr::group_by(Month) %>%
+      dplyr::summarise(V_diff = mean(Vertical_diffusivity, na.rm = T)) %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(Month)                                                       # Order by month to match template
+
+    Physics_new <- dplyr::mutate(Physics_new,
+                                 ## Vertical diffusivity
+                                 log10Kvert = log10(My_V_Flows$V_diff))
+  } else {
+    usethis::ui_warn("Did not update vertical diffusivity; fewer than half the target years are represented.")}
+
+} else {
+
+  usethis::ui_warn("'./Objects/vertical diffusivity.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output).")
+
+}
+  #### Update other volume based values ####
+
+if(file.exists("./Objects/TS.rds")) {
+
+  My_volumes <- readRDS("./Objects/TS.rds") %>%
+    dplyr::filter(between(Year, start, end))                                    # Limit to reference period
+
+  if(length(unique(My_volumes$Year)) > (end-start+1)*0.5){
+
+    usethis::ui_info("Updating water temperatures and ice (NEMO-MEDUSA) using data from {usethis::ui_value(min(My_volumes$Year))} to {usethis::ui_value(max(My_volumes$Year))}.")
+
+    My_volumes <- My_volumes %>%
+      dplyr::group_by(Compartment, Month) %>%                                     # By compartment and month
+      dplyr::summarise(dplyr::across(Salinity_avg:Ice_conc_avg, mean, na.rm = T)) %>% # Average across years for multiple columns
+      dplyr::ungroup() %>%
+      dplyr::arrange(Month)                                                       # Order by month to match template
+
+    Physics_new <- dplyr::mutate(Physics_new,
+                                 ## Temperatures in volumes for each zone
+                                 SO_temp = dplyr::filter(My_volumes, Compartment == "Offshore S")$Temperature_avg,
+                                 D_temp =dplyr:: filter(My_volumes, Compartment == "Offshore D")$Temperature_avg,
+                                 SI_temp = dplyr::filter(My_volumes, Compartment == "Inshore S")$Temperature_avg ,
+                                 ## Cryo variables
+                                 SO_IceFree = 1 - dplyr::filter(My_volumes, Compartment == "Offshore S")$Ice_pres,
+                                 SI_IceFree = 1 - dplyr::filter(My_volumes, Compartment == "Inshore S")$Ice_pres,
+                                 SO_IceCover = dplyr::filter(My_volumes, Compartment == "Offshore S")$Ice_conc_avg,
+                                 SI_IceCover = dplyr::filter(My_volumes, Compartment == "Inshore S")$Ice_conc_avg,
+                                 SO_IceThickness = dplyr::filter(My_volumes, Compartment == "Offshore S")$Ice_Thickness_avg,
+                                 SI_IceThickness = dplyr::filter(My_volumes, Compartment == "Inshore S")$Ice_Thickness_avg,
+                                 SO_SnowThickness = dplyr::filter(My_volumes, Compartment == "Offshore S")$Snow_Thickness_avg,
+                                 SI_SnowThickness = dplyr::filter(My_volumes, Compartment == "Inshore S")$Snow_Thickness_avg)
+  } else {
+    usethis::ui_warn("Did not update water temperatures and ice (NEMO-MEDUSA); fewer than half the target years are represented.")}
+
+} else {
+
+  usethis::ui_warn("'./Objects/TS.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output).")
+
+}
+  #### Update suspended particulate matter ####
+
+if(file.exists("./Objects/Suspended particulate matter.rds")) {
+
+  My_SPM <- readRDS("./Objects/Suspended particulate matter.rds") %>%
+    dplyr::filter(between(Year, start, end))                                    # Limit to reference period
+
+  if(length(unique(My_SPM$Year)) > (end-start+1)*0.5){
+
+    usethis::ui_info("Updating suspended particulate matter using data from {usethis::ui_value(min(My_SPM$Year))} to {usethis::ui_value(max(My_SPM$Year))}.")
+
+    My_SPM <- My_SPM %>%
+      dplyr::group_by(Shore, Month) %>%
+      dplyr::summarise(SPM = mean(SPM, na.rm = T)) %>%                            # Average by month across years
+      dplyr::ungroup() %>%
+      dplyr::arrange(Month)                                                       # Order by month to match template
+
+    Physics_new <- dplyr::mutate(Physics_new,
+                                 ## log e transformed suspended particulate matter concentration in zones
+                                 SO_LogeSPM = log(dplyr::filter(My_SPM, Shore == "Offshore")$SPM),
+                                 SI_LogeSPM = log(dplyr::filter(My_SPM, Shore == "Inshore")$SPM))
+  } else {
+    usethis::ui_warn("Did not update suspended particulate matter; fewer than half the target years are represented.")}
+
+} else {
+
+  usethis::ui_warn("'./Objects/Suspended particulate matter.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output).")
+
+}
+
+  #### Update river volumes ####
+
+if(file.exists("./Objects/River volume input.rds")) {
+
+  My_Rivers <- readRDS("./Objects/River volume input.rds") %>%
+    dplyr::filter(between(Year, start, end))                                    # Limit to reference period
+
+  if(length(unique(My_Rivers$Year)) > (end-start+1)*0.5){
+
+    usethis::ui_info("Updating river outflows using data from {usethis::ui_value(min(My_Rivers$Year))} to {usethis::ui_value(max(My_Rivers$Year))}.")
+
+    My_Rivers <- My_Rivers %>%
+      dplyr::group_by(Month) %>%
+      dplyr::summarise(Runoff = mean(Runoff, na.rm = T)) %>%                      # Average by month across years
+      dplyr::ungroup() %>%
+      dplyr::arrange(as.numeric(Month))                                           # Order by month to match template
+
+    Physics_new <- dplyr::mutate(Physics_new,
+                                 ## River inflow,
+                                 Rivervol_SI = My_Rivers$Runoff / dplyr::filter(My_scale, Shore == "Inshore")$Volume) # Scale as proportion of inshore volume
+  } else {
+    usethis::ui_warn("Did not update river outflows; fewer than half the target years are represented.")}
+
+} else {
+
+  usethis::ui_warn("'./Objects/River volume input.rds' not detected. Original values returned (useful when only updating NEMO-MEDUSA output).")
+
+}
+
+  #### Create new file ####
+
+  new <- stringr::str_split(path, "Models/")[[1]][2] %>%                # Pull the text we need from the file path to name the new file
+    stringr::str_replace("[[:punct:]]", "_") %>%                        # Remove the '/'
+    stringr::str_replace(" ", "_") %>%                                  # Replace any spaces with '_'
+    toupper() %>%                                                       # Capitalise
+    paste0(path, "/Driving/physics_", ., ".csv")                        # Build new name
+
+  write.csv(Physics_new, file = new, row.names = F)                     # Save the new file
+  unlink(copied)                                                        # Delete the old one
+
+}
+
+
+
+
+
