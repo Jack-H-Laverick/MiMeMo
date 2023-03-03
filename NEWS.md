@@ -1,7 +1,13 @@
+# MiMeMo.tools 0.6.0 
+<span style="color:grey;">24/02/2022</span>
+
+* `update_boundary_period` can now handle missing data files for partial updates. Also acquires a switch `convert_units` for backward compatabilty, as since Mission Atlantic unit conversions should be performed BEFORE saving out .rds objects.
+* `update_physics_period` can now handle missing data files for partial updates. 
+
 # MiMeMo.tools 0.5.0 
 <span style="color:grey;">24/02/2022</span>
 
-* `Window` gains a switch to handle files using 0-360 longitudes, and can crop using an sf polygon 
+* `Window` gains a switch to handle files using 0-360 longitudes, and can crop using an sf polygon .
 
 # MiMeMo.tools 0.4.0 
 <span style="color:grey;">24/02/2022</span>
